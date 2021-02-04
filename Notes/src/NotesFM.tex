@@ -16,4 +16,319 @@
 
 \tableofcontents\newpage
 
+\section{Financial Terminology \& Single-Period Models}
+
+  \begin{proposition}{Types of Financial Objects}
+    In this course we consider two types of financial objects
+    \begin{enumerate}
+      \item \textit{Underlying Traded Assets} (e.g. Oil, interest rates \& exchange rates).
+      \item \textit{Derivative Securities} (contracts based on \textit{Underlying Traded Assets})
+    \end{enumerate}
+  \end{proposition}
+
+  \begin{proposition}{Derivative Securities}
+    \textit{Derivative Securities} can act as insurance, by paying the holder when the value of the \textit{Underlying Traded Asset} goes in the opposite direction.
+    \par \textit{e.g.} ``I will pay you £1mn for every dollar the price of oil is over £80 on 1st December 2025.''
+    \par Our question is what such a contract is worth. To answer this we consider both \textit{Arbitrage} and \textit{Modelling}.
+  \end{proposition}
+
+  \begin{definition}{Modelling}
+    \textit{Modelling} is the practice of forecasting the future value of an \textit{Underlying Traded Asset}. Classical models for price processes involve \textit{Brownian Motion}.
+  \end{definition}
+
+  \begin{definition}{Arbitrage}
+    \textit{Arbitrage} is the possibility of being able to make a profit on a transaction without being exposed to the risk of incurring a loss. Traders who try to lock in riskless profit are called \textit{Arbitrageurs}.
+    \par Generally realised by buying and selling the same asset in different markets, with the asset having a different value in each market.
+  \end{definition}
+
+  \begin{example}{Arbitrage}
+    Consider a stock that is traded on both the NYSE and the LSE. Suppose the sotck price is \$189 on the NYSE and £100 on the LSE, and the exchange rate is \$1.87=£1. The following \textit{Arbitrage Opportunity} exists:
+    \begin{enumerate}
+      \item Buy 100 shares in London.
+      \item Sell all these shares in NY.
+      \item Exchange dollars to sterling.
+    \end{enumerate}
+    This has a riskless profit of \$200=£106.95 (assuming negligible transaction costs).
+  \end{example}
+
+  \begin{proposition}{"No Arbitrage Principle"}
+    The \textit{"No Arbitrage Principle"} is the principle that \textit{Arbitrage} opportunity do not exist (for long) in real life markets. If they did then the market activity caused by agents exploiting the \textit{Arbitrage} opportunity\footnote{The forces of \textit{Supply-and-Demand}.} would raise the cost of buying and thus remove the \textit{Arbitrage} opportunity.
+  \end{proposition}
+
+  \begin{remark}{Arbitrage \& Valuing Contracts}
+    When valuing contracts we assume there is no arbitrage (The \textit{"No Arbitrage Principle"}). This means we can decide a single price for a contract, as at any other price there would be arbitrage.
+  \end{remark}
+
+  \begin{definition}{Short Selling}
+    \textit{Short Selling} is the practice of borrowing an asset, selling it and then at some point in the future buying an equivalent asset to reimburse whoever lent you the original asset. If the value of the asset has fallen in this time then you make a profit.
+  \end{definition}
+
+  \begin{example}{}
+    Consider a share which trades at £10 on 1st Jan. Suppose we know that on 1st July there is a 2/3 chance it will be worth £25 and 1/3 chance it will be worth £5. Suppose the following contract is offer on the 1st Jan:
+    \begin{enumerate}
+      \item ``If the share goes up, I will pay you £4. If the share price goes down, I pay you nothing.''
+    \end{enumerate}
+    What is this contract worth? (Assuming your bank account pays no interest).
+    \par You could argue that the contract should be worth the expected payout of the contract , $\frac23\times\pounds4+\frac13\times\pounds0=\pounds2.66$.
+    \par However, consider creating a replicating portfolio which buys $\frac15$ of a unit of the stock and borrows £1 from the bank.
+    \begin{itemize}
+      \item If the stock goes up, the portfolio is worth $\frac15\times\pounds25-\pounds1=\pounds4$.
+      \item If the stock goes down, the portfolio is worth $\frac15\times\pounds5-\pounds1=\pounds0$.
+    \end{itemize}
+    These two outcomes show that this replicating portfolio has exactly the same payouts as the contract being offer. This means that whatever the portfolio costs, the contract must cost the same.
+    \par Suppose the portfolio costs £1 and the contract costs £1.50. Then you would sell the contract, buy the portfolio and make £0.50 profit independent of the price of the share on 1st July. (and visa-versa).
+    \par This valuation is independent of the probability of the asset's value increasing, but there is an interesting ``phantom probability'' $q=\frac14$. The price of the contract is the expected payout of the contract, if the probability of the share price increasing was $q$, $\expect[\text{payout}]=\frac14\times\pounds4+\frac34\times0=\pounds1$. Also, using this probability the expected value of the stock on July 1st is $\frac14\times\pounds25+\frac34\times\pounds5=\pounds10$, the same as it was on Jan 1st. (This is how we find $q$).
+    \par This $q$ is known as the \textit{Equivalent Martingale Measure}
+  \end{example}
+
+  \begin{definition}{Equivalent Martingale Measure}
+    TODO
+  \end{definition}
+
+  \begin{remark}{Value of Money}
+    These problems are more interesting when we consider that the value of money is not constant due to inflation \& interest rates.
+  \end{remark}
+
+  \begin{remark}{Risk-Free}
+    When referring to an activity being ``Risk-Free'' we mean that the loses \& profits from it are known, not that there are no loses.
+  \end{remark}
+
+  \begin{definition}{Bank Process, $B_t$}
+    \textit{Bank Process}, $B_t$, is a measure of how much the value of money has changed over $t$ time-periods.
+    \par Assume the existence of a risk-free bank account with known interest rate $r$ (assumed to be constant over interval $[0,T]$). This means the initial deposit of one unit becomes the following after $t$ time-steps
+    \begin{itemize}
+      \item[Continuous Time Model] $B_t=e^{rt}$
+      \item[Multi-Period Model] $B_t=(1+r)^t$
+    \end{itemize}
+    We must consider the performance of our portfolio relative to the \textit{Bank Process}, by discounting our profits by factor $B_t$.
+    \par \textit{N.B.} - The \textit{Bank Process} is also known as a \textit{Bond} or a \textit{Numeraire}.
+  \end{definition}
+
+  \begin{definition}{Derivative Security}
+    A \textit{Derivative Security} is a contract whose value at expiration date $T$ is a function of the values of the assets within the time interval $[0,T]$. Often, the value is just a function of the value at time $T$.
+  \end{definition}
+
+  \begin{definition}{Forward Contract}
+    A \textit{Forward Contract} is an agreement to buy or sell an asset $S$ at future \textit{Delivery Date}\footnote{AKA \textit{Settlement Date}} $T$ for \textit{Delivery Price} $K$. Both parties are obliged to fulfil the contract.
+    \par The agent who agrees to buy the underlying asset is said to have a \textit{Long Position}, the other agent has a \textit{Short Position}.
+    \par The \textit{Forward Price} $f(t;T)$ is the delivery price which would make the contract have zero value at time $t$.
+  \end{definition}
+
+  \begin{remark}{Usefulness of Forward Contracts}
+    \textit{Forward Contracts} allow you to agree terms of a future purchase/sale in advance of actually transacting. This means you know the price you will receive/pay and thus can plan accordingly. (e.g. Farmers may agree to price per tonne of corn well before the harvest).
+  \end{remark}
+
+  \begin{definition}{Option Contract}
+    An \textit{Option} is a financial instrument giving one the right, but \underline{not} the obligation, to buy or sell an asset $S$ at (or before) a specified date $T$ for an agreed \textit{Strike Price}\footnote{AKA \textit{Exercise Price}} $K$. There are two classes of \textit{Option Contract}
+    \begin{itemize}
+      \item \textit{Call Option} - The holder has the right to buy.
+      \item \textit{Put Option} - The holder has the right to sell
+    \end{itemize}
+    \textit{N.B.} Only one party (the holder) decides whether to exercise the contract or not, the other (the writer) has to do what the former wishes.
+  \end{definition}
+
+  \begin{definition}{European \& American Options}
+    \textit{European} vs \textit{American Options} determine when the \textit{Option Contract} can be exercised.
+    \begin{itemize}
+      \item \textit{European Option} can only be executed on the expiry date.
+      \item \textit{American Option} can be executed on any date up to and inc. the expiry date.
+    \end{itemize}
+  \end{definition}
+
+  \begin{example}{Derivative}
+    Consider the following call option
+    \begin{quote}
+      ``The holder has the right to buy 1,000 litres of petrol for £1,000 next Jan 1st''
+    \end{quote}
+    If the market price $S_T$ on 1st Jan is greater than £1,000 it is profitable to exercise the option. You would make profit $S_T-1000$. However, if $S_T$ was less than £1,000 then it is better to buy petrol at the market price.
+    \par The value on Jan 1st of the option will be $\{S_T-1000\}_+$, a function of the random price $S_T$.
+    \par \textit{N.B.} - a put option would the opposite analysis with profit $1000-S_T$.
+  \end{example}
+
+  \begin{definition}{Dividend}
+    A \textit{Dividend} is a one-off payment provided made to the holder of an underlying asset at a certain time. Not all underlying assets provide a \textit{Dividend}.
+  \end{definition}
+
+  \begin{proposition}{Fair Price of a Forward Contract with a Dividend}
+    Consider a forward contract on an asset with current price $S_0$ which provides a known dividend $D$ at time point $t_0\in(0,T)$ and has delivery date $T$.
+    \par Assume the existence of a risk-free bank account with constant interest rate $r$ during the interval $[0,T]$. This means an initial deposit of one unit grows to $B_t=e^{rt}$ up to time point $t$.
+    \par If $D=0$ (ie no dividend is paid) then the fair delivery price for the forward contract is $K=S_0e^{rT}$. Else, if $D>0$ (ie a dividend is paid) then the fair delivery price for the forward contract is $K=(S_0-I)e^{rT}$ where $I=De^{-rt_0}$.
+  \end{proposition}
+
+  \begin{proof}{Proposition 1.4}
+    We use the ``no-arbitrage principle'' to prove that this is the fair price.
+    \par First assume that the price of the contract is $K>(S_0-I)e^{rT}$ where $I=De^{-rt_0}$. Then an arbitrageur will adopt a short position on this contract by doing the following
+    \begin{enumerate}
+      \item Borrow $\pounds£S_0$ at an interest rate of $r$.
+      \item Buy the underlying asset.
+      \item Take a short position in the forward contract (i.e. agree to sell the asset for $K$ at time $T$).
+    \end{enumerate}
+    At time point $T_0$ we use the dividend to partially repay the loan. Finally, at time point $T$ we sell the asset for $K$ and repay the outstanding balance of the loan. The riskless profit is $K-(S_0e^{rt_0}D)e^{(T-t_0)}=K-(S_0-I)e^{rT}$, regardless of the price of the underlying asset at time point $T$.
+    \par Now assume the converse, the price of the contract is $K-(S_0-I)e^{rT}>0$ where $I=De^{-rt_0}$. Then an arbitrageur will adopt a long position on this contract by doing the following
+    \begin{enumerate}
+      \item Short sell the underlying asset (N.B. you are obliged to pay dividends to the lender).
+      \item Invest the proceeds of $S_0$ at the risk-free interest rate of $r$.
+      \item Take a long position in the forward contract (i.e. agree to buy the asset for $K$ at time $T$).
+    \end{enumerate}
+    At time $t_0$ we have to pay the dividend from our bank account. On the delivery date the arbitrageur buys the asset for $K$ and makes a riskless profit of $(S_0e^{rt_0}-D)e^{r(T-t_0)}-K=(S_0-I)e^{rT}-K>0$ where $I=De^{-rt_0}$.\footnote{$D$ is subtracted as you have to pay the lender the dividend, but as you have already sold the asset you do not receive the dividend from the asset.}
+  \end{proof}
+
+  \begin{theorem}{Equivalent Contract Valuations over Time}
+    Consider two combinations of financial derivatives that both have the same value $V=W$ at time point $T$. Then their prices $V_t$ and $W_t$ at time point $t<T$ must also coincide.
+  \end{theorem}
+
+  \begin{proof}{Theorem 1.1}
+    We use the ``no-arbitrage principle'' and assume WLOG that $V_t>W_t$. Then, at time $t$, we would do the following
+    \begin{enumerate}
+      \item Sell or short the first combination.
+      \item Buy the second combination.
+      \item Invest the difference $V_t-W_t>0$.
+    \end{enumerate}
+    At time point $T$ we would do the following
+    \begin{enumerate}
+      \item Buy the second combination for $W$.
+      \item Sell the first combination for $V=W$.
+    \end{enumerate}
+    The risk-free profit, assuming a risk-free interest rate of $r$, is $(V_t-W_t)e^{r(T-t)}>0$
+  \end{proof}
+
+  \begin{proposition}{Put-Call Parity}
+    We apply \texttt{Theorem 1.1} to \textit{European Put \& Call Options}.
+    \par Consider a \textit{European Put Option} and a \textit{European Call Option} for the same underlying asset, both with strike price $K$ and expiry date $T$. Assume that $S_T$ is the price of the underlying asset at time point $T$ then the payoff of the \textit{Call Option} is $C$ and the \textit{Put Option} is $P$ at time $T$, where
+    \[\begin{array}{rcl}
+      C&=&\{S_T-K\}_+\\
+      P&=&\{K-S_T\}_+
+    \end{array}\]
+    For the first combination choose the \textit{Underlying Asset} and \textit{European Put Option}. The value of this combination at time point $T$ is $V=S_T+P=\max\{S_T,K\}$.
+    \par For the second combination choose the \textit{European Call Option} and a bond which matures at time point $T$ with a price of $K$. The value of the second combination is $W=K+C=\max\{S_T,K\}$
+  \end{proposition}
+
+  \begin{theorem}{Put-Call Parity - Formal}
+    Let $S_t$ be the price of the asset at time point $t$, $Ke^{-r(T-t)}$ the discounted value of the bond and $C_t,P_t$ be the prices of the \textit{European Call} and \textit{Put Options} at time $t$, respectively. Then
+    \[ S_t+P_t-C_t=Ke^{-r(T-t)}\quad\ \forall t\in[0,T] \]
+  \end{theorem}
+
+  \begin{theorem}{Lower Bound for a European Call Option}
+    We can use \textit{Put-Call Parity} to determine a lower bound for a \textit{European Call Option}
+    \[\begin{array}{rcl}
+      S_t+P_t-C_t&=&Ke^{-r(T-t)}\\
+      \implies C_t&=&S_t+P_t-Ke^{-r(T-t)}\\
+      \implies C_t\geq\{S_t-Ke^{-r(T-t)}\}_+\text{ as }P_t\geq0
+    \end{array}\]
+  \end{theorem}
+
+  \begin{theorem}{American Call Options}
+    Let $C_A$ be the price of an \textit{American Call Option} and $C_E$ be the price of a \textit{European Call Option} for the same underlying asset, with the same strike price and expiry date.
+    \par Then, for a \underline{non-dividend paying} stock we have that
+    \[ C_A=C_E \]
+    This means that, for non-dividend paying stock, it is suboptimal to exercise an American call optional early.
+  \end{theorem}
+
+  \begin{proof}{Theorem 1.4}
+    First, note that exercising the American call early at time $t<T$ generates an income of $S_t-K$. However, from the inequality above, we know that selling the call options yields a cash-flow of $\{S_t-Ke^{-r(T-t)}\}_+\geq S_t-Ke^{-r(T-t)}$. Since $e^{-r(T-t)}<1$, exercising the call at any $t<T$ (i.e. early) is suboptimal.
+  \end{proof}
+
+\subsection{Single-Period Model}
+
+  \begin{definition}{Sample Space, $\Omega$}
+    The \textit{Sample Space} $\Omega$ is the set consisting of all elementary outcomes.
+  \end{definition}
+
+  \begin{definition}{Random Variable}
+    A \textit{Random Variable} $X$ is a function from the \textit{Sample Space} to real numbers
+    \[ X:\Omega\to\reals \]
+  \end{definition}
+
+  \begin{definition}{Single-Period Model}
+    The \textit{Single-Period Model} is a model for a financial market with the following components
+    \begin{itemize}
+      \item Initial date $t=0$ and terminal date $t=1$, with trading and consumption only allowed on these two dates.
+      \item A finite \textit{Sample Space} $\Omega$ with $|\Omega|=K<\infty$.
+      \[ \Omega=\{\omega_1,\dots,\omega_k\} \]
+      with each element corresponding to some state of the world.
+      \item A \textit{Probability Measure} $\prob$ on $\Omega$ with $\prob(\omega_i)>0\ \forall\ \omega_i\in\Omega$.
+    \end{itemize}
+  \end{definition}
+
+  \begin{definition}{Bank Account Process}
+    A \textit{Bank Account Process} $B=\{B_t:t=0,1\}$ where $B_0=1$ and $B_1$ is a \textit{Random Variable}.
+    \par The \textit{Bank Account Process} is distinguished from other securities because its price $B_1(\omega)$ at time $t=1$ is assumed to be strictly positive for all $\omega\in \Omega$. Usually, in fact, $B_1\geq1$ in which case $B_1$ should be though of as the value of the bank account at time $t=1$, if 1 unit of currency was deposited at time $t=0$. And, $r=B_t-1\geq0$ should be thought of as the \textit{Interest Rate}. In many applications $r$ and $B_1$ are deterministic scalars.
+  \end{definition}
+
+  \begin{definition}{Price Process\footnote{AKA \textit{Stock Process}}}
+    A \textit{Price Process} $S=\{S(t):t=0,1\}$ where $S(t)=(S_1(t),S_2(t),\dots,S_N(t)),\ N<\infty$ and $S_i(t)$ is the price of the $i^{th}$ security at time $t$. In many applications these $N$ risky securities are stocks.
+    \par The prices at time $t=0$ are positive scalars that are known to the investors, whereas the prices at time $t=1$ are non-negative random variables whose value only become known to investors at time $t=1$.
+  \end{definition}
+
+  \begin{definition}{Trading Strategy}
+    A \textit{Trading Strategy} $H=(H_0,\dots,H_N)$ describes an investor's portfolio as carried from time $t=0$ to time $t=1$. Specifically, $H_0$ is the number of units of the currency invested in the \textit{Savings Account} and $H_i$ with $i\geq1$ is a scalar of the number of units invested in the $i^{th}$ security.
+    \par Note that $H_i$ can be positive or negative. Positive means you have bought/invested and negative means you are borrowing or short selling.
+  \end{definition}
+
+  \begin{example}{Single-Period Model}
+    Consider a share which trades on 1st Jan for £10. Suppose we know with probability $p_1=\frac23$ it will be worth £25 on 1st July, and with probability $p_2=\frac13$ it will be worth £5 on 1st July. You also have access to a bank account which pays no interest ($r=0$), which you can pay into or borrow from. Create a \textit{Replicating Portfolio} as follows: buy $\frac15$ unit of the stock, and borrow £1 from the bank.
+    \par We can rephrase this as a \textit{Single-Period Model} for a single period ($T=1$).
+    \begin{itemize}
+      \item \textit{Bank Account Process} - $B_0=B_1=1$. As no interest rate.
+      \item \textit{Sample Space} - $\Omega=\{\omega_1,\omega_2\}$ with $\omega_1$ being the event the stock rises to £25 and $\omega_2$ being the event the stock falls to £5.
+      \item There are $N=1$ stocks. So the \textit{Price Process} is
+      \[\begin{array}{rcl}
+        S_1(0)(\omega_i)&=&10\text{ for }i=1,2\\
+        S_1(1)(\omega_i)&=&\begin{cases}
+          25&\text{if }i=1\\
+          5&\text{if }i=2
+        \end{cases}
+      \end{array}\]
+      \item We can write the \textit{Replicating Portfolio} as a vector $(H_0,H_1)$.
+    \end{itemize}
+  \end{example}
+
+  \begin{definition}{Value Process, $V$}
+    A \textit{Value Process} $V=\{V_t:t=0,1\}$ describes the total value of the portfolio at each point in time
+    \[ V_t=H_0B_t+\sum_{n=1}^NH_nS_n(t) \]
+  \end{definition}
+
+  \begin{definition}{Gains Process, $G$}
+    The \textit{Gains Process} $G$ is a random variable that describes the total profit or loss generated by the portfolio between times 0 and 1.
+    \[ G=H_0r+\sum_{n=1}^NH_n\Delta S_n \]
+    where $\Delta S_n=S_n(1)-S_n(0)$ is the change in price of the $n^{th}$ asset.
+  \end{definition}
+
+  \begin{remark}{Normalising Prices}
+    It is convenient to normalize the prices, so that the bank account becomes constant by defining discounted versions of the processes defined earlier. See \texttt{Definitions 1.19, 1.20, 1.21}.
+  \end{remark}
+
+  \begin{definition}{Discounted Price Process, $S^*$}
+    A \textit{Discounted Price Process} $S^*$ is the \textit{Price Process} $S$ normalised by the \textit{Bank Process} $B_t$
+    \[S^*:=\{S_t^*:t=0,1\}\text{ with }S_n^*(t):=\frac{S_n(t)}{B_t}\text{ for }n\in\{1,\dots,N\},\ t=\{0,1\}\]
+  \end{definition}
+
+  \begin{definition}{Discounted Value Process, $V^*$}
+    A \textit{Discounted Value Process} $V_t^*$ is the \textit{Value Process} $V_t$ normalised by the \textit{Bank Process} $B_t$
+    \[ V_t^*:=\frac{V_t}{B_t}=H_0+\sum_{n=1}^NH_nS_n^*(t)\text{ for }t=0,1 \]
+  \end{definition}
+
+  \begin{definition}{Discounted Gains Process, $G^*$}
+    A \textit{Discounted Gains Process} $G^*$is the \textit{Gains Process} $G$ normalised by the \textit{Bank Process} $B_t$
+    \[ G^*:=\frac{G}{B_t}=\sum_{n=1}^NH_n\Delta S_n^*\text{ with }\Delta S_n^*:=S_n^*(1)-S_n^*(0) \]
+  \end{definition}
+
+\section{Stochastic Processes in Discrete Time}
+
+\section{Multi-Period Models}
+
+\section{Stochastic Processes in Continuous Time}
+
+\section{Financial Market Models in Continuous Time}
+
+\reference
+\section{Notation}
+
+  \begin{notation}{General Mathematical Notation}
+    \begin{tabular}{c|c}
+      Notation&Description\\\hline
+      $\{x\}$&Only the positive part of $x$ (i.e. $\max\{0,x\}$).
+    \end{tabular}
+  \end{notation}
+
 \end{document}
