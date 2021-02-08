@@ -70,7 +70,7 @@
     \end{enumerate}
     What is this contract worth? (Assuming your bank account pays no interest).
     \par You could argue that the contract should be worth the expected payout of the contract , $\frac23\times\pounds4+\frac13\times\pounds0=\pounds2.66$.
-    \par However, consider creating a replicating portfolio which buys $\frac15$ of a unit of the stock and borrows £1 from the bank.
+    \par However, consider creating a replicating portfolio which buys $\frac15$ of a unit of the stock and borrows £1 from the bank. On 1st Jan this portfolio is worth $(1/5)\times\pounds10-\pounds1=\pounds1$.
     \begin{itemize}
       \item If the stock goes up, the portfolio is worth $\frac15\times\pounds25-\pounds1=\pounds4$.
       \item If the stock goes down, the portfolio is worth $\frac15\times\pounds5-\pounds1=\pounds0$.
@@ -250,7 +250,7 @@
     \end{itemize}
   \end{definition}
 
-  \begin{definition}{Bank Account Process}
+  \begin{definition}{Bank Account Process $B$}
     A \textit{Bank Account Process} $B=\{B_t:t=0,1\}$ where $B_0=1$ and $B_1$ is a \textit{Random Variable}.
     \par The \textit{Bank Account Process} is distinguished from other securities because its price $B_1(\omega)$ at time $t=1$ is assumed to be strictly positive for all $\omega\in \Omega$. Usually, in fact, $B_1\geq1$ in which case $B_1$ should be though of as the value of the bank account at time $t=1$, if 1 unit of currency was deposited at time $t=0$. And, $r=B_t-1\geq0$ should be thought of as the \textit{Interest Rate}. In many applications $r$ and $B_1$ are deterministic scalars.
   \end{definition}
@@ -260,7 +260,7 @@
     \par The prices at time $t=0$ are positive scalars that are known to the investors, whereas the prices at time $t=1$ are non-negative random variables whose value only become known to investors at time $t=1$.
   \end{definition}
 
-  \begin{definition}{Trading Strategy}
+  \begin{definition}{Trading Strategy $H$}
     A \textit{Trading Strategy} $H=(H_0,\dots,H_N)$ describes an investor's portfolio as carried from time $t=0$ to time $t=1$. Specifically, $H_0$ is the number of units of the currency invested in the \textit{Savings Account} and $H_i$ with $i\geq1$ is a scalar of the number of units invested in the $i^{th}$ security.
     \par Note that $H_i$ can be positive or negative. Positive means you have bought/invested and negative means you are borrowing or short selling.
   \end{definition}
@@ -312,6 +312,77 @@
     A \textit{Discounted Gains Process} $G^*$is the \textit{Gains Process} $G$ normalised by the \textit{Bank Process} $B_t$
     \[ G^*:=\frac{G}{B_t}=\sum_{n=1}^NH_n\Delta S_n^*\text{ with }\Delta S_n^*:=S_n^*(1)-S_n^*(0) \]
   \end{definition}
+
+  \begin{definition}{Arbitrage Opportunity}
+    An \textit{Arbitrage Opportunity} is a \textit{Trading Strategy} $H$ with the following three properties
+    \begin{enumerate}
+      \item $V_0=0$.
+      \item $V_1(\omega)\geq0\ \forall\ \omega\in\Omega$.
+      \item $\prob(V1(\omega)\geq0)>0\ \forall\ \omega\in\Omega$.\footnote{Equivalently, $\expect[V_1]>0$.}
+    \end{enumerate}
+  \end{definition}
+
+  \begin{proposition}{Gains Process \& Arbitrage Opportunity}
+    There exists an \textit{Arbitrage Opportunity} iff there is some trading strategy $H$ st $G^*\geq0$ and $\expect[G^*]>0$.
+    \par This means that \textit{Gains} is always non-negative (so not losses), and as its expected value is strictly positive there must be at least one positive value of $G^*$ which has a non-zero probability.
+  \end{proposition}
+
+  \begin{proof}{Proposition 1.6}
+    \par As this is an \textit{iff} statement, I prove the statement in both directions.
+    First consider the forwards direction. Let $H$ be an \textit{Arbitrage Opportunity}. Since $G^*=V_1^*-V_0^*$ and $B_t>0\ \forall\ t,\omega$, by the definition of an \textit{Arbitrage Opportunity}, we find that $G^*\geq0$ and thus $\expect[G^*]=\expect[V_1^*]>0$.
+    \par Now consider the other direction, suppose $H$ satisfies $G^*\geq0$ and $\expect[G^*]>0$. Define $\hat{H}:=(\hat{H}_0,H_1\dots,H_N)$ where $\hat{H}_0:=-\sum_{n=1}^NH_nS_n^*(0)$\footnote{Any money used to buy a stock is borrowed from the bank, and any money made from short selling is deposited into the bank. This means the total value of the portfolio at $t=0$ is $0$ (requirement of an \textit{Arbitrage Opportunity}).}. Under $\hat{H}$ one has $V_0^*=0$ and $V_1^*=V_0^*+G^*=G^*$.
+    \par Hence $V_1^*\geq0$ and $\expect[V_1^*]=\expect[G^*]>0$, meaning $\hat{H}$ is an arbitrage opportunity.
+  \end{proof}
+
+\subsection{Risk-Neutral Probability Measures}
+
+  \begin{definition}{Risk-Neutral Probability Measure}
+    A probability measure $\Q$ on $\Omega$ is said to be a \textit{Risk-Neutral Probability Measure} if both the following hold
+    \begin{enumerate}
+      \item $\Q(\{\omega\})>0\ \forall\ \omega\in\Omega$.
+      \item $\expect_\Q(S_n^*(1))=S_n^*(0)$ for $n\in\{1,\dots,N\}$.
+    \end{enumerate}
+  \end{definition}
+
+  \begin{theorem}{No-Arbitrage Theorem}
+    There are no \textit{Arbitrage Opportunities} \underline{iff} there exists a \textit{Risk-Neutral Probability Measure} $\Q$.
+  \end{theorem}
+
+  \begin{theorem}{Separating Hyperplane Theorem\footnote{This is a consequence of the \textit{Hahn-Banach Theorem} from functional analysis.}}
+    Let $\mathbb{W}$ be a linear subspace of $\reals^K$ and $\mathbb{K}$ be a compact convex subset in $\reals^K$ which is disjoint from $\mathbb{W}$. Then we can separate $\mathbb{W}$ and $\mathbb{K}$ strictly by a hyperplane containing $\mathbb{W}$ (ie $\exists\ v\in\reals^K$ which is \textit{Orthogonal} to $\mathbb{W}$\footnote{$u^Tv=0\ \forall\ u\in\mathbb{W}$}) such that
+    \[ u^Tv>0\ \forall\ u\in\mathbb{K} \]
+
+    \textit{N.B.} - Proof of this is beyond the scope of this course.
+  \end{theorem}
+
+  \begin{proof}{No-Arbitrage Theorem}
+    \par Consider the three following sets
+    \begin{enumerate}
+      \item $\mathbb{W}=\left\{X\in\reals^K:X=G^*\text{ for some \textit{Trading Strategy}}H\right\}$.
+      \par This can be considered the set of random variables which each represent a possible $t=1$ discounted wealth when the initial value of the investment is zero. Here, $\mathbb{W}$ is a linear subspace of $\reals^K$\footnote{Proved by showing it is complete under: addition, and scalar multiplication.}.
+      \item $\mathbb{A}=\left\{X\in\reals^K:X\geq0,X\neq0\right\}$. ($\mathbb{A}$ is not compact, so can not be used for $\mathbb{K}$ in \textit{Separating Hyperplane Theorem}).
+      \par Note there exists an arbitrage opportunity \underline{iff} $\mathbb{W}\cap\mathbb{A}\neq\emptyset$.
+      \item $\mathbb{A}^+=\left\{X\in\reals^N:X\geq0,X\neq0,\sum_{i=1}^KX_i=1\right\}$.
+      \par $\mathbb{A}^+$ is a convex and compact subset of $\reals^K$.
+    \end{enumerate}
+    Assume that there is no \textit{Arbitrage Opportunity}, then $\mathbb{W}\cap\mathbb{A}\neq\emptyset$ (They are disjoint). By the \textit{Separating Hyperplane Theorem} $\exists\ Y\in\reals^K$ which is \textit{Orthogonal} to $\mathbb{W}$ ($X^TY=0\ \forall\ X\in\mathbb{W}$) st
+    \[ X^TY>0\ \forall\ X\in\mathbb{A}^+ \]
+    For each $k\in\{1,\dots,K\}$ the $k^\text{th}$ unit vector $e_k$ is an element of $\mathbb{A}^+$. Therefore, $\forall\ k\in\{1,\dots,K\}$ we have that
+    \[ Y_K:=e_K^TY>0 \]
+    which means all entries of $Y$ are strictly positive.
+    \par Define a probability measure $\Q$ by setting
+    \[ \Q(\{\omega_k\})=\frac{Y(\omega_k)}{Y(\omega_1)+\dots+Y(\omega_k)} \]
+    Furthermore, $\Delta S_n^*\in\mathbb{W}$ for all $n$ because $\Delta S_n^*:=S_n^*(1)-S_n^*(0)$ is the discounted wealth for the portfolio $H=e_n$ which consists of one unit of the $n^\text{th}$ asset only. Since $Y$ is orthogonal to $\mathbb{W}$ we can conclude that
+    \[ \expect_\Q[\Delta S_n^*]=\sum_{k=1}^K\Delta S_n^*(\omega_k)\Q(\{\omega_k\})=0\ \forall\ n \]
+    In other words
+    \[ \expect_\Q[S_n^*(1)]=S_n^*(0)\ \forall n \]
+    Thus $\Q$ is a \textit{Risk-Neutral Probability Measure}.
+    \par For the converse, assume that $\Q$ is a \textit{Risk-Neutral Probability Measure}. Then for an arbitrary \textit{Trading Strategy} $H$ we have
+    \[ \expect_\Q[G^*]=\expect_\Q\left[\sum_{n=1}^NH_n\Delta S_n^*\right]=\sum_{n=1}^NH_n\expect_\Q[\Delta S_n^*]=0 \]
+    and, in particular
+    \[ \sum_{k=1}^KG^*(\omega_k)\Q(\{\omega_k\})=0 \]
+    which shows that either $G^*(\omega_k<0)$ for some $k$ or $G^*=0$, but then $\expect_\prob[G^*]=0$. Hence, by \texttt{Proposition 1.6} , there cannot be any arbitrage opportunities.\proved
+  \end{proof}
 
 \section{Stochastic Processes in Discrete Time}
 
