@@ -206,6 +206,7 @@
   \begin{theorem}{Put-Call Parity - Formal}
     Let $S_t$ be the price of the asset at time point $t$, $Ke^{-r(T-t)}$ the discounted value of the bond and $C_t,P_t$ be the prices of the \textit{European Call} and \textit{Put Options} at time $t$, respectively. Then
     \[ S_t+P_t-C_t=Ke^{-r(T-t)}\quad\ \forall t\in[0,T] \]
+    If, at some time $t$, this relationship does not hold then an \textit{Arbitrage Opportunity} exists at this time.
   \end{theorem}
 
   \begin{theorem}{Lower Bound for a European Call Option}
@@ -265,7 +266,7 @@
     \par Note that $H_i$ can be positive or negative. Positive means you have bought/invested and negative means you are borrowing or short selling.
   \end{definition}
 
-  \begin{example}{Single-Period Model}
+  \begin{example}{Single-Period Model (Zero Interest)}
     Consider a share which trades on 1st Jan for £10. Suppose we know with probability $p_1=\frac23$ it will be worth £25 on 1st July, and with probability $p_2=\frac13$ it will be worth £5 on 1st July. You also have access to a bank account which pays no interest ($r=0$), which you can pay into or borrow from. Create a \textit{Replicating Portfolio} as follows: buy $\frac15$ unit of the stock, and borrow £1 from the bank.
     \par We can rephrase this as a \textit{Single-Period Model} for a single period ($T=1$).
     \begin{itemize}
@@ -312,6 +313,38 @@
     A \textit{Discounted Gains Process} $G^*$is the \textit{Gains Process} $G$ normalised by the \textit{Bank Process} $B_t$
     \[ G^*:=\frac{G}{B_t}=\sum_{n=1}^NH_n\Delta S_n^*\text{ with }\Delta S_n^*:=S_n^*(1)-S_n^*(0) \]
   \end{definition}
+
+  \begin{example}{Single-Period Model (Non-Zero Interest)}
+    Consider a share which trades on 1st Jan for £10. Suppose we know with probability $p_1=\frac23$ it will be worth £25 on 1st July, and with probability $p_2=\frac13$ it will be worth £5 on 1st July. You also have access to a bank account which pays interest $r\in\reals$, which you can pay into or borrow from.
+    \par We can rephrase this as a \textit{Single-Period Model} for a single period ($T=1$).
+    \begin{itemize}
+      \item Bank Account Process - $B_0=1,\ B_1=1+r$.
+      \item Probability Space - $\Omega=\{\omega_1,\omega_2\}$ where $\omega_1$ indicates the stock going up and $\omega_2$ indicates the stock going down.
+      \item There is $N=1$ units of the stock, so we have the following price process
+      \[\begin{array}{rcl}
+        S_1(0)(\omega_i)&=&10\text{ for }i\in\{1,2\}\\
+        S_1(1)(\omega_1)&=&25\\
+        S_1(1)(\omega_2)&=&5
+      \end{array}\]
+      And discounted price process
+      \[\begin{array}{rcl}
+        S^*_1(0)(\omega_i)&=&10\text{ for }i\in\{1,2\}\\
+        S^*_1(1)(\omega_1)&=&\frac{25}{1+r}\\
+        S^*_1(1)(\omega_2)&=&\frac5{1+r}
+      \end{array}\]
+      \item For an arbitrary strategy $H$, our portfolio has initial value $V_0=V_0^*=H_0+10H_1$. Thus, we can determine the gains and future values of this portfolio
+      \[\begin{array}{rcl}
+        V_1(\omega_1)&=&(1+r)H_0+25H_1\\
+        V_1^*(\omega_1)&=&H_0+\frac{25}{1+r}H_1\\
+        G(\omega_1)&=&rH_0+15H_1\\
+        G^*(\omega_1)&=&\left(\frac{25}{1+r}-10\right)H_1\\
+        V_1(\omega_2)&=&(1+r)H_0+5H_1\\
+        V_1^*(\omega_2)&=&H_0+\frac5{1+r}H_1\\
+        G(\omega_2)&=&rH_0-5H_1\\
+        G^*(\omega_2)&=&\left(\frac5{1+r}-10\right)H_1
+      \end{array}\]
+    \end{itemize}
+  \end{example}
 
   \begin{definition}{Arbitrage Opportunity}
     An \textit{Arbitrage Opportunity} is a \textit{Trading Strategy} $H$ with the following three properties
@@ -384,6 +417,150 @@
     which shows that either $G^*(\omega_k<0)$ for some $k$ or $G^*=0$, but then $\expect_\prob[G^*]=0$. Hence, by \texttt{Proposition 1.6} , there cannot be any arbitrage opportunities.\proved
   \end{proof}
 
+\subsection{Valuation of Contingent Claims}
+
+  \begin{definition}{Contingent Claim}
+    A \textit{Contingent Claim} in the \textit{Single-Period Model} is a random variable $X$ which represents the payoff at time $t=1$. A contingent claim $X$ is said to be ``attainable'' (or ``marketable'') if there exists a trading strategy $H$ st $V_1=X$. In this case one says that $H$ generates $X$ and $H$ is called the \textit{Replicating Portfolio}.
+  \end{definition}
+
+  \begin{proposition}{Fair Price of a Contingent Claim?}
+    Consider a \textit{Contingent Claim} which is ``attainable'', and suppose that $H$ is its \textit{Replicating Portfolio}. The value $V_0$ of $H$ at time $t=0$ is the fair price of the \textit{Contingent Claim}.
+  \end{proposition}
+
+  \begin{proof}{Proposition 1.7}
+    Suppose the fair price of the \textit{Contingent Claim} $p$ is not equal to the value $V_0$ of $H$ at time $t=0$ (ie $p\neq V_0$). Then we have two cases
+    \begin{itemize}
+      \item[$p>V_0$] - An \textit{Arbitrage Opportunity} arises because an arbitrageur would sell the \textit{Contingent Claim} for $p$ at time 0, follow the trading strategy $H$ at a time $t=0$ cost of $V_0$ and pocket the difference $p-V_0$.
+      \par At time $t=1$ the value $V_1$ of the portfolio matches the obligation $X$ of the \textit{Contingent Claim}. We make profit $(p-V_0)e^{rT}$.
+      \item[$p<V_0$] - An arbitrageur would follow the trading strategy $H$ and purchase the \textit{Contingent Claim}, again making a riskless profit.
+    \end{itemize}
+  \end{proof}
+
+  \begin{theorem}{Risk-Neural Valuation Principle}
+    If the \textit{Single Period Model} is free of \textit{Arbitrage Opportunities}, then the time $t=0$ value of an \textit{Attainable Contingent Claim} $X$ is $\expect_\Q[X/B_1]$ where $\Q$ is any \textit{Risk-Neutral Probability Measure}\footnote{So value is independent of the choice of $\Q$}.
+  \end{theorem}
+
+  \begin{proof}{Risk-Neutral Valuation Principle}
+    Suppose there exists a second trading strategy $\hat{H}$ st $\hat{V}_1=X$, but $\hat{V}_0\neq V_0$.
+    \par Let $\Q$ be a \textit{Risk-Neutral Probability Measure}, then for any trading strategy $H$ we have seen that $\expect_\Q[G^*]=0$. Consequently
+    \[ V_0=V_0^*=\expect_\Q[V_0^*]=\expect_\Q[V_1^*-G^*]=\expect_\Q[V_1^*]-\expect_\Q[G^*]=\expect_\Q[V_1^*]=\expect_\Q\left[\frac{V_1}{B_1}\right] \]
+    In particular, any replicating strategy with $V_1=X$ has time $t=0$ value
+    \[ V_0=\expect_\Q\left[\frac{X}{B_1}\right] \]
+    As this holds for all $\Q$, this calculation does not depend on the choice of $\Q$ and therefore $\expect_\Q[V_1^*]$ is constant even if there are two or more \textit{Risk-Neutral Probability Measures}.
+    \par This means all \textit{Replicating Porfolios} for the same \textit{Attainable Contingent Claim} have the same values in time $t=0$ and $t=1$.
+  \end{proof}
+
+  \begin{example}{Valuation of Contingent Claims - I}
+    Consider a stock which is trading for £10 at time $t=0$, and we know that at time $t=0$ it will be worth either £25 or £5.
+    \par In order to find a \textit{Risk-Neutral Probability Measure} $\Q$ we need to find strictly positive numbers $\Q(\{\omega_1\})$ and $\Q(\{\omega_2\})$ st $\expect_\Q[S_n^*(1)]=S_n^*(0)$ is satisfied. That is
+    \[\begin{array}{rrcl}
+      &\expect_\Q[S_0^*(1)]&=&S_0^*(0)\\
+      \implies&S_1^*(\omega_1)\Q(\{\omega_1\})+S_1^*(\omega_2)\Q(\{\omega_2\})&=&S_0\\
+      \implies&\frac{25}{1+r}\Q(\{\omega_1\})+\frac5{1+r}\Q(\{\omega_2\})&=&10
+    \end{array}\]
+    As $\Q$ is a \textit{Probability Measure}, we must have that
+    \[ 1=\Q(\{\omega_1\})+\Q(\{\omega_2\}) \]
+    We deduce the values $q_1=\Q(\{\omega_1\}),q_2=\Q(\{\omega_2\})$ as follows
+    \[\begin{array}{rrcl}
+      &\frac{25}{1+r}q_1+\frac5{1+r}q_2&=&10\\
+      \&&q_1+q_2&=&1\\
+      \implies&q_1&=&1-q_2\\
+      \implies&\frac5{1+r}\left(5(1-q_2)+q_2\right)&=&1-\\
+      \implies&5-4q&=&2(1+r)\\
+      \implies&q_2&=&\frac{3-2r}4\\
+      \implies&q_1&=&1-\frac{3-2r}4=\frac{1+2r}4
+    \end{array}\]
+    The values $\Q(\{\omega_1\})=\frac{1+2r}4,\Q(\{\omega_2\})=\frac{3-2r}4$ satisfy both these equations, so this is a \textit{Risk-Neutral Probability Measure} and by \texttt{Theorem 1.5}  (The ``No-Arbitrage Principle'') there cannot be any \textit{Arbitrage Opportunities}.
+    \par In particular for $r=0$ (ie No interest), we recover $\Q(\{\omega_1\})=\frac14$ which is the same as a previous example.
+  \end{example}
+
+  \begin{example}{Valuation of Contingent Claims - II}
+    Continuing from \texttt{Example 1.6}.
+    \par Suppose $X$ is a \textit{Contingent Claim} with $X(\omega_1)=4$ and $X(\omega_2)=0$. If $X$ is \textit{Attainable}, then the value of $X$ at time $t=0$ is
+    \[ \expect_\Q[X/B_1]=\frac{1+2r}4\cdot\frac4{1+r}+0=\frac{1+2r}{1+r} \]
+    Check whether $X$ can be generated by solving for $H=(H_0,H_1)$\footnote{$H_0$ is amount invested in our bank account and $H_1$ is amount invested in the stock.}\footnote{We fine $(H_0,H_1)$ by solving $AH=X$ for defined $A,X$.}
+    \[\begin{array}{rcl}
+      4&=&H_0(1+r)+H_1\cdot 25\\
+      0&=&H_0(1+r)+H_1\cdot5
+    \end{array}\]
+    Solving gives
+    \[\begin{array}{rrcl}
+      &(4-0)&=&\big((1+r)-(1+r)\big)H_0+(25-5)H_1\\
+      \implies&4&=&20H_1\\
+      \implies&H_1&=&1/5\\
+      \implies&0&=&H_0(1+r)+1\\
+      \implies&H_0&=&-1/(1+r)
+    \end{array}\]
+    This means that $X$ is indeed \textit{Attainable}.
+    \par We check the value of the \textit{Replicating Portfolio} $H$ at time $t=0$
+    \[ V_0=H_0+S_1\cdot H_1=-\frac{1}{1+r}+10(1/5)=\frac{1+2r}{1+r} \]
+  \end{example}
+
+\subsection{Complete \& Incomplete Markets}
+
+  \begin{definition}{Complete \& Incomplete Models}
+    A model is said to be \textit{Complete} if every \textit{Contingent Claim} $X$ can be generated by some trading strategy. Otherwise, the model is said to be \textit{In-Complete}
+  \end{definition}
+
+  \begin{remark}{Checking if a Model is Complete}
+    There are simple ways to check whether a model is \textit{Complete}. One way is to define $K\times(N+1)$-matrix $A$ as
+    \[A=\begin{pmatrix}
+        B_1(\omega_1)&S_1(1)(\omega_1)&\dots&S_N(1)(\omega_1)\\
+        B_1(\omega_2)&S_1(1)(\omega_2)&\dots&S_N(1)(\omega_2)\\
+        \vdots&\vdots&\ddots&\vdots\\
+        B_1(\omega_K)&S_1(1)(\omega_K)&\dots&S_N(1)(\omega_K)
+    \end{pmatrix}\]
+    If a particular \textit{Contingent Claim} $X$ is attainable, then $AH=X$ will have a solution for $H$.
+    \par A model is \textit{Complete} \underline{iff} $\forall\ X\in\reals^K\ \exists H$ st $AH=X$.
+    \par NB - If the bank process $B$ is deterministic then the first column will be identical for all rows.
+  \end{remark}
+
+  \begin{theorem}{Uniqueness of Risk-Neutral Probability Measure}
+    Suppose there are no \textit{Arbitrage Opportunities}. Then a model is \textit{Complete} \underline{iff} there exists a \underline{unique} \textit{Risk-Neutral Probability Measure}.
+  \end{theorem}
+
+  \begin{proof}{Theorem 1.8}
+    \everymath={\displaystyle}
+    We denote by $\mathbb{M}$ the set of all \textit{Risk-Neutral Probability Measures}. Since there are no \textit{Arbitrage Opportunities} we know that $\mathbb{M}\neq\mathbb{Q}$.
+    We consider the statement in both directions
+    \begin{itemize}
+      \item[$\Longleftarrow$] For the sake of contradiction, assume that the model is \textit{Complete}, but $\mathbb{M}$ contains two distinct \textit{Risk-Neutral Probability Measures} $\Q,\hat\Q$. In this case there must exists some state $\omega_k$ with $\Q(\omega_k)\neq\hat\Q(\omega_k)$ so take the contingent claim $X$ defined by
+      \[ X(\omega)=\begin{cases}B_1(\omega_k)&\text{if }\omega=\omega_k\\0&\text{otherwise}\end{cases}=B_1\indexed\{\omega=\omega_k\} \]
+      Then
+      \[ \expect_\Q(X/B_1)=\expect_\Q(\indexed\{\omega=\omega_k\})=\Q(\{\omega_k\})\neq\hat\Q(\omega_k)=\expect_{\hat\Q}(X/B_1) \]
+      But, this contradicts the calculation in \texttt{Proof 1.7} where we saw that if \textit{Contingent Claim} $X$ is \textit{Attainable} then $\expect_\Q[X/B_1]$ has the same value $\forall\ \Q\in \mathbb{M}$.
+      \item[$\Longrightarrow$] For the sake of contradiction, assume that there is only one \textit{Risk-Neutral Probabiltiy Measure} $\hat\Q$, but there exists a \textit{Contingent Claim} $X$ which is \underline{not} \textit{Attainable}.
+      \par Then there is no solution to the system $AH=X$. By \textit{Separating Hyperplane Theorem} it follows that there must exists a row vector $\pi\in\reals^K$ st
+      \[ \pi^TA=0\footnotemark,\pi^TX>0 \] \footnotetext{$\pi$ is \textit{Orthogonal} to $A$.}
+      Let $\lambda>0$ be same enough st
+      \[ \Q(\{\omega_j\})=\hat\Q(\{\omega_j\})+\lambda\pi_j\cdot B_1(\omega_j)>0\ \forall\ j\in\{1,\dots,K\} \]
+      Since $B_1$ is the first column of $A$ and $\pi^TA=0$, the quantity $\Q$ is defined above is actually a \textit{Probabiltiy Measure}.\footnote{i.e. $\sum_j\Q(\{\omega_j\})=\underbrace{\sum_j\hat\Q(\{\omega_j\})}_{=1}+\underbrace{\sum_j\lambda\pi B_1}_{=0}=1$}
+      Moreover, for any \textit{Discounted Price Process} $S^*=(S_1^*,\dots,S_N^*)$ and for every $n\in\{1,\dots,N\}$ we have
+      \[\begin{array}{rcl}
+        \expect_\Q[S_n^*(1)]&=&\sum_{j=1}^K\Q(\{\omega_j\})S_n(1,\omega_j)/B_1(\omega_j)\\
+        &=&\sum_{j=1}^K\hat\Q(\{\omega_j\})S_n(1,\omega_j)/B_1(\omega_j)+\underbrace{\lambda\sum_{j=1}^K\pi_jS_n(1,\omega_j)}_{=0}\\
+        &=&\sum_{j=1}^K\hat\Q(\{\omega_j\})S_n^*(1,\omega_j)\\
+        &=&\expect_{\hat\Q}(S_n^*(1))
+        &=&S_n^*(0)\footnotemark
+      \end{array}\]
+      \footnotetext{As $\hat\Q$ is a \textit{Risk-Neutral Probability Measure}.}
+      Thus $\Q\in\mathbb{M}$ which is a contradiction to the uniqueness of $\hat\Q$.
+    \end{itemize}
+    \proved
+  \end{proof}
+
+  \begin{example}{Complete Markets}
+    Consider the situation in \textit{Example 1.7}.
+    \par Here is another way to check that $X$ is \textit{Attainable} is to check if the model is \textit{Complete}.
+    \par Consider the matrix $A$
+    \[ A=\begin{pmatrix}
+      1+r&25\\
+      1+r&5
+    \end{pmatrix} \]
+    Since $A$ has two linearly-independent columns, $AH$ can take all values in $\reals^2$.
+    \par Hence the model is \textit{Complete}.
+  \end{example}
+
 \section{Stochastic Processes in Discrete Time}
 
 \section{Multi-Period Models}
@@ -398,7 +575,7 @@
   \begin{notation}{General Mathematical Notation}
     \begin{tabular}{c|c}
       Notation&Description\\\hline
-      $\{x\}$&Only the positive part of $x$ (i.e. $\max\{0,x\}$).
+      $\{x\}_+$&Only the positive part of $x$ (i.e. $\max\{0,x\}$).
     \end{tabular}
   \end{notation}
 
