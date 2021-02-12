@@ -16,7 +16,7 @@
 
 \tableofcontents\newpage
 
-\section{Financial Terminology \& Single-Period Models}
+\section{Financial Terminology \& Single-Period Models}\label{sec_financial_terminology_and_single_period_model}
 
   \begin{proposition}{Types of Financial Objects}
     In this course we consider two types of financial objects
@@ -36,9 +36,10 @@
     \textit{Modelling} is the practice of forecasting the future value of an \textit{Underlying Traded Asset}. Classical models for price processes involve \textit{Brownian Motion}.
   \end{definition}
 
-  \begin{definition}{Arbitrage}
+  \begin{definition}{Arbitrage}\label{def_arbitrage}
     \textit{Arbitrage} is the possibility of being able to make a profit on a transaction without being exposed to the risk of incurring a loss. Traders who try to lock in riskless profit are called \textit{Arbitrageurs}.
     \par Generally realised by buying and selling the same asset in different markets, with the asset having a different value in each market.
+    \par (\arabic{definition})
   \end{definition}
 
   \begin{example}{Arbitrage}
@@ -149,13 +150,13 @@
     A \textit{Dividend} is a one-off payment provided made to the holder of an underlying asset at a certain time. Not all underlying assets provide a \textit{Dividend}.
   \end{definition}
 
-  \begin{proposition}{Fair Price of a Forward Contract with a Dividend}
+  \begin{proposition}{Fair Price of a Forward Contract with a Dividend}\label{prop_fair_price_of_forward_w_dividend}
     Consider a forward contract on an asset with current price $S_0$ which provides a known dividend $D$ at time point $t_0\in(0,T)$ and has delivery date $T$.
     \par Assume the existence of a risk-free bank account with constant interest rate $r$ during the interval $[0,T]$. This means an initial deposit of one unit grows to $B_t=e^{rt}$ up to time point $t$.
     \par If $D=0$ (ie no dividend is paid) then the fair delivery price for the forward contract is $K=S_0e^{rT}$. Else, if $D>0$ (ie a dividend is paid) then the fair delivery price for the forward contract is $K=(S_0-I)e^{rT}$ where $I=De^{-rt_0}$.
   \end{proposition}
 
-  \begin{proof}{Proposition 1.4}
+  \begin{proof}{Proposition \ref{sec_financial_terminology_and_single_period_model}.\ref{prop_fair_price_of_forward_w_dividend}}
     We use the ``no-arbitrage principle'' to prove that this is the fair price.
     \par First assume that the price of the contract is $K>(S_0-I)e^{rT}$ where $I=De^{-rt_0}$. Then an arbitrageur will adopt a short position on this contract by doing the following
     \begin{enumerate}
@@ -173,11 +174,11 @@
     At time $t_0$ we have to pay the dividend from our bank account. On the delivery date the arbitrageur buys the asset for $K$ and makes a riskless profit of $(S_0e^{rt_0}-D)e^{r(T-t_0)}-K=(S_0-I)e^{rT}-K>0$ where $I=De^{-rt_0}$.\footnote{$D$ is subtracted as you have to pay the lender the dividend, but as you have already sold the asset you do not receive the dividend from the asset.}
   \end{proof}
 
-  \begin{theorem}{Equivalent Contract Valuations over Time}
+  \begin{theorem}{Equivalent Contract Valuations over Time}\label{thrm_equivalent_contract_valuations_over_time}
     Consider two combinations of financial derivatives that both have the same value $V=W$ at time point $T$. Then their prices $V_t$ and $W_t$ at time point $t<T$ must also coincide.
   \end{theorem}
 
-  \begin{proof}{Theorem 1.1}
+  \begin{proof}{Theorem \ref{sec_financial_terminology_and_single_period_model}.\ref{thrm_equivalent_contract_valuations_over_time}}
     We use the ``no-arbitrage principle'' and assume WLOG that $V_t>W_t$. Then, at time $t$, we would do the following
     \begin{enumerate}
       \item Sell or short the first combination.
@@ -193,7 +194,7 @@
   \end{proof}
 
   \begin{proposition}{Put-Call Parity}
-    We apply \texttt{Theorem 1.1} to \textit{European Put \& Call Options}.
+    We apply \texttt{Theorem \ref{sec_financial_terminology_and_single_period_model}.\ref{thrm_equivalent_contract_valuations_over_time}} to \textit{European Put \& Call Options}.
     \par Consider a \textit{European Put Option} and a \textit{European Call Option} for the same underlying asset, both with strike price $K$ and expiry date $T$. Assume that $S_T$ is the price of the underlying asset at time point $T$ then the payoff of the \textit{Call Option} is $C$ and the \textit{Put Option} is $P$ at time $T$, where
     \[\begin{array}{rcl}
       C&=&\{S_T-K\}_+\\
@@ -218,14 +219,14 @@
     \end{array}\]
   \end{theorem}
 
-  \begin{theorem}{American Call Options}
+  \begin{theorem}{American Call Options}\label{thrm_american_call_option_value}
     Let $C_A$ be the price of an \textit{American Call Option} and $C_E$ be the price of a \textit{European Call Option} for the same underlying asset, with the same strike price and expiry date.
     \par Then, for a \underline{non-dividend paying} stock we have that
     \[ C_A=C_E \]
     This means that, for non-dividend paying stock, it is suboptimal to exercise an American call optional early.
   \end{theorem}
 
-  \begin{proof}{Theorem 1.4}
+  \begin{proof}{Theorem \ref{sec_financial_terminology_and_single_period_model}.\ref{thrm_american_call_option_value}}
     First, note that exercising the American call early at time $t<T$ generates an income of $S_t-K$. However, from the inequality above, we know that selling the call options yields a cash-flow of $\{S_t-Ke^{-r(T-t)}\}_+\geq S_t-Ke^{-r(T-t)}$. Since $e^{-r(T-t)}<1$, exercising the call at any $t<T$ (i.e. early) is suboptimal.
   \end{proof}
 
@@ -296,20 +297,20 @@
   \end{definition}
 
   \begin{remark}{Normalising Prices}
-    It is convenient to normalize the prices, so that the bank account becomes constant by defining discounted versions of the processes defined earlier. See \texttt{Definitions 1.19, 1.20, 1.21}.
+    It is convenient to normalize the prices, so that the bank account becomes constant by defining discounted versions of the processes defined earlier. See \texttt{Definitions \ref{sec_financial_terminology_and_single_period_model}.\ref{def_discounted_price_process}, \ref{sec_financial_terminology_and_single_period_model}.\ref{def_discounted_value_process}, \ref{sec_financial_terminology_and_single_period_model}.\ref{def_discounted_gains_process}}.
   \end{remark}
 
-  \begin{definition}{Discounted Price Process, $S^*$}
+  \begin{definition}{Discounted Price Process, $S^*$}\label{def_discounted_price_process}
     A \textit{Discounted Price Process} $S^*$ is the \textit{Price Process} $S$ normalised by the \textit{Bank Process} $B_t$
     \[S^*:=\{S_t^*:t=0,1\}\text{ with }S_n^*(t):=\frac{S_n(t)}{B_t}\text{ for }n\in\{1,\dots,N\},\ t=\{0,1\}\]
   \end{definition}
 
-  \begin{definition}{Discounted Value Process, $V^*$}
+  \begin{definition}{Discounted Value Process, $V^*$}\label{def_discounted_value_process}
     A \textit{Discounted Value Process} $V_t^*$ is the \textit{Value Process} $V_t$ normalised by the \textit{Bank Process} $B_t$
     \[ V_t^*:=\frac{V_t}{B_t}=H_0+\sum_{n=1}^NH_nS_n^*(t)\text{ for }t=0,1 \]
   \end{definition}
 
-  \begin{definition}{Discounted Gains Process, $G^*$}
+  \begin{definition}{Discounted Gains Process, $G^*$}\label{def_discounted_gains_process}
     A \textit{Discounted Gains Process} $G^*$is the \textit{Gains Process} $G$ normalised by the \textit{Bank Process} $B_t$
     \[ G^*:=\frac{G}{B_t}=\sum_{n=1}^NH_n\Delta S_n^*\text{ with }\Delta S_n^*:=S_n^*(1)-S_n^*(0) \]
   \end{definition}
@@ -355,13 +356,13 @@
     \end{enumerate}
   \end{definition}
 
-  \begin{proposition}{Gains Process \& Arbitrage Opportunity}
+  \begin{proposition}{Gains Process \& Arbitrage Opportunity}\label{prop_gains_process_and_arbitrage_opportunity}
     There exists an \textit{Arbitrage Opportunity} iff there is some trading strategy $H$ st $G^*\geq0$ and $\expect[G^*]>0$.
     \par This means that \textit{Gains} is always non-negative (so not losses), and as its expected value is strictly positive there must be at least one positive value of $G^*$ which has a non-zero probability.
   \end{proposition}
 
-  \begin{proof}{Proposition 1.6}
-    \par As this is an \textit{iff} statement, I prove the statement in both directions.
+  \begin{proof}{Proposition \ref{sec_financial_terminology_and_single_period_model}.\ref{prop_gains_process_and_arbitrage_opportunity}}
+    \par As this is an \underline{iff} statement, I prove the statement in both directions.
     First consider the forwards direction. Let $H$ be an \textit{Arbitrage Opportunity}. Since $G^*=V_1^*-V_0^*$ and $B_t>0\ \forall\ t,\omega$, by the definition of an \textit{Arbitrage Opportunity}, we find that $G^*\geq0$ and thus $\expect[G^*]=\expect[V_1^*]>0$.
     \par Now consider the other direction, suppose $H$ satisfies $G^*\geq0$ and $\expect[G^*]>0$. Define $\hat{H}:=(\hat{H}_0,H_1\dots,H_N)$ where $\hat{H}_0:=-\sum_{n=1}^NH_nS_n^*(0)$\footnote{Any money used to buy a stock is borrowed from the bank, and any money made from short selling is deposited into the bank. This means the total value of the portfolio at $t=0$ is $0$ (requirement of an \textit{Arbitrage Opportunity}).}. Under $\hat{H}$ one has $V_0^*=0$ and $V_1^*=V_0^*+G^*=G^*$.
     \par Hence $V_1^*\geq0$ and $\expect[V_1^*]=\expect[G^*]>0$, meaning $\hat{H}$ is an arbitrage opportunity.
@@ -423,11 +424,11 @@
     A \textit{Contingent Claim} in the \textit{Single-Period Model} is a random variable $X$ which represents the payoff at time $t=1$. A contingent claim $X$ is said to be ``attainable'' (or ``marketable'') if there exists a trading strategy $H$ st $V_1=X$. In this case one says that $H$ generates $X$ and $H$ is called the \textit{Replicating Portfolio}.
   \end{definition}
 
-  \begin{proposition}{Fair Price of a Contingent Claim?}
+  \begin{proposition}{Fair Price of a Contingent Claim?}\label{prop_fair_price_of_a_contingent_claim}
     Consider a \textit{Contingent Claim} which is ``attainable'', and suppose that $H$ is its \textit{Replicating Portfolio}. The value $V_0$ of $H$ at time $t=0$ is the fair price of the \textit{Contingent Claim}.
   \end{proposition}
 
-  \begin{proof}{Proposition 1.7}
+  \begin{proof}{Proposition \ref{sec_financial_terminology_and_single_period_model}.\ref{prop_fair_price_of_a_contingent_claim}}
     Suppose the fair price of the \textit{Contingent Claim} $p$ is not equal to the value $V_0$ of $H$ at time $t=0$ (ie $p\neq V_0$). Then we have two cases
     \begin{itemize}
       \item[$p>V_0$] - An \textit{Arbitrage Opportunity} arises because an arbitrageur would sell the \textit{Contingent Claim} for $p$ at time 0, follow the trading strategy $H$ at a time $t=0$ cost of $V_0$ and pocket the difference $p-V_0$.
@@ -450,7 +451,7 @@
     \par This means all \textit{Replicating Porfolios} for the same \textit{Attainable Contingent Claim} have the same values in time $t=0$ and $t=1$.
   \end{proof}
 
-  \begin{example}{Valuation of Contingent Claims - I}
+  \begin{example}{Valuation of Contingent Claims - I}\label{ex_valuation_of_contingent_claims}
     Consider a stock which is trading for £10 at time $t=0$, and we know that at time $t=0$ it will be worth either £25 or £5.
     \par In order to find a \textit{Risk-Neutral Probability Measure} $\Q$ we need to find strictly positive numbers $\Q(\{\omega_1\})$ and $\Q(\{\omega_2\})$ st $\expect_\Q[S_n^*(1)]=S_n^*(0)$ is satisfied. That is
     \[\begin{array}{rrcl}
@@ -475,7 +476,7 @@
   \end{example}
 
   \begin{example}{Valuation of Contingent Claims - II}
-    Continuing from \texttt{Example 1.6}.
+    Continuing from \texttt{Example \ref{sec_financial_terminology_and_single_period_model}.\ref{ex_valuation_of_contingent_claims}}.
     \par Suppose $X$ is a \textit{Contingent Claim} with $X(\omega_1)=4$ and $X(\omega_2)=0$. If $X$ is \textit{Attainable}, then the value of $X$ at time $t=0$ is
     \[ \expect_\Q[X/B_1]=\frac{1+2r}4\cdot\frac4{1+r}+0=\frac{1+2r}{1+r} \]
     Check whether $X$ can be generated by solving for $H=(H_0,H_1)$\footnote{$H_0$ is amount invested in our bank account and $H_1$ is amount invested in the stock.}\footnote{We fine $(H_0,H_1)$ by solving $AH=X$ for defined $A,X$.}
@@ -515,21 +516,21 @@
     \par NB - If the bank process $B$ is deterministic then the first column will be identical for all rows.
   \end{remark}
 
-  \begin{theorem}{Uniqueness of Risk-Neutral Probability Measure}
+  \begin{theorem}{Uniqueness of Risk-Neutral Probability Measure}\label{thrm_uniqueness_of_risk_neutral_probability_measure}
     Suppose there are no \textit{Arbitrage Opportunities}. Then a model is \textit{Complete} \underline{iff} there exists a \underline{unique} \textit{Risk-Neutral Probability Measure}.
   \end{theorem}
 
-  \begin{proof}{Theorem 1.8}
+  \begin{proof}{Theorem \ref{sec_financial_terminology_and_single_period_model}.\ref{thrm_uniqueness_of_risk_neutral_probability_measure}}
     \everymath={\displaystyle}
     We denote by $\mathbb{M}$ the set of all \textit{Risk-Neutral Probability Measures}. Since there are no \textit{Arbitrage Opportunities} we know that $\mathbb{M}\neq\mathbb{Q}$.
     We consider the statement in both directions
     \begin{itemize}
-      \item[$\Longleftarrow$] For the sake of contradiction, assume that the model is \textit{Complete}, but $\mathbb{M}$ contains two distinct \textit{Risk-Neutral Probability Measures} $\Q,\hat\Q$. In this case there must exists some state $\omega_k$ with $\Q(\omega_k)\neq\hat\Q(\omega_k)$ so take the contingent claim $X$ defined by
+      \item[$\Longrightarrow$] For the sake of contradiction, assume that the model is \textit{Complete}, but $\mathbb{M}$ contains two distinct \textit{Risk-Neutral Probability Measures} $\Q,\hat\Q$. In this case there must exists some state $\omega_k$ with $\Q(\omega_k)\neq\hat\Q(\omega_k)$ so take the contingent claim $X$ defined by
       \[ X(\omega)=\begin{cases}B_1(\omega_k)&\text{if }\omega=\omega_k\\0&\text{otherwise}\end{cases}=B_1\indexed\{\omega=\omega_k\} \]
       Then
       \[ \expect_\Q(X/B_1)=\expect_\Q(\indexed\{\omega=\omega_k\})=\Q(\{\omega_k\})\neq\hat\Q(\omega_k)=\expect_{\hat\Q}(X/B_1) \]
       But, this contradicts the calculation in \texttt{Proof 1.7} where we saw that if \textit{Contingent Claim} $X$ is \textit{Attainable} then $\expect_\Q[X/B_1]$ has the same value $\forall\ \Q\in \mathbb{M}$.
-      \item[$\Longrightarrow$] For the sake of contradiction, assume that there is only one \textit{Risk-Neutral Probabiltiy Measure} $\hat\Q$, but there exists a \textit{Contingent Claim} $X$ which is \underline{not} \textit{Attainable}.
+      \item[$\Longleftarrow$] For the sake of contradiction, assume that there is only one \textit{Risk-Neutral Probabiltiy Measure} $\hat\Q$, but there exists a \textit{Contingent Claim} $X$ which is \underline{not} \textit{Attainable}.
       \par Then there is no solution to the system $AH=X$. By \textit{Separating Hyperplane Theorem} it follows that there must exists a row vector $\pi\in\reals^K$ st
       \[ \pi^TA=0\footnotemark,\pi^TX>0 \] \footnotetext{$\pi$ is \textit{Orthogonal} to $A$.}
       Let $\lambda>0$ be same enough st
@@ -550,7 +551,7 @@
   \end{proof}
 
   \begin{example}{Complete Markets}
-    Consider the situation in \textit{Example 1.7}.
+    Consider the situation in \texttt{Example \ref{sec_financial_terminology_and_single_period_model}.\ref{ex_valuation_of_contingent_claims}}.
     \par Here is another way to check that $X$ is \textit{Attainable} is to check if the model is \textit{Complete}.
     \par Consider the matrix $A$
     \[ A=\begin{pmatrix}
