@@ -1,0 +1,263 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in, paperwidth=8.3in, paperheight=11.7in]{geometry}
+\usepackage{amsmath,amsfonts,fancyhdr,bbm}
+\usepackage[section,nohyphen]{DomH}
+\headertitle{Financial Mathematics - Problem Sheet 2}
+
+\newcommand\aug{\fboxsep=-\fboxrule\!\!\!\fbox{\strut}\!\!\!}
+
+\begin{document}
+
+% \questionsfalse
+% \answersfalse
+
+\title{Financial Mathematics - Problem Sheet 2}
+\author{Dom Hutchinson}
+\date{\today}
+\maketitle
+
+\begin{question}{2.}
+  Consider a single-period model with one risky asset that has a current price of $S_0=15$ and a future price of either $S_1(\omega_1)=20,\ S_1(\omega_2)=40/3$ or $S_1(\omega_3)=10$. There is also a bank account with a constant interest rate $r=1/9$.
+\end{question}
+
+\begin{question}{2. a)}
+  Specify the value and gains processes $V,G$ for this model as well as their discounted versions $V^*,G^*$.
+\end{question}
+
+\begin{answer}{2. a)}
+  When using a trading strategy $H:=(H_0,H_1)$, this model has value process $V$ and gains process $G$, defined as
+  \[\begin{array}{rrrl}
+    &V&:=&\{V_t:t=0,1\}\\
+    \text{where }&V_t&:=&H_0(1+rt)+H_1\cdot S_1(t)\\
+    &&=&H_0\left(1+\frac{t}9\right)+H_1\cdot S_1(t)\\
+    \\
+    &G&=&H_0r+H_1\Delta S_1(t)\\
+    &&=&\frac19H_0+(S_1(t)-15)H_1
+  \end{array}\]
+  Note that in this model $B_t=1+rt$ with $r=1/9$. Thus the discounted value process $V^*$ and discounted gains process $G^*$ for this model are defined as
+  \[\begin{array}{rrcl}
+    &V^*&:=&\{V_t^*:t=0,1\}\\
+    \text{where }&V_t^*&:=&\frac{V_t}{B_t}\\
+    &&=&\frac{V_t}{1+rt}\\
+    \\
+    &G^*&:=&\frac{G}{B_1}\\
+    &&=&\frac{G}{1+r}
+  \end{array}\]
+\end{answer}
+
+\begin{question}{2. b)}
+  By describing the discounted price process $S^*$, and using the condition that $\expect_\Q[S^*(1)]=S^*(0)$, determine all risk neutral probability measures $\Q$.
+\end{question}
+
+\begin{answer}{2. b)}
+  For this model, the discounted price process $S^*$ is defined as
+  \[\begin{array}{rrrl}
+    &S^*&:=&\{S_1^*(t):t=0,1\}\\
+    \text{where}&S_1^*(t)&:=&\frac{S_1(t)}{B_t}\\
+    &&=&\frac{S_1(t)}{1+rt}
+  \end{array}\]
+  Define a probability measure $\Q$ and let $q_i:=\Q(\{\omega_i\})$ for $i\in\{1,2,3\}$. Consider both sides of the expression $\expect_\Q[S_1^*(1)]=S_1^*(0)$.
+  \[\begin{array}{rcl}
+    S_1^*(0)&=&\frac{S_1(0)}{B_0}\\
+    &=&15\\
+    \expect_\Q[S_1^*(1)]&=&\sum_{i=1}^3q_iS^*(1)(\omega_i)\\
+    &=&\sum_{i=1}^3q_i\frac{S(1)(\omega_i)}{B_1}\\
+    &=&\frac1{1+r}(20q_1+(40/3)q_2+10q_3)
+  \end{array}\]
+  For $\Q$ to be a risk-neutral probability measure, the following must all hold
+  \begin{enumerate}
+    \item $\Q(\{\omega_i\})>0\ \forall\ i\in\{1,2,3\}$.
+    \item $\sum_{i=1}^3\Q(\{\omega_i\})=1$.
+    \item $\expect_\Q[S_1^*(1)]=S_1^*(0)\implies\frac1{1+r}\left(20q_1+(40/3)q_2+10q_3\right)=15$.
+  \end{enumerate}
+  We can state, and find solutions to, the last two conditions as the following matrix
+  \[\begin{array}{rrcl}
+    &&&\begin{pmatrix}
+      1&1&1&\aug&1\\
+      \frac{20}{1+r}&\frac{40}{3(1+r)}&\frac{10}{1+r}&\aug&15
+    \end{pmatrix}\\
+    &&=&\begin{pmatrix}
+      1&1&1&\aug&1\\
+      18&12&9&\aug&15
+    \end{pmatrix}\\
+    &&=&\begin{pmatrix}
+      1&1&1&\aug&1\\
+      6&4&3&\aug&5
+    \end{pmatrix}\\
+    &&=&\begin{pmatrix}
+      1&1&1&\aug&1\\
+      3&1&0&\aug&2
+    \end{pmatrix}\\
+    \implies&q_3&=&1-q_1-q_2\\
+    \text{and}&q_2&=&2-3q_1\\
+    \implies&q_3&=&1-q_1-(2-3q_1)\\
+    &&=&2q_1-1\\
+    \implies&\mathbf{q}&=&\begin{pmatrix}
+      q_1&2-3q_1&2q_1-1
+    \end{pmatrix}
+  \end{array}\]
+  In order for the first condition to be fulfilled we require
+  \[\begin{array}{rrcl}
+    &q_1&\in&[0,1]\\
+    &q_2=2-3q_1&\in&[0,1]\\
+    \implies&q_1&\in&[1/3,2/3]\\
+    &q_3=2q_1-1&\in&[0,1]\\
+    \implies&q_1&\in&[0,1]
+  \end{array}\]
+  Thus, for the first condition to be true we must restrict $q_1$ to values in $[1/3,2/3]$.
+  \par To summarise, $\Q$ is a risk-neutral probability measure for this model if
+  \[ \Q(\{\omega_1\})=q_1\quad\Q(\{\omega_2\})=2-3q_1\quad\Q(\{\omega_3\})=2q_1-1\quad\text{for any }q_1\in[1/3,2/3] \]
+\end{answer}
+
+\begin{question}{2. c)}
+  Is the market complete? Describe the set of attainable contingent claims $X=(X_1,X_2,X_3)$ for this model.
+\end{question}
+
+\begin{answer}{2. c)}
+  Consider the following matrix $A$ which summarises this market
+  \[ A=\begin{pmatrix}
+    B_1(\omega_1)&S_1(1)(\omega_1)\\
+    B_1(\omega_2)&S_1(1)(\omega_2)\\
+    B_1(\omega_3)&S_1(1)(\omega_3)
+  \end{pmatrix}=\begin{pmatrix}
+    10/9&20\\
+    10/9&40/3\\
+    10/9&10
+  \end{pmatrix}
+  \]
+  Matrix $A$ only has two linearly-independent columns (ie $\text{rank}(A)=2$), this means $AH$ can only span $R^2$ for any $H$. Thus, this market is \underline{not} complete.
+  \par Under this model, a contingent claim $X$ can have any value for two of its three dimensions, but the value of the third dimension has to fulfil a specific relationship with the other two in order for $X$ to be attainable. This dependency is defined in the requirement that $\exists\ H\in\reals^2$ st $AH=X$ for $X$ to be attainable
+\end{answer}
+
+\begin{question}{3.}
+  Consider a single-period model with two risky securities $S_1$ and $S_2$. Assume that there is a bank account with interest rate $r=1/9$ and that the price process is given in the following table
+  \begin{center}
+    \begin{tabular}{c|c|ccc}
+      $n$&$S_n(0)$&$S_n(1)(\omega_1)$&$S_n(1)(\omega_2)$&$S_n(1)(\omega_3)$\\\hline
+      1&15&20&20&40/3\\
+      2&30&40&80/3&80/3
+    \end{tabular}
+  \end{center}
+\end{question}
+
+\begin{question}{3. a)}
+  Specify the value and gains processes $V,G$ for this model as well as their discounted versions $V^*,G^*$.
+\end{question}
+
+\begin{answer}{3. a)}
+  When using a trading strategy $H:=(H_0,H_1,H_2)$, this model has value process $V$ and gains process $G$, defined as
+  \[\begin{array}{rrrl}
+    &V&:=&\{V_t:t=0,1\}\\
+    \text{where }&V_t&:=&H_0(1+rt)+H_1\cdot S_1(t)\\
+    &&=&H_0\left(1+\frac{t}9\right)+H_1\cdot S_1(t)+H_2\cdot S_2(t)\\
+    \\
+    &G&=&H_0r+H_1\Delta S_1(t)+H_2\Delta S_2(t)\\
+    &&=&\frac19H_0+(S_1(t)-15)H_1+(S_2(t)-30)H_2
+  \end{array}\]
+  Note that in this model $B_t=1+rt$ with $r=1/9$. Thus the discounted value process $V^*$ and discounted gains process $G^*$ for this model are defined as
+  \[\begin{array}{rrcl}
+    &V^*&:=&\{V_t^*:t=0,1\}\\
+    \text{where }&V_t^*&:=&\frac{V_t}{B_t}\\
+    &&=&\frac{V_t}{1+rt}\\
+    \\
+    &G^*&:=&\frac{G}{B_1}\\
+    &&=&\frac{G}{1+r}
+  \end{array}\]
+\end{answer}
+
+\begin{question}{3. b)}
+  By considering the two discounted stock processes $S_1^*,S_2^*$, show that there is no risk neutral probability measure.
+\end{question}
+
+\begin{answer}{3. b)}
+  For this model, the discounted price processes $S_1^*$ and $S_2^*$ are defined as
+  \[\begin{array}{rcl}
+    S_1^*(t)&:=&\frac{S_1(t)}{B_t}=\frac{S_1(t)}{1+rt}\\
+    S_2^*(t)&:=&\frac{S_2(t)}{B_t}=\frac{S_2(t)}{1+rt}
+  \end{array}\]
+  Let $\Q$ be a probability measure and defined $q_i:=\Q(\{\omega_i\})$ for $i\in\{1,2,3\}$. For $\Q$ to be a risk-neutral probability measure, the following must all hold
+  \begin{enumerate}
+    \item $q_i>0\ \forall\ i\in\{1,2,3\}$.
+    \item $q_1+q_2+q_3=1$.
+    \item $\expect_\Q[S_1^*(1)]=S_1^*(0)\implies\frac1{1+r}\left(20q_1+20q_2+(40/3)q_3\right)=15$.
+    \item $\expect_\Q[S_2^*(1)]=S_2^*(0)\implies\frac1{1+r}\left(40q_1+(80/3)q_2+(80/3)q_3\right)=30$.
+  \end{enumerate}
+  We can express the last three equations in the following matrix % TODO
+  \[\begin{array}{rl}
+    &\begin{pmatrix}
+        1&1&1&\aug&1\\
+        \frac{20}{1+r}&\frac{20}{1+r}&\frac{40}{3(1+r)}&\aug&15\\
+        \frac{40}{1+r}&\frac{80}{3(1+r)}&\frac{80}{3(1+r)}&\aug&30\\
+      \end{pmatrix}\\
+    =&\begin{pmatrix}
+        1&1&1&\aug&1\\
+        18&18&12&\aug&15\\
+        36&24&24&\aug&30\\
+    \end{pmatrix}\\
+    =&\begin{pmatrix}
+        1&1&1&\aug&1\\
+        0&0&-6&\aug&-3\\
+        12&0&0&\aug&6
+    \end{pmatrix}\\
+    =&\begin{pmatrix}
+        1&1&1&\aug&1\\
+        0&0&1&\aug&1/2\\
+        1&0&0&\aug&1/2
+    \end{pmatrix}\\
+    =&\begin{pmatrix}
+        0&1&0&\aug&0\\
+        0&0&1&\aug&1/2\\
+        1&0&0&\aug&1/2
+    \end{pmatrix}\\
+  \end{array}\]
+  This shows there is a unique solution to this system of equations $(q_1,q_2,q_3)=(0,1/2,1/2)$, but this violates the first condition for $\Q$ to be a risk-neutral probability measure. Thus, there are no risk-neutral probability measures for this model.
+\end{answer}
+
+\begin{question}{3. c)}
+  Determine expressions for $\mathbb{W}$ and $\mathbb{W}\cap\mathbb{A}$ where
+  \[\begin{array}{rcl}
+    \mathbb{W}&:=&\left\{X\in\reals^K:X=G^*\text{ for some strat. }H\right\}\\
+    \mathbb{A}&:=&\left\{X\in\reals^K:X\geq0,X\neq0\right\}
+  \end{array}\]
+  Determine all arbitrage opportunities by deriving for any $X\in\mathbb{W}\cap\mathbb{A}$ a trading strategy $H$ which gives rise to the time $t=1$ portfolio value $(X_1,X_2,X_3)$.
+\end{question}
+
+\begin{answer}{3. c)}
+  Consider generic $X,H\in\reals^3$ and define matrix $A\in\reals^{3\times3}$ as
+  \[ A=\begin{pmatrix}
+    B_1(\omega_1)&S_1(1)(\omega_1)&S_2(1)(\omega_1)\\
+    B_1(\omega_2)&S_1(1)(\omega_2)&S_2(1)(\omega_2)\\
+    B_1(\omega_3)&S_1(1)(\omega_3)&S_2(1)(\omega_3)
+  \end{pmatrix}=\begin{pmatrix}
+    1+r&20&40\\
+    1+r&20&80/3\\
+    1+r&40/3&80/3
+  \end{pmatrix}=\begin{pmatrix}
+    10/9&20&40\\
+    10/9&20&80/3\\
+    10/9&40/3&80/3
+  \end{pmatrix} \]
+  The strategy $H$ attains contingent claim $X$ if $AH=X$. Thus
+  \[\begin{array}{rcl}
+    H&=&A^{-1}X\\
+    \begin{pmatrix}
+      H_1\\H_2\\H_3
+    \end{pmatrix}&=&
+    \begin{pmatrix}
+      -9/5&0&27/10\\
+      0&3/20&-3/20\\
+      3/40&-3/40&0
+    \end{pmatrix}\begin{pmatrix}
+      X_1\\X_2\\X_3
+    \end{pmatrix}\\
+    &=&\begin{pmatrix}
+        (9/10)(3X_3-2X_1)\\
+        (3/20)(X_2-X_3)\\
+        (3/40)(X_1-X_2)
+      \end{pmatrix}
+  \end{array}\]
+  This gives a formula for what trading strategy $H$ to give rise to a portfolio of value $(X_1,X_2,X_3)$ at time $t=1$.
+\end{answer}
+
+\end{document}
