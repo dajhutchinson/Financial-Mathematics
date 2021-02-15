@@ -9,7 +9,7 @@
 
 \begin{document}
 
-% \questionsfalse
+\questionsfalse
 % \answersfalse
 
 \title{Financial Mathematics - Problem Sheet 2}
@@ -26,7 +26,7 @@
 \end{question}
 
 \begin{answer}{2. a)}
-  When using a trading strategy $H:=(H_0,H_1)$, this model has value process $V$ and gains process $G$, defined as
+  When using a trading strategy $H:=(H_0,H_1)$, this model has value process $V$ and gains process $G$ defined as
   \[\begin{array}{rrrl}
     &V&:=&\{V_t:t=0,1\}\\
     \text{where }&V_t&:=&H_0(1+rt)+H_1\cdot S_1(t)\\
@@ -39,10 +39,10 @@
   \[\begin{array}{rrcl}
     &V^*&:=&\{V_t^*:t=0,1\}\\
     \text{where }&V_t^*&:=&\frac{V_t}{B_t}\\
-    &&=&\frac{V_t}{1+rt}\\
+    &&=&\frac{V_t}{1+rt}=\frac{9V_t}{9+t}\\
     \\
     &G^*&:=&\frac{G}{B_1}\\
-    &&=&\frac{G}{1+r}
+    &&=&\frac{G}{1+r}=\frac{9G}{10}
   \end{array}\]
 \end{answer}
 
@@ -55,7 +55,7 @@
   \[\begin{array}{rrrl}
     &S^*&:=&\{S_1^*(t):t=0,1\}\\
     \text{where}&S_1^*(t)&:=&\frac{S_1(t)}{B_t}\\
-    &&=&\frac{S_1(t)}{1+rt}
+    &&=&\frac{S_1(t)}{1+rt}=\frac{9S_1(t)}{9+t}
   \end{array}\]
   Define a probability measure $\Q$ and let $q_i:=\Q(\{\omega_i\})$ for $i\in\{1,2,3\}$. Consider both sides of the expression $\expect_\Q[S_1^*(1)]=S_1^*(0)$.
   \[\begin{array}{rcl}
@@ -80,7 +80,7 @@
     &&=&\begin{pmatrix}
       1&1&1&\aug&1\\
       18&12&9&\aug&15
-    \end{pmatrix}\\
+    \end{pmatrix}\text{ by value of }r\\
     &&=&\begin{pmatrix}
       1&1&1&\aug&1\\
       6&4&3&\aug&5
@@ -93,11 +93,9 @@
     \text{and}&q_2&=&2-3q_1\\
     \implies&q_3&=&1-q_1-(2-3q_1)\\
     &&=&2q_1-1\\
-    \implies&\mathbf{q}&=&\begin{pmatrix}
-      q_1&2-3q_1&2q_1-1
-    \end{pmatrix}
+    \implies&(q_1,q_2,q_3)&=&(q_1,\ 2-3q_1,\ 2q_1-1)
   \end{array}\]
-  In order for the first condition to be fulfilled we require
+  In order for the first condition to be fulfilled we require each term to be in $[0,1]$, thus
   \[\begin{array}{rrcl}
     &q_1&\in&[0,1]\\
     &q_2=2-3q_1&\in&[0,1]\\
@@ -126,7 +124,7 @@
     10/9&10
   \end{pmatrix}
   \]
-  Matrix $A$ only has two linearly-independent columns (ie $\text{rank}(A)=2$), this means $AH$ can only span $R^2$ for any $H$. Thus, this market is \underline{not} complete.
+  Matrix $A$ only has two linearly-independent columns (ie $\text{rank}(A)=2$), this means $AH$ can only span $\reals^2$ for any $H$. Thus, this market is \underline{not} complete.
   \par Under this model, a contingent claim $X$ can have any value for two of its three dimensions, but the value of the third dimension has to fulfil a specific relationship with the other two in order for $X$ to be attainable. This dependency is defined in the requirement that $\exists\ H\in\reals^2$ st $AH=X$ for $X$ to be attainable
 \end{answer}
 
@@ -146,7 +144,7 @@
 \end{question}
 
 \begin{answer}{3. a)}
-  When using a trading strategy $H:=(H_0,H_1,H_2)$, this model has value process $V$ and gains process $G$, defined as
+  When using a trading strategy $H:=(H_0,H_1,H_2)$, this model has value process $V$ and gains process $G$ defined as
   \[\begin{array}{rrrl}
     &V&:=&\{V_t:t=0,1\}\\
     \text{where }&V_t&:=&H_0(1+rt)+H_1\cdot S_1(t)\\
@@ -159,10 +157,10 @@
   \[\begin{array}{rrcl}
     &V^*&:=&\{V_t^*:t=0,1\}\\
     \text{where }&V_t^*&:=&\frac{V_t}{B_t}\\
-    &&=&\frac{V_t}{1+rt}\\
+    &&=&\frac{V_t}{1+rt}=\frac{9V_t}{9+t}\\
     \\
     &G^*&:=&\frac{G}{B_1}\\
-    &&=&\frac{G}{1+r}
+    &&=&\frac{G}{1+r}=\frac{9G}{10}
   \end{array}\]
 \end{answer}
 
@@ -176,14 +174,14 @@
     S_1^*(t)&:=&\frac{S_1(t)}{B_t}=\frac{S_1(t)}{1+rt}\\
     S_2^*(t)&:=&\frac{S_2(t)}{B_t}=\frac{S_2(t)}{1+rt}
   \end{array}\]
-  Let $\Q$ be a probability measure and defined $q_i:=\Q(\{\omega_i\})$ for $i\in\{1,2,3\}$. For $\Q$ to be a risk-neutral probability measure, the following must all hold
+  Let $\Q$ be a probability measure and define $q_i:=\Q(\{\omega_i\})$ for $i\in\{1,2,3\}$. For $\Q$ to be a risk-neutral probability measure, the following must all hold
   \begin{enumerate}
     \item $q_i>0\ \forall\ i\in\{1,2,3\}$.
     \item $q_1+q_2+q_3=1$.
     \item $\expect_\Q[S_1^*(1)]=S_1^*(0)\implies\frac1{1+r}\left(20q_1+20q_2+(40/3)q_3\right)=15$.
     \item $\expect_\Q[S_2^*(1)]=S_2^*(0)\implies\frac1{1+r}\left(40q_1+(80/3)q_2+(80/3)q_3\right)=30$.
   \end{enumerate}
-  We can express the last three equations in the following matrix % TODO
+  We can express the last three equations in the following matrix
   \[\begin{array}{rl}
     &\begin{pmatrix}
         1&1&1&\aug&1\\
@@ -194,7 +192,7 @@
         1&1&1&\aug&1\\
         18&18&12&\aug&15\\
         36&24&24&\aug&30\\
-    \end{pmatrix}\\
+    \end{pmatrix}\text{ by value of }r\\
     =&\begin{pmatrix}
         1&1&1&\aug&1\\
         0&0&-6&\aug&-3\\
@@ -224,7 +222,7 @@
 \end{question}
 
 \begin{answer}{3. c)}
-  Consider generic $X,H\in\reals^3$ and define matrix $A\in\reals^{3\times3}$ as
+  Consider generic $X,H\in\reals^3$ and define matrix $A\in\reals^{3\times3}$, which summarise this model, as
   \[ A=\begin{pmatrix}
     B_1(\omega_1)&S_1(1)(\omega_1)&S_2(1)(\omega_1)\\
     B_1(\omega_2)&S_1(1)(\omega_2)&S_2(1)(\omega_2)\\
@@ -257,7 +255,7 @@
         (3/40)(X_1-X_2)
       \end{pmatrix}
   \end{array}\]
-  This gives a formula for what trading strategy $H$ to give rise to a portfolio of value $(X_1,X_2,X_3)$ at time $t=1$.
+  This gives a formula for what trading strategy $H$ to use in order to have a portfolio of value of $(X_1,X_2,X_3)$ at time $t=1$.
 \end{answer}
 
 \end{document}

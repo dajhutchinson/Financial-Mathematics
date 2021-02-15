@@ -7,7 +7,7 @@
 
 \begin{document}
 
-% \questionsfalse
+\questionsfalse
 % \answersfalse
 
 \title{Financial Mathematics - Assessed Problem Sheet 1}
@@ -26,17 +26,18 @@
 \end{question}
 
 \begin{answer}{1. a) i.}
-  From the question we know the strike price $K=\pounds30$, the annual interest rate is $r=0.05$, initial value of AKOCOM $S_0=\pounds37.5$, initial price of the put option $P_0=\pounds11$ and initial price of the call option $C_0=\pounds18.5$. The strike date is $T=\frac12$, as the length of each option is 6 months, but we are given the annual interest rate.
-  \par The put-call parity states that if $S_t+P_t-C_t=Ke^{r(T-t)}$ for all $t$ then no arbitrage opportunities exist.
+  From the question we know the strike price $K=\pounds30$, the annual interest rate is $r=0.05$, initial value of AKOCOM $S_0=\pounds37.5$, the initial price of the put option $P_0=\pounds11$ and the initial price of the call option $C_0=\pounds18.50$. The strike date is $T=1/2$, as the length of each option is 6 months, but we are given the annual interest rate.
+  \par The put-call parity states that if $S_t+P_t-C_t=Ke^{r(T-t)}$ for all $t\in[0,T]$ then no arbitrage opportunities exist.
   \par Consider each side of this expression at time $t=0$
   \[\begin{array}{rcl}
     S_0+P_0-C_0&=&\pounds37.50+\pounds11-\pounds18.50\\
     &=&\pounds30\\
     Ke^{-r(T-0)}&=&30e^{-(0.05)(0.5-0)}\\
     &=&30e^{-0.025}\\
-    &=&\pounds29.26
+    &=&\pounds29.26\\
+    \implies S_0+P_0-C_0&\neq&Ke^{-r(T-0)}
   \end{array}\]
-  This means that the put-call parity does not hold at time $t=0$, as $S_0+P_0-C_0\neq Ke^{-rT}$, and thus an arbitrage opportunity exists.
+  This shows that the put-call parity does not hold at time $t=0$ and thus an arbitrage opportunity exists.
 \end{answer}
 
 \begin{question}{1. a) ii.}
@@ -51,16 +52,16 @@
     \item Take a short position on a put option, receiving £11.
     \item Invest the net amount receiving from these transactions, $B_0=37.5-18.5+11=\pounds30$.
   \end{itemize}
-  In six months time, $t=T$, our arbitrageur's bank balance will be $B_1=B_0e^{T/20}$.
-  \par Let $S_T$ be the price of AKOCOM shares at this time. The arbitrageur should do the following
+  In six months time, $t=T=1/2$, our arbitrageur's bank balance will be $B_1=B_0e^{T/20}$.
+  \par Let $S_T$ be the price of AKOCOM shares at time $T$. The arbitrageur should do the following
   \begin{itemize}
-    \item If $S_T\geq\pounds30$ then exercise their call option. This costs £30 and fulfils the arbitrageur's short position on AKOCOM. The gains in this scenario is
+    \item If $S_T\geq\pounds30$ then exercise their call option. This costs £30 and fulfils the arbitrageur's short position on AKOCOM. The gains in this scenario are
     \[ B_1-30=30e^{T/20}-30>0 \]
-    The holder of long position in our put option will not exercise the option in this scenario as they would loose money.
-    \item If $S_T<\pounds30$ then tear-up our call option. The holder of the long position in our put option will exercise their option in this scenario as they will make a profit. This means we have to buy a share of AKOCOM from them for £30, this fulfils our short position on AKOCOM. Our profit in this scenario is again
+    The holder of long position in our put option will not exercise their option in this scenario as they would loose money.
+    \item If $S_T<\pounds30$ then tear-up the call option. The holder of the long position in our put option will exercise their option in this scenario as they will make a profit. This means we have to buy a share of AKOCOM from them for £30, this fulfils our short position on AKOCOM. Our profit in this scenario is again
     \[ B_1-30=30e^{T/20}-30>0 \]
   \end{itemize}
-  These two scenarios cover all outcomes in six months time, and show that we make a risk-free profit under both scenarios.
+  These two scenarios cover all outcomes in six months time, and show that our arbitrageur makes a risk-free profit under both scenarios.
 \end{answer}
 
 \begin{question}{1. b)}
@@ -75,7 +76,7 @@
     C_T^1&=&\{S_T-K_1\}_+\\
     C_T^2&=&\{S_T-K_2\}_+
   \end{array}\]
-  where $\{x\}_+=\max\{0,x\}$. Note that since $K_1<K_2$ then $C_T^2\leq C_T^1\ \forall\ S_T\in\reals^{\geq0}$.
+  where $\{x\}_+:=\max\{0,x\}$. Note that since $K_1<K_2$ then $C_T^2\leq C_T^1\ \forall\ S_T\in\reals^{\geq0}$.
   \par We can restate $X_T$ in terms of $C_T^1$ and $C_T^2$ as
   \[\begin{array}{rcl}
     X_T&=&\begin{cases}
@@ -85,7 +86,7 @@
     \end{cases}\\
     &=&C_T^1-C_T^2
   \end{array}\]
-  Using the ``No-Arbitrage Principle'' it can be shown that if two, or more, financial derivatives have the same value at time $T$, then their prices will coincide at all times $t<T$. This means the fair price at time $t$ for this capped call is
+  Using the ``No-Arbitrage Principle'' it can be shown that if two, or more, financial derivatives have the same value at time $T$, then their prices will coincide at all times $t<T$. This means the fair price at time $t$ for this capped call option is
   \[ X_t=C_t^1-C_t^2 \]
 \end{answer}
 
@@ -104,19 +105,19 @@
     \item $\expect_\Q[S_1^*(1)]=S_1^*(0)$
   \end{enumerate}
   Additionally, as $\Q$ is a probability measure we have $\sum_{\omega\in\Omega}\Q(\{\omega\})=1$.
-  \par From the question we have that $S_1(0)=1,\ S_1(\omega_1)=1.3$ and $S_2(\omega_2)=1.1$. Let $r$ denote the risk-free interest rate, $q_1:=\Q(\{\omega_1\}),\ q_2:=\Q(\{\omega_2\})$. Note that the Bank process at time $t=1$ has value $B_1=1+r$.
-  \par Under the conditions of this question, for $\Q$ to be a \textit{Risk-Neutral Probability Measure}, the following must hold
-  \[\begin{array}{rrcll}
-    &q_1+q_2&=&1&(1)\\
+  \par From the question we have that $S_0=1,\ S_1(\omega_1)=1.3$ and $S_2(\omega_2)=1.1$. Let $r$ denote the risk-free interest rate, $q_1:=\Q(\{\omega_1\})$ and $q_2:=\Q(\{\omega_2\})$. Note that the Bank process at time $t=1$ has value $B_1=1+r$.
+  \par Under the conditions of this question, we can derive the follow equations which must hold in order for $\Q$ to be a \textit{Risk-Neutral Probability Measure}
+  \[\begin{array}{rrclcl}
+    &q_1+q_2&=&1&\quad&(1)\\
     \text{and }&\expect_\Q[S_1^*(1)]&=&S_1^*(0)\\
     \implies&q_1S_1^*(\omega_1)+q_2S_1^*(\omega_2)&=&\frac{S_1(0)}{B_0}\\
     \implies&q_1\cdot\frac{S_1(\omega_1)}{B_1}+q_2\cdot\frac{S_1(\omega_2)}{B_1}&=&\frac{S_1(0)}{B_0}\\
-    \implies&q_1\cdot\frac{1.1}{1+r}+q_2\cdot\frac{1.3}{1+r}&=&1&(2)\\
+    \implies&q_1\cdot\frac{1.1}{1+r}+q_2\cdot\frac{1.3}{1+r}&=&1&&(2)\\
   \end{array}\]
-  These equations are only well defined when $r\neq1$.
   \par From equations $(1),(2)$ we can deduce values for $q_1,q_2$ in terms of $r$.
   \[\begin{array}{rrcl}
-    &q_1\cdot\frac{1.1}{1+r}+(1-q_1)\cdot\frac{1.3}{1+r}&=&1\\
+    &q_2&=&1-q_1\\
+    \implies&q_1\cdot\frac{1.1}{1+r}+(1-q_1)\cdot\frac{1.3}{1+r}&=&1\\
     \implies&\frac{13}{10(1+r)}-q_1\cdot\frac2{10(1+r)}&=&1\\
     \implies&q_1&=&\frac{13-10(1+r)}2\\
     &&=&\frac{3-10r}2\\
@@ -126,12 +127,12 @@
   Thus, probability measure $\Q$ can be stated as
   \[ \Q(\{\omega_1\})=\frac{3-10r}{2}\quad\Q(\{\omega_2\})=\frac{10r-1}2 \]
   As both these quantities must take values in $[0,1]$ we can deduce the range of interest rates $r$ where a \textit{Risk-Neutral Probability Measure} exists.
-  \[\begin{array}{rrcl}
-    &\Q(\{\omega_1\})&\in&[0,1]\\
-    \implies&\frac{3-10r}{2}&\in&[0,1]\\
-    \implies&3-10r&\in&[0,2]\\
-    \implies&10r&\in&[1,3]\\
-    \implies&r&\in&[0.1,0.3]\\
+  \[\begin{array}{rrclcrcl}
+    &\Q(\{\omega_1\})&\in&[0,1]&\quad&\Q(\{\omega_2\})&\in&[0,1]\\
+    \implies&\frac{3-10r}{2}&\in&[0,1]&\quad&\frac{10r-1}2&\in&[0,1]\\
+    \implies&3-10r&\in&[0,2]&\quad&10r-1&\in&[0,2]\\
+    \implies&10r&\in&[1,3]&\quad&10r&\in&[1,3]\\
+    \implies&r&\in&[0.1,0.3]&\quad&r&\in&[0.1,0.3]
   \end{array}\]
   Thus, there exists a \textit{Risk-Neutral Probability Measure} if $r\in[0.1,0.3]$.
 \end{answer}
@@ -143,18 +144,18 @@
 \begin{answer}{1. c) ii.}
   At time-point $t=0$ the agent should do the following
   \begin{itemize}
-    \item Short a share.
-    \item Invest the $S_0=\pounds1$, received from shorting, in the risk-free asset.
+    \item Short a share, receiving $S_0=$£1.
+    \item Invest this £1 in the risk-free asset.
   \end{itemize}
+  At time-point $t=1$ this investment is work $B_1=1+r=1.4$.
   Then, at time-point $t=1$ the agent should do the following.
   \begin{itemize}
     \item Pay the dividend $D=0.1$ to the agent who leant us the share used for our short position.
     \item Buy a share, at whatever the current price is, in order to fulfil our short position.
   \end{itemize}
-  Our investment in the risk-free asset is now worth $B_1=1+r=1.4$.
-  \par If our arbitrageur follows this strategy and event $\omega_1$ occurs, then they share a make risk-free profit of
+  If our arbitrageur follows this strategy and event $\omega_1$ occurs, then they make a risk-free profit of
   \[ B_1-S_1(\omega_1)-D=1.4-1.3-0.1=0 \]
-  \par If our arbitrageur follows this strategy and event $\omega_2$ occurs, then they share a make risk-free profit of
+  \par If our arbitrageur follows this strategy and event $\omega_2$ occurs, then they make a risk-free profit of
   \[ B_1-S_1(\omega_2)-D=1.4-1.1-0.1=0.2 \]
   Thus, under either event our arbitrageur is guaranteed not to loose money.
 \end{answer}
