@@ -1,7 +1,7 @@
 \documentclass[11pt,a4paper]{article}
 
 \usepackage[margin=1in, paperwidth=8.3in, paperheight=11.7in]{geometry}
-\usepackage{amsmath,amsfonts,fancyhdr,bbm,graphicx,tikz}
+\usepackage{amsmath,amsfonts,fancyhdr,bbm,graphicx,tikz,float}
 \usetikzlibrary{automata,positioning}
 \graphicspath{ {img/} }
 \usepackage[section,nohyphen]{DomH}
@@ -541,7 +541,7 @@
         \expect_\Q[S_n^*(1)]&=&\sum_{j=1}^K\Q(\{\omega_j\})S_n(1,\omega_j)/B_1(\omega_j)\\
         &=&\sum_{j=1}^K\hat\Q(\{\omega_j\})S_n(1,\omega_j)/B_1(\omega_j)+\underbrace{\lambda\sum_{j=1}^K\pi_jS_n(1,\omega_j)}_{=0}\\
         &=&\sum_{j=1}^K\hat\Q(\{\omega_j\})S_n^*(1,\omega_j)\\
-        &=&\expect_{\hat\Q}(S_n^*(1))
+        &=&\expect_{\hat\Q}(S_n^*(1))\\
         &=&S_n^*(0)\footnotemark
       \end{array}\]
       \footnotetext{As $\hat\Q$ is a \textit{Risk-Neutral Probability Measure}.}
@@ -562,13 +562,238 @@
     \par Hence the model is \textit{Complete}.
   \end{example}
 
-\section{Stochastic Processes in Discrete Time}
+\section{Stochastic Processes in Discrete Time} \label{sec_stochastic_processes_in_discrete_time}
 
-\section{Multi-Period Models}
+\subsection{Multi-Period Models}
 
-\section{Stochastic Processes in Continuous Time}
+  \begin{remark}{Multi-Period vs Single-Period Model}
+    The \textit{Multi-Period Model} for securities markets are much more realistic than \textit{Single-Period Models}.
+  \end{remark}
 
-\section{Financial Market Models in Continuous Time}
+  \begin{definition}{Multi-Period Model}
+    A \textit{Multi-Period Model} is a model for a financial market with the following elements
+    \begin{itemize}
+      \item $T+1$ trading dates $\{0,1,\dots,T\}$.
+      \item A finite sample space $\Omega$ where each element corresponds to a certain state of the world.
+      \[ \Omega=\{\omega_1,\dots,\omega_K\}\text{ with }K<\infty \]
+      \item A probability measure $\prob$ on $\Omega$ with $\prob(\omega)>0\ \forall\ \omega\in\Omega$.
+    \end{itemize}
+  \end{definition}
+
+  \begin{definition}{Filtration $\mathcal{F}$}
+    A \textit{Filtration} $\mathcal{F}:=\{\mathcal{F}_t:t=0,1,\dots,T\}$\footnote{Each $\mathcal{F}_t$ is a \textit{$\sigma$-Algebra}} is a sub-model describing how the formation about the security prices is revealed to investors.
+  \end{definition}
+
+  \begin{definition}{Bank Process $B$}
+    A \textit{Bank Process} $B:=\{B_t:t=0,1,\dots,T\}$ where $B$ is a stochastic process with $B_0=1$ and $B_t(\omega)>0$.
+    \par The \textit{Bank Process} at time $t$ $B_t$ should be thought of as the time $t$ value of a savings account when 1 unit of currency was deposited at time $t=0$.
+    \par $B$ is usually a non-decreasing process and the (possibly random) quantity $r_t:=\frac{B_t-B_{t+1}}{B_{t+1}}\geq0,\ t=1,\dots,T$ should be though of as the interest rate for time-interval $(t-1,t)$.
+  \end{definition}
+
+  \begin{definition}{Price Process $S$}
+    A \textit{Price Process} $S=\{S(t):t=0,1,\dots,T\}$ where each element is multi-dimensional\footnote{One dimension for each security in the market.} $S(t)=(S_1(t),\dots,S_N(t))$ and $S_i(t)$ is a non-negative stochastic process for each $i\in[1,N]$. \par The $S_i(t)$ should be though of as the price of the $i^{th}$ security in time-period $t$.
+  \end{definition}
+
+\subsection{Information Structures}
+
+
+  \begin{definition}{Partition $\mathcal{P}$}
+    A set $A=\{a_1,\dots,a_n\}$ forms a partition $\mathcal{P}$ if each element of $A$ is disjoint and the union of all the elements of $A$ is the whole sample space $\Omega$.
+    \[ a_i\cap a_j=\emptyset\ \forall\ a_i,a_j\in A\quad\text{and}\quad \bigcup\limits_{i=1}^na_i=\Omega \]
+  \end{definition}
+
+  \begin{example}{Information Structures}\label{example_information_structures}
+    Consider a multi-period model with $T=3$ time-periods and whether the stock either increases or decreases in value is the only event recorded in each time-period. The sample space has $K=2^3=8$ different outcomes
+    \begin{center}
+      \begin{tabular}{c|c|c|c|c|c|c|c}
+        $\omega_1$&$\omega_2$&$\omega_3$&$\omega_4$&$\omega_5$&$\omega_6$&$\omega_7$&$\omega_8$\\\hline
+        UUU&UUD&UDU&UDD&DUU&DUD&DDU&DDD\\
+      \end{tabular}
+    \end{center}
+    Initially, all of these outcomes are possible (ie $A_0=\Omega$). After the first move occurs there are only $2^2=4$ possible outcomes, after the second there are only $2^1=2$ possible outcomes and after the third there is only 1 possible outcome.
+    \par The set of possible subsets $A_t$ at time $t$ form a \textit{Partition} $\mathcal{P}_t$.
+  \end{example}
+
+  \begin{remark}{Flow of Information}
+    At time $t=0$ every state $\omega\in\Omega$ is a possible outcome (although usually not with the same probability). And, at time $t=T$, the true state of the world is known. Each new piece of information removes certain states.
+    \par One can view the evolution of information as a random sequence $\{A_t\}$ of subsets of $\Omega$ where
+    \[ A_0=\Omega,\ A_T=\{\omega\}\text{ and }A_0\supseteq A_1\supseteq\dots\supseteq A_T \]
+    There exists $K$ possible \textit{Information Sequences} $\{A_t\}_{t\in[1,T]}$ of subsets, corresponding to the $K$ elements of $\Omega$. At time $t=0$ the investors are aware of all these sequences, but they do not know which one is the true sequence.
+  \end{remark}
+
+  \begin{definition}{Information Sequence}
+    The \textit{Information Sequence} is fully describe by a sequence $\mathcal{P}_0,\dots,\mathcal{P}_T$ of partitions of $\Omega$ with
+    \begin{itemize}
+      \item $\mathcal{P}_0=\{\Omega\}$.
+      \item $\mathcal{P}_T=\big\{\{\omega_1\},\{\omega_2\},\{\omega_3\},\{\omega_4\},\{\omega_5\},\{\omega_6\},\{\omega_7\},\{\omega_8\}\big\}$
+      \item And, $\forall\ t<T$ each $A\in\mathcal{P}_t$ is equal to the union of some elements of $\mathcal{P}_{t+1}$.
+    \end{itemize}
+  \end{definition}
+
+  \begin{figure}[H]
+    \centering\includegraphics[width=.7\textwidth]{TreeOfInformationStructures.PNG}
+    \caption{Tree diagram for the structure of information from \texttt{Example \ref{sec_stochastic_processes_in_discrete_time}.\ref{example_information_structures}.}}
+    \label{fig_tree_diagram_of_information_structure}
+  \end{figure}
+
+  \begin{figure}[H]
+    \centering\includegraphics[width=.7\textwidth]{PicturesOfInformationStructures.PNG}
+    \caption{A sequence of pictures demonstrating the structure of information \texttt{Example \ref{sec_stochastic_processes_in_discrete_time}.\ref{example_information_structures}.}}
+    \label{fig_sequence_of_pictures_of_information_structure}
+  \end{figure}
+
+  \begin{example}{}
+    Consider an arbitrary sequence $\{\hat{A}_t\}_{t\in[1,T]}$ and some time-point $s<T$. For each $\omega\in \hat{A}_s$ the sequence $\{A_t\}_{t\in[1,T]}$ with $A_T=\{\omega\}$ will coincide with $\{\hat{A}_t\}$ at least until time $t=s$.
+    \par The collection of subsets $\{A_{s+1}\}$ that can follow $\hat{A}_s$ forms a partition of $\hat{A}_s$, that is, a collection of disjoint subsets whose union equals $\hat{A}_s$.
+    \par In particular, taking $s=0$, we see that the collection $\{A_1\}$ of all possible time-period $t=1$ subsets forms a partition of $\Omega$. This partition is denoted $\mathcal{P}_1$.
+    \par Moreover, the collection $\{A_2\}$ of all possible time-period $t=2$ subsets also forms a partition of $\Omega$, denoted $\mathcal{P}_2$.
+    Consider \texttt{Example \ref{sec_stochastic_processes_in_discrete_time}.\ref{example_information_structures}} where $K=8$ and $T=3$, the partitions are
+    \[\begin{array}{rcl}
+      \mathcal{P}_0&=&\big\{\{\omega_1,\omega_2,\omega_3,\omega_4,\omega_5,\omega_6,\omega_7,\omega_8\}\big\}\\
+      \mathcal{P}_1&=&\big\{\{\omega_1,\omega_2,\omega_3,\omega_4\},\{\omega_5,\omega_6,\omega_7,\omega_8\}\big\}\\
+      \mathcal{P}_2&=&\big\{\{\omega_1,\omega_2\},\{\omega_3,\omega_4\},\{\omega_5,\omega_6\},\{\omega_7,\omega_8\}\big\}\\
+      \mathcal{P}_3&=&\big\{\{\omega_1\},\{\omega_2\},\{\omega_3\},\{\omega_4\},\{\omega_5\},\{\omega_6\},\{\omega_7\},\{\omega_8\}\big\}\\
+    \end{array}\]
+  \end{example}
+
+  \begin{remark}{Visualising Information Structure}
+    There are two popular ways to visualise information structure
+    \begin{enumerate}
+      \item A \textit{Tree Diagram} where each node corresponds to an element $A_t$ of the time $t$ partition and where there is edge arc going from this node to each node corresponding to some $A_{t+1}\subseteq A_t$. (See \texttt{Figure \ref{fig_tree_diagram_of_information_structure}}).
+      \item A \textit{Sequence of Pictures} of the same space. (See \texttt{Figure \ref{fig_sequence_of_pictures_of_information_structure}}).
+    \end{enumerate}
+  \end{remark}
+
+  \begin{definition}{$\sigma$-Algebra $\mathcal{F}_t$}
+    A collection $\mathcal{F}$ of subsets of $\Omega$ is called a \textit{$\sigma$-Algebra} on sample space $\Omega$ if
+    \begin{enumerate}
+      \item $\Omega\in\mathcal{F}$.
+      \item $\forall\ F\in\mathcal{F},\ F^c\in\mathcal{F}$.
+      \item $\forall\ F,G\in\mathcal{F},\ (F\cup G)\in\mathcal{F}$.
+    \end{enumerate}
+  \end{definition}
+
+  \begin{proposition}{Generated $\sigma$-Algebra}
+    For any partition $\mathcal{P}$ of $\Omega$ we can generate \textit{$\sigma$-Algebra} $\mathcal{F}$ by letting $\mathcal{F}$ be the collection of all unions of elements of $\mathcal{P}$ together with the complements of all such unions.
+    \par Hence, the sub-models of the information structure can be organised as a sequence $\{\mathcal{F}_t\}_{t\in[1,T]}$ of \textit{$\sigma$-Algebras}.
+  \end{proposition}
+
+  \begin{definition}{Filtration $\mathcal{F}$}
+    A \textit{Filtration} is a family of \textit{$\sigma$-Algebras} $\mathcal{F}:=\{\mathcal{F}_t:t=0,1,\dots,T\}$ where
+    \begin{enumerate}
+      \item $\mathcal{F}_0=\{\emptyset,\Omega\}$.
+      \item $\mathcal{F}_T$ consists of all subsets of $\Omega$.
+      \item $\mathcal{F}_n\subset\mathcal{F}_{n+1}$ for all $n<T$, by which we mean that each subset of $\mathcal{F}_n$ must be an element of $\mathcal{F}_{n+1}$.
+    \end{enumerate}
+  \end{definition}
+
+  \begin{example}{$\sigma$-Algebra}
+    Consider the context of \texttt{Example \ref{sec_stochastic_processes_in_discrete_time}.\ref{example_information_structures}}. The corresponding filtration is given by
+    \[\begin{array}{rcl}
+      \mathcal{F}_0&=&\big\{\emptyset,\Omega\big\}\\
+
+      \mathcal{F}_1&=&\big\{\emptyset,\Omega,\{\omega_1,\omega_2,\omega_3,\omega_4\},\{\omega_5,\omega_6,\omega_7,\omega_8\}\big\}\\
+
+      \mathcal{F}_2&=&\big\{\emptyset,\Omega,\{\omega_1,\omega_2\},\{\omega_3,\omega_4\},\{\omega_5,\omega_6\},\{\omega_7,\omega_8\},\{\omega_1,\omega_2,\omega_3,\omega_4\},\\
+      &&\ \{\omega_5,\omega_6,\omega_7,\omega_8\},\{\omega_1,\omega_2,\omega_5,\omega_6\},\{\omega_1,\omega_2,\omega_7,\omega_8\},\{\omega_3,\omega_4,\omega_5,\omega_6\},\\
+      &&\ \{\omega_3,\omega_4,\omega_7,\omega_8\},\{\omega_1,\omega_2,\omega_3,\omega_4,\omega_5,\omega_6\},\{\omega_1,\omega_2,\omega_3,\omega_4,\omega_7,\omega_8\},\\
+      &&\ \{\omega_1,\omega_2,\omega_5,\omega_6,\omega_7,\omega_8\},\{\omega_3,\omega_4,\omega_5,\omega_6,\omega_7,\omega_8\}\big\}\\
+    \end{array}\]
+    and $\mathcal{F}_3$ contains all the subsets of $\Omega$ (ie $\mathcal{F}_3=2^\Omega$).
+  \end{example}
+
+\subsection{Stochastic Processes in Discrete Time}
+
+  \begin{definition}{Stochastic Process $S$}
+    A \textit{Stochastic Process} $S$ is a real-valued function $S(t)(\omega)$ of two variables, $t$ and $\omega$.
+    \par For each fixed $\omega\in\Omega$ the function mapping $t\to S(t)(\omega)$ is called the \textit{Sample Path}.
+    \par For each fixed $t\in[0,T]$ the function mapping $\omega\to S(t)(\omega)$ is a \textit{Random Variable}.
+    \par NB - For simplicity, we assume $S(0)$ is constant.
+  \end{definition}
+
+  \begin{definition}{Measurable Function}
+    A function $\omega\to W(\omega)$ is said to be \textit{Measurable} wrt the \textit{$\sigma$-Algebra} $\mathcal{F}$ if
+    \begin{center}
+      All $x\in\reals$ where $x\in W^{-1}(x)$ is an element of the \textit{$\sigma$-Algebra} $\mathcal{F}$.
+    \end{center}
+    where $W^{-1}(x):=\big\{\omega\in\Omega:W(\omega)=x\big\}$.\footnote{Equivalently, if we know which set of the \textit{$\sigma$-algebra} $\omega$ is in, then we know the value of $W(\omega)$.}
+  \end{definition}
+
+  \begin{example}{Measurable Function}
+    Consider random variables $X,Y$ defined as
+    \[\begin{array}{rcl}
+      X(\omega)&=&\begin{cases}
+        5&,\omega\in\{\omega_1,\omega_2,\omega_3,\omega_4\}\\
+        7&,\omega\in\{\omega_5,\omega_6,\omega_7,\omega_8\}
+      \end{cases}\\
+      Y(\omega)&=&\begin{cases}
+        8&,\omega\in\{\omega_1,\omega_3,\omega_5,\omega_7\}\\
+        6&,\omega\in\{\omega_2,\omega_4,\omega_6,\omega_8\}
+      \end{cases}
+    \end{array}\]
+    Then, by the notation of \texttt{Example \ref{sec_stochastic_processes_in_discrete_time}.\ref{example_information_structures}}, we have that
+    \begin{itemize}
+      \item $X$ is \textit{Measurable} wrt $\mathcal{F}_1,\mathcal{F}_2,\mathcal{F}_3$ as $\big\{\{\omega_1,\omega_2,\omega_3,\omega_4\},\{\omega_5,\omega_6,\omega_7,\omega_8\},\emptyset\big\}\subset\mathcal{F}_1$.
+      \item $Y$ is \underline{not} \textit{Measurable} wrt $\mathcal{F}_1,\mathcal{F}_2$, but is measurable wrt $\mathcal{F}_3$, as $\{\omega_1,\omega_3,\omega_5,\omega_7\}\not\in\mathcal{F}_1$.
+    \end{itemize}
+  \end{example}
+
+  \begin{remark}{Measurable}
+    If a function $X$ is \textit{Measurable} wrt $\mathcal{F}_t$ then it will be \textit{Measurable} wrt $\mathcal{F}_{t+1}$, as $\mathcal{F}_t\subseteq\mathcal{F}_{t+1}$.
+  \end{remark}
+
+  \begin{definition}{Adapted}
+    A \textit{Stochastic Process} $S=\{S(t):t=0,1,\dots,T\}$ is said to be \textit{Adapted} to the \textit{Filtration} $\mathcal{F}=\{\mathcal{F}_t:t=0,1,\dots,T\}$ if for every $t=0,\dots,T$ the random variable $S(t)$ is \textit{Measurable} wrt $\mathcal{F}_t$.
+  \end{definition}
+
+  \begin{remark}{Adapted Filtrations in Practice}
+    In practice we often define the \textit{Stochastic Process} $S$ first and use the so-called ``\textit{Natural Filtration}'', defined as
+    \begin{enumerate}
+      \item For each $t=0,1,\dots,T$ let $\mathcal{P}_t$ be the partition of $\Omega$ st the \textit{Stochastic Process} $\{S(0),\dots,S(t)\}$ takes the same value for each $\omega\in A$, for each subset $A\in\mathcal{P}_t$.
+      \item Let $\mathcal{F}_t$ be the \textit{$\sigma$-Algebra} generated by $\mathcal{P}_t$.
+      \item Then $\mathcal{F}:=\{\mathcal{F}_t:t=0,1,\dots,T\}$ is called the filtration \textit{Generated} by the \textit{Stochastic Process} $S$.
+    \end{enumerate}
+  \end{remark}
+
+  \begin{example}{}
+    Consider the setting it \texttt{Example \ref{sec_stochastic_processes_in_discrete_time}.\ref{example_information_structures}} and let $S(t)$ be the upwards movements in the value of the asset by time $t$. Then $S(t)$ generates the \textit{Filtration} above.
+    \par This can be summarised in the table
+    \begin{center}
+      \begin{tabular}{c|cccc}
+        $\omega_k$&$t=0$&$t=1$&$t=2$&$t=3$\\\hline
+        $\omega_1$&$S(t)=0$&$S(t)=1$&$S(t)=2$&$S(t)=3$\\
+        $\omega_2$&$S(t)=0$&$S(t)=1$&$S(t)=2$&$S(t)=2$\\
+        $\omega_3$&$S(t)=0$&$S(t)=1$&$S(t)=1$&$S(t)=2$\\
+        $\omega_4$&$S(t)=0$&$S(t)=1$&$S(t)=1$&$S(t)=1$\\
+        $\omega_5$&$S(t)=0$&$S(t)=0$&$S(t)=1$&$S(t)=2$\\
+        $\omega_6$&$S(t)=0$&$S(t)=0$&$S(t)=1$&$S(t)=1$\\
+        $\omega_7$&$S(t)=0$&$S(t)=0$&$S(t)=0$&$S(t)=1$\\
+        $\omega_8$&$S(t)=0$&$S(t)=0$&$S(t)=0$&$S(t)=0$
+      \end{tabular}
+    \end{center}
+  \end{example}
+
+  \begin{definition}{Random Walk}
+    Let $X_t:=X_0+Y_1+\dots+Y_t$ where $Y_1,\dots,Y_t$ are iid random variables with finite variance $\sigma^2$ and mean $mean$. Then $\{X_t:t\geq0\}$ is a \textit{Random Walk}.
+    \par We say that $\{X_t:t\geq0\}$ is a \textit{Simple Random Walk} if $Y_i$ takes only the values 1 with probability $p$ and -1 with probability $1-p$.
+  \end{definition}
+
+  \begin{proposition}{Distribution of Simple Random Walk Values}
+    A \textit{Simple Random Walk} takes values $y$ at time-point $t$ iff exactly $\frac{t+y}2$ of $Y_1,\dots,Y_t$ are equal to 1, and the remaining $\frac{t-y}2$ equal -1.
+    \[ \forall\ t\geq0,y\in\{-t,-t+2,\dots,t-2,t\},\quad\prob(X_t=y)={t\choose \frac{t+y}2}p^{(t+y)/2}(1-p)^{(t-y)/2} \]
+  \end{proposition}
+
+\subsection{Conditional Expectations}
+
+\subsection{Martingales}
+
+\subsection{Stopping Times}
+
+\section{Multi-Period Models} \label{sec_multi_period_models}
+
+\section{Stochastic Processes in Continuous Time} \label{sec_stochastic_processes_in_continuous_time}
+
+\section{Financial Market Models in Continuous Time} \label{sec_financial_market_models_in_continuous_time}
 
 \reference
 \section{Notation}
