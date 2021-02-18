@@ -755,7 +755,7 @@
     \end{enumerate}
   \end{remark}
 
-  \begin{example}{}
+  \begin{example}{}\label{example_2_13}
     Consider the setting it \texttt{Example \ref{sec_stochastic_processes_in_discrete_time}.\ref{example_information_structures}} and let $S(t)$ be the upwards movements in the value of the asset by time $t$. Then $S(t)$ generates the \textit{Filtration} above.
     \par This can be summarised in the table
     \begin{center}
@@ -784,6 +784,159 @@
   \end{proposition}
 
 \subsection{Conditional Expectations}
+
+  \begin{definition}{Conditional Expectation $\expect[\cdot|\cdot]$}
+    For a finite \textit{Sample Space} $\Omega$ the \textit{Conditional Expectation} of a discrete RV $Y$ given the event $A$ $\expect[Y|A]$ is defined as
+    \[ \expect[Y|A]=\sum_yy\prob(Y=y|A) \]
+    This \textit{Conditional Expectation} maps from the events $A$ to the real numbers.
+  \end{definition}
+
+  \begin{remark}{Rewriting Conditional Expectation}
+    We can rewrite the \textit{Conditional Expectation} as
+    \[\begin{array}{rcl}
+      \expect[Y|A]&=&\sum_yy\frac{\prob(Y(\omega)=y,A)}{\prob(A)}\\
+      &=&\sum_{\omega\in A}Y(\omega)\frac{\prob(\omega)}{\prob(A)}
+    \end{array}\]
+  \end{remark}
+
+  \begin{example}{Conditional Expectation}
+    Consider \texttt{Example \ref{sec_stochastic_processes_in_discrete_time}.\ref{example_2_13}} with $\omega_i$ having probability 1/8.
+    \begin{itemize}
+      \item If $A:=\{\omega_1,\omega_2,\omega_3,\omega_4\}$ then
+      \[ \expect[S_3|A]=\frac{(3+2+2+1)(1/8)}{1/2}=2 \]
+      \item If $A:=\{\omega_5,\omega_6,\omega_7,\omega_8\}$ then
+      \[ \expect[S_3|A]=\frac{(2+1+1+0)(1/8)}{1/2}=1 \]
+    \end{itemize}
+  \end{example}
+
+  \begin{definition}{Conditional Expectation /w $\sigma$-Algebra}
+    Let $\mathcal{F}$ be a \textit{$\sigma$-algebra} and $\mathcal{P}$ be the corresponding \textit{Partition} of $\Omega$.
+    \par We define the \textit{Conditional Expectation} of RV $Y$ give \textit{$\sigma$-algebra} $\mathcal{F}$ as
+    \[ \expect[Y|\mathcal{F}]=\sum_{A\in\mathcal{P}}\expect[Y|A]\indexed_A \]
+    This is a random-variable\footnote{Not a sum, as there is one $A$ st $\indexed_A=1$ (the rest equal zero)} which is \textit{Measurable} wrt $\mathcal{F}$. And,
+    \[ \forall\ \omega\in A,\ \expect[Y|\mathcal{F}](\omega)=\expect[Y|A] \]
+  \end{definition}
+
+  \begin{example}{Conditional Expectation /w $\sigma$-Algebras}
+    Consider \texttt{Example \ref{sec_stochastic_processes_in_discrete_time}.\ref{example_2_13}} with $\omega_i$ having probability 1/8.
+    \par Recall that $\mathcal{F}_1=\big\{\emptyset,\Omega,\{\omega_1,\omega_2,\omega_3,\omega_4\},\{\omega_5,\omega_6,\omega_7,\omega_8\}\big\}$.
+    Then
+    \[ \expect[S_3|A]=\begin{cases}2&\text{if }A=\{\omega_1,\omega_2,\omega_3,\omega_4\}\\1&\text{if }A=\{\omega_5,\omega_6,\omega_7,\omega_8\}\end{cases} \]
+    Hence $\expect[S_3|\mathcal{F}_1]$ is a random variable with
+    \[ \expect[S_3|\mathcal{F}](\omega_i)=\begin{cases}2&\text{if }i=1,2,3,4\\1&\text{if }i=5,6,7,8\end{cases} \]
+    This random variable is \textit{$\mathcal{F}_1$-Measurable}.
+    \par Observer that
+    \[\begin{array}{rcl}
+      \expect[\expect[S_3|\mathcal{F}_1]]&=&\sum_i\prob(\omega_i)\expect[S_3|\mathcal{F}_1](\omega_i)\\
+      &=&2\cdot\frac48+1\cdot\frac48=\frac32=\expect[S_3]\footnotemark
+    \end{array}\]
+    \footnotetext{This is the ``Tower Law''}
+    Note that if
+    \[ Y(\omega_i)=\begin{cases}7&\text{if }i\leq4\\1&\text{if }i\geq5\end{cases}\implies\expect[Y|\mathcal{F}_1]=Y \]
+    Moreover, If $Z=\indexed\{\text{3rd move is up}\}$ then $|$ is independent of $\mathcal{F}_1$ and
+    \[ \expect[Z|\mathcal{F}_1]=\frac12=\expect[Z] \]
+  \end{example}
+
+  \begin{theorem}{Properties of Conditional Expectation}\label{the_properties_of_conditional_expectation}
+    Let $Y$ be a random variable and $\mathcal{F},\mathcal{F}_1,\mathcal{F}_2$ be \textit{$\sigma$-algebras} with $\mathcal{F}_1\subset\mathcal{F}_2$.
+    \par\textit{Conditional Expectations} satisfy the following properties:
+    \begin{enumerate}
+      \item $\expect[\expect[Y|\mathcal{F}]]=\expect[Y]$. (The ``Tower Law'')
+      \item $\expect[\expect[Y|\mathcal{F}_2]|\mathcal{F}_1]=\expect[Y|\mathcal{F}_1]=\expect[\expect[Y|\mathcal{F}_1]\mathcal{F}_2]$. (The ``Generalised Tower Law'')
+      \item If $X$ is a random variable which is \textit{Measurable} wrt $\mathcal{F}$ then $\expect[XY|\mathcal{F}]=X\expect[Y|\mathcal{F}]$ and $\expect[X|\mathcal{F}]=X$.\footnote{As $X$ is measurable wrt $\mathcal{F}$ all information is known about it, and thus can treat it as a scalar.}
+      \item If $Y$ is independent of $\mathcal{F}$\footnote{$\forall\ A\in\mathcal{P}$ the distribution of $Y$ is independent of $A$} then $\expect[Y|\mathcal{F}]=\expect[Y]$.
+    \end{enumerate}
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_stochastic_processes_in_discrete_time}.\ref{the_properties_of_conditional_expectation} i)}}
+    \everymath={\displaystyle}
+    \[\begin{array}{rcl}
+      \expect[\expect[Y|\mathcal{F}]]&=&\expect\left[\sum_{A\in\mathcal{P}}\expect[Y|A]\indexed_A\right]\text{ by def. cond. expectation}\\
+      &=&\sum_{A\in\mathcal{P}}\expect[\indexed_A]\expect[Y|A]\\
+      &=&\sum_{A\in\mathcal{P}}\left(\sum_{\omega\in\Omega}\indexed_A(\omega)\prob(\omega )\right)\cdot\left(\sum_{\omega\in A}\frac{Y(\omega)\prob(\omega)}{\prob(A)}\right)\\
+      &=&\sum_{A\in\mathcal{P}}\prob(A)\left(\sum_{\omega\in A}\frac{Y(\omega)\prob(\omega)}{\prob(A)}\right)\\
+      &=&\sum_{A\in\mathcal{P}}\sum_{\omega\in A}Y(\omega)\prob(\omega)\\
+      &=&\expect[Y]
+    \end{array}\]
+    \proved
+  \end{proof}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_stochastic_processes_in_discrete_time}.\ref{the_properties_of_conditional_expectation} ii)}}
+    \everymath={\displaystyle}
+    \[\begin{array}{rcl}
+      \expect[\expect[Y|\mathcal{F}_2]\mathcal{F}_1]&=&\expect\left(\sum_{B\in\mathcal{P}_2}\expect[Y|B]\indexed_B\big|\mathcal{F}_1\right)\\
+      &=&\sum_{B\in\mathcal{P}_2}\expect[Y|B]\expect[\indexed_B|\mathcal{F}_1]\\
+      &=&\sum_{B\in\mathcal{P}_2}\expect[Y|B]\sum_{A\in\mathcal{P}_1}\expect[1_B|A]\indexed_A\\
+      &=&\sum_{A\in\mathcal{P}_1}\sum_{B\in\mathcal{P}_2}\expect[Y|B]\expect[1_B|A]\indexed_A\\
+      &=&\sum_{A\in\mathcal{P}_1}\sum_{B\in\mathcal{P}_2}\expect[Y|B]\frac{\prob(A\cap B)}{\prob(A)}\indexed_A\\
+    \end{array}\]
+    Since the partition $\mathcal{P}_2$ is finer than $\mathcal{P}_1$  for all $B\in\mathcal{P}_2$ and $A\in\mathcal{P}_1$, either $B\subset A$ or $B\cap A=\emptyset$.
+    \par Thus
+    \[\begin{array}{rcl}
+      \expect[\expect[Y|\mathcal{F}_2]|\mathcal{F}_1]&=&\sum_{A\in\mathcal{P}_1}\sum_{B\in\mathcal{P}_2,B\subset A}\expect[Y|B]\frac{\prob(B)}{\prob(A)}\indexed_A\\
+      &=&\sum_{A\in\mathcal{P}_1}\sum_{B\in\mathcal{P}_2,B\subset A}\left(\sum_{\omega\in B}Y(\omega)\frac{\prob(\omega)}{\prob(B)}\right)\frac{\prob(B)}{\prob(A)}\indexed_A\\
+      &=&\sum_{A\in\mathcal{P}_1}\sum_{\omega\in A}Y(\omega)\frac{\prob(\omega)}{\prob(A)}\indexed_A\\
+      &=&\sum_{A\in\mathcal{P}_1}\expect[Y|A]\indexed_A\\
+      &=&\expect[Y|\mathcal{F}_1]
+    \end{array}\]
+    \proved
+  \end{proof}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_stochastic_processes_in_discrete_time}.\ref{the_properties_of_conditional_expectation} iii)}}\label{proof_conditional_expectation_property_iii}
+    \everymath={\displaystyle}
+    Since $S$ is \textit{Measurable} it is constant on sets of $\mathcal{P}$ so we can write
+    \[ X=\sum_{A\in\mathcal{P}} x_A\indexed_A \]
+    with suitable scalars $x_A\in\reals$. Then
+    \[\begin{array}{rcl}
+      \expect[XY|\mathcal{F}]&=&\sum_{A\in\mathcal{P}}\expect[XY|A]\indexed_A\\
+      &=&\sum_{A\in\mathcal{P}}\expect[x_AY|A]\indexed_A\\
+      &=&\sum_{A\in\mathcal{P}}x_A\expect[Y|A]\indexed_A\\
+      &=&\sum_{A\in\mathcal{P}}X\expect[Y|A]\indexed_A\footnotemark\\
+      &=&X\sum_{A\in\mathcal{P}}\expect[Y|A]\indexed_A\\
+      &=&X\expect[Y|\mathcal{F}]
+    \end{array}\]
+    \footnotetext{This holds as $\indexed_A=1$ for only one specific $A$.}
+    Consider the special case where $Y=1$, then it follows that $\expect[X|\mathcal{F}]=X$.\proved
+  \end{proof}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_stochastic_processes_in_discrete_time}.\ref{the_properties_of_conditional_expectation} iv)}}
+    \everymath={\displaystyle}
+    If $Y$ is independent of $\mathcal{F}$ then for all $A\in\mathcal{F}$
+    \[\begin{array}{rcl}
+      \expect[Y|A]&=&\sum_yy\prob(Y=y|A)\\
+      &=&\sum_yy\prob(Y=y)\\
+      &=&\expect[Y]
+    \end{array}\]
+    \proved
+  \end{proof}
+
+  \begin{proposition}{Conditional Expectation for Non-Finite Sample Spaces}\label{prop_conditional_expectation_for_non_finite_sample_space}
+    Let $Y$ be a RV, then the \textit{Conditional Expectation} $\expect[Y|\mathcal{F}]$ is the unique random variable st
+    \begin{enumerate}
+      \item $\expect[Y|\mathcal{F}]$ is $\mathcal{F}$-Measurable.
+      \item $\forall\ A\in\mathcal{F},\ \expect[\expect[Y|\mathcal{F}]\cdot\indexed_A]=\expect[Y\indexed_A]$.
+    \end{enumerate}
+  \end{proposition}
+
+  \begin{proof}{\texttt{Proposition \ref{sec_stochastic_processes_in_discrete_time}.\ref{prop_conditional_expectation_for_non_finite_sample_space}}}
+    For an arbitrary event $A\in\mathcal{F}$ the indicator function $\indexed_A$ is \textit{$\mathcal{F}$-Measurable} and thus $\expect[\indexed_AY|\mathcal{F}]=\indexed_A\expect[Y|\mathcal{F}]$ by \texttt{Theorem \ref{sec_stochastic_processes_in_discrete_time}.\ref{the_properties_of_conditional_expectation}}.
+    \par Hence, for all $A\in\mathcal{F}$
+    \[ \expect[\expect[Y|\mathcal{F}]\cdot\indexed_A]=\expect[\expect[\indexed_AY|\mathcal{F}]]=\expect[\indexed_AY] \]
+    On the other hand, suppose $X$ is \textit{$\mathcal{F}$-Measurable} and satisfies
+    \[ \expect[X\indexed_A]=\expect[Y1_A]\ \forall\ A\in\mathcal{F} \]
+    Then write $X$ as in \texttt{Proof \ref{sec_stochastic_processes_in_discrete_time}.\ref{proof_conditional_expectation_property_iii}} $X=\sum_{A\in\mathcal{P}}x_A\indexed_A$.
+    \par It follows that $\forall\ A\in\mathcal{P},\ \expect[X\indexed_A]=x_A\prob(A)$ and thus
+    \[\begin{array}{rcl}
+      \expect[Y\indexed_A]&=&\sum_{\omega\in A}Y(\omega)\prob(\omega)\\
+      &=&\frac{\prob(A)}{\prob(A)}\sum_{\omega\in A}Y(\omega)\prob(\omega)\\
+      &=&\prob(A)\sum_{\omega\in A}\frac{Y(\omega)\prob(\omega)}{\prob(A)}\\
+      &=&\prob(A)\expect[Y|A]
+    \end{array}\]
+    Thus
+    \[ x\prob(A)=\expect[X\indexed_A]=\expect[Y\indexed_A]=\prob(A)\expect[Y|A] \]
+    Therefore, we have found that $x_A=\expect[Y|A]\ \forall\ A\in\mathcal{P}$ where $\mathcal{P}$ is the partition which corresponds to \textit{$\sigma$-algebra} $\mathcal{F}$.
+    \par Moreover, $X=\expect[Y|\mathcal{F}]$.
+  \end{proof}
 
 \subsection{Martingales}
 
