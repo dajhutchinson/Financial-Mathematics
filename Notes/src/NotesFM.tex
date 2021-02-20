@@ -522,7 +522,7 @@
 
   \begin{proof}{Theorem \ref{sec_financial_terminology_and_single_period_model}.\ref{thrm_uniqueness_of_risk_neutral_probability_measure}}
     \everymath={\displaystyle}
-    We denote by $\mathbb{M}$ the set of all \textit{Risk-Neutral Probability Measures}. Since there are no \textit{Arbitrage Opportunities} we know that $\mathbb{M}\neq\mathbb{Q}$.
+    We denote by $\mathbb{M}$ the set of all \textit{Risk-Neutral Probability Measures}. Since there are no \textit{Arbitrage Opportunities} we know that $\mathbb{M}\neq\emptyset$.
     We consider the statement in both directions
     \begin{itemize}
       \item[$\Longrightarrow$] For the sake of contradiction, assume that the model is \textit{Complete}, but $\mathbb{M}$ contains two distinct \textit{Risk-Neutral Probability Measures} $\Q,\hat\Q$. In this case there must exists some state $\omega_k$ with $\Q(\omega_k)\neq\hat\Q(\omega_k)$ so take the contingent claim $X$ defined by
@@ -533,7 +533,7 @@
       \item[$\Longleftarrow$] For the sake of contradiction, assume that there is only one \textit{Risk-Neutral Probabiltiy Measure} $\hat\Q$, but there exists a \textit{Contingent Claim} $X$ which is \underline{not} \textit{Attainable}.
       \par Then there is no solution to the system $AH=X$. By \textit{Separating Hyperplane Theorem} it follows that there must exists a row vector $\pi\in\reals^K$ st
       \[ \pi^TA=0\footnotemark,\pi^TX>0 \] \footnotetext{$\pi$ is \textit{Orthogonal} to $A$.}
-      Let $\lambda>0$ be same enough st
+      Let $\lambda>0$ be small enough st
       \[ \Q(\{\omega_j\})=\hat\Q(\{\omega_j\})+\lambda\pi_j\cdot B_1(\omega_j)>0\ \forall\ j\in\{1,\dots,K\} \]
       Since $B_1$ is the first column of $A$ and $\pi^TA=0$, the quantity $\Q$ is defined above is actually a \textit{Probabiltiy Measure}.\footnote{i.e. $\sum_j\Q(\{\omega_j\})=\underbrace{\sum_j\hat\Q(\{\omega_j\})}_{=1}+\underbrace{\sum_j\lambda\pi B_1}_{=0}=1$}
       Moreover, for any \textit{Discounted Price Process} $S^*=(S_1^*,\dots,S_N^*)$ and for every $n\in\{1,\dots,N\}$ we have
@@ -714,9 +714,8 @@
   \begin{definition}{Measurable Function}
     A function $\omega\to W(\omega)$ is said to be \textit{Measurable} wrt the \textit{$\sigma$-Algebra} $\mathcal{F}$ if
     \begin{center}
-      All $x\in\reals$ where $x\in W^{-1}(x)$ is an element of the \textit{$\sigma$-Algebra} $\mathcal{F}$.
+      $\forall\ x\in\reals$ where $W^{-1}(x)\subset\mathcal{F}$ it is true that $W^{-1}(x):=\big\{\omega\in\Omega:W(\omega)=x\big\}$.\footnote{Equivalently, if we know which set of the \textit{$\sigma$-algebra} $\omega$ is in, then we know the value of $W(\omega)$.}
     \end{center}
-    where $W^{-1}(x):=\big\{\omega\in\Omega:W(\omega)=x\big\}$.\footnote{Equivalently, if we know which set of the \textit{$\sigma$-algebra} $\omega$ is in, then we know the value of $W(\omega)$.}
   \end{definition}
 
   \begin{example}{Measurable Function}

@@ -1,0 +1,661 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in, paperwidth=8.3in, paperheight=11.7in]{geometry}
+\usepackage{amsmath,amsfonts,fancyhdr,bbm,graphicx,tikz}
+\usetikzlibrary{automata,positioning}
+\graphicspath{ {img/} }
+\usepackage[section,nohyphen]{DomH}
+\headertitle{Financial Mathematics - Reviewed Notes}
+
+\begin{document}
+
+\title{Financial Mathematics - Reviewed Notes}
+\author{Dom Hutchinson}
+\date{\today}
+\maketitle
+
+\tableofcontents\newpage
+
+\section{General}\label{sec_general}
+
+  \begin{definition}{Modelling}
+
+  \end{definition}
+
+  \begin{definition}{Risk-Free}
+    An activity is said to be ``\textit{Risk-Free}'' if the potential profits \& losses are completely known.\footnote{It does not refer to whether there no chance of making a loss.}
+  \end{definition}
+
+\subsection{Probability}
+
+  \begin{definition}{Sample Space $\Omega$}
+    The \textit{Sample Space} $\Omega$ is the set consisting of all elementary outcomes from a (series of) event(s).
+  \end{definition}
+
+  \begin{definition}{Random Variable $X$}
+    A \textit{Random Variable} $X$ is a function from the \textit{Sample Space} $\Omega$ to the real numbers $\reals$.
+    \[ X:\Omega\to\reals \]
+  \end{definition}
+
+  \begin{definition}{Stochastic Process}
+
+  \end{definition}
+
+  \begin{definition}{$\sigma$-Algebra}
+
+  \end{definition}
+
+  \begin{definition}{Generated $\sigma$-Algebra}
+
+  \end{definition}
+
+  \begin{definition}{Filtration}
+
+  \end{definition}
+
+\subsection{Information Structures}
+
+  % \begin{definition}{Partition}
+  %
+  % \end{definition}
+  %
+  % \begin{remark}{Flow of Information}
+  %
+  % \end{remark}
+  %
+  % \begin{definition}{Information Sequence}
+  %
+  % \end{definition}
+
+\section{Financial Terminology}\label{sec_financial_terminology}
+
+  \begin{definition}{Underlying Asset}
+    The \textit{Underlying Asset} is a real financial asset or security which a contract can be based on. (e.g. Oil, interest rate, shares).
+  \end{definition}
+
+  \begin{definition}{Dividend}
+    A \textit{Dividend} is a one-off payment provided to the holder of an \textit{Underlying Asset} at a certain time. Whether an \textit{Underlying Asset} pays a \textit{Dividend}, and the value of the \textit{Dividend}, will affect the value of the \textit{Underlying Asset}.
+    \par A \textit{Dividend} is generally used by companies to distribute yearly profits to its shareholders.
+  \end{definition}
+
+  \begin{definition}{Long Selling}
+    \textit{Long Selling} is the practice of buying an asset (or security) and then selling it at some point in the future.
+    \par In \textit{Long Selling} your profit/loss is $P_{\text{sell}}-P_{\text{buy}}$, thus you hope the price of the asset \underline{increases} in the period between you buying and selling it.
+  \end{definition}
+
+  \begin{definition}{Short Selling}
+    \textit{Short Selling} is the practice of borrowing an asset (or security), immediately selling it\footnote{Receiving payment at this point.} and at some point in the future buying an equivalent asset in order to reimburse your lender.
+    \par In \textit{Short Selling} your profit/loss if $P_{\text{sell}}-P_{\text{buy}}$, thus you hope the price of the asset \underline{decreases} in the period between you selling and having to reimburse your lender.
+  \end{definition}
+
+  \begin{remark}{Short Selling \& Dividends}
+    If the asset you borrowed in \textit{Short Selling} pays a \textit{Dividend} during the time you have borrowed the asset, then you must pay this \textit{Dividend} to the lender.\footnote{As you have already sold the asset, then this expense will come out of your own pocket.}
+  \end{remark}
+
+  \begin{definition}{Arbitrage Opportunity}
+    An \textit{Arbitrage Opportunity} occurs when it is possible to make a profit without being exposed to the risk of incurring a loss.\footnote{Someone who loos for \textit{Arbitrage Opportunities} is called an \textit{Arbitrageur}.}
+    \par Generally \textit{Arbitrage Opportunities} occur by being able to buy and sell the same asset in different markets, as each market may have a different price.
+  \end{definition}
+
+  \begin{theorem}{No-Arbitrage Principle}
+    \begin{quote}
+      ``\textit{Arbitrage Opportunities} do not exist (for long) in real life markets.''
+    \end{quote}
+    As when the opportunities arise, the market activity cause by agents exploiting the opportunity would raise the cost of buying and thus remove the opportunity due to the \textit{Law of Supply-and-Demand}.
+  \end{theorem}
+
+  \begin{remark}{Value of Money}
+    IRL the value of money is not constant due to inflation, interest rates \& exchange rates. We generally want to normalise the returns of our portfolio wrt the change in value of money in order to determine the ``real returns''.
+  \end{remark}
+
+  \begin{definition}{Bank Account Process, $B_t$}
+    A \textit{Bank Account Process}\footnote{AKA a \textit{Bond} or a \textit{Numeraire}.} $B_t$ is how much an initial deposit of one unit at time $t=0$ would be worth at time point $t$ if the deposit was made into a ``Risk-Free Bank Account'', given some risk-free \textit{Interest Rate} $r$. This is a measure of how the value of money changes over the $t$ time-periods.
+    \par The \textit{Bank Account Process} must fulfil the following criteria
+    \[ B_0=1\quad\text{and}\quad B_t(\omega)\geq0\ \forall\ \omega\in\Omega \]
+    It is generally assumed that you can borrow money from these accounts, paying the same interest rate $r$.
+  \end{definition}
+
+  \begin{proposition}{Value of Bank Account Process $B_t$}
+    \par Suppose our ``Risk-Free Bank Account'' pays a constant interest rate of $r$ in each time-period, then after $t$ time-periods our initial deposit would be worth
+    \begin{itemize}
+      \item \textit{Continuous Time Model} $B_t=B_0e^{rt}$.
+      \item \textit{Single-Period Model} $B_1=B_0(1+r)$.\footnote{Must be that $t=1$ in a \textit{Single-Period Model}.}
+      \item \textit{Multi-Period Model} $B_t=B_0(1+r)^t$.
+    \end{itemize}
+  \end{proposition}
+
+  \begin{definition}{Portfolio}
+    % Replicating Portfolio
+  \end{definition}
+
+\subsection{Derivatives}
+
+  \begin{definition}{Derivative Securities}
+    A \textit{Deriviative Security} is a contract which has an expiry date $T$ and pays out different amounts depending upon the value of some \textit{Underlying Asset} in the time-period $[0,T]$.
+  \end{definition}
+
+  \begin{remark}{Valuing Contracts}
+    When valuing contracts we assume that arbitrage does not exist. This means we can derive a single price\footnote{Known as the \textit{Fair Price}.} for a contract, as any other price would create an \textit{Arbitrage Opportunity}.
+  \end{remark}
+
+  \begin{theorem}{Equivalent Contract Valuations over Time}\label{the_equivalent_contract_valuations_over_time}
+    If two combinations of financial derivatives both have the same value $V_T=W_T$ at time $t=T$. Then their prices will be the same at all $t<T$
+    \[ \text{if }V_T=W_t\text{ then }V_t=W_t\ \forall\ t<T \]
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_financial_terminology}.\ref{the_equivalent_contract_valuations_over_time}} }
+    \textit{We assume the ``No-Arbitrage Principle'' holds throughout this proof.}
+    \par Let $V_t,W_t$ represent the fair price for two different combinations of financial derivatives at time $t$ and that $V_T=W_T$. Suppose there is a risk-free profit of $r$.
+    \par Assume WLOG that $V_t>W_t$. Then an arbitrage opportunity exists and can be exploited by doing the following:
+    \begin{itemize}
+      \item At $t=0$
+      \begin{enumerate}
+        \item Sell/short the first combination, receiving £$V_t$.
+        \item Buy the second combination, costing £$W_t$.
+        \item Invest the difference (£$V_t-W_t>0$).
+      \end{enumerate}
+      \item At $t=T$
+      \begin{enumerate}
+        \item Sell the first combination, receiving £$V_T=W_T$
+        \item Buy the second combination, costing £$W_T=V_T$.
+      \end{enumerate}
+    \end{itemize}
+    Following this will result in a ``riskless'' profit of $(V_t-W_t)e^{r(T-t)}>0$.
+  \end{proof}
+
+  \begin{definition}{Forward Contract}
+    A \textit{Forward Contract} is a type of \textit{Derivative Security}. In a \textit{Forward Contract} two parties agree to an exchange on a predetermined future date for a predetermined amount, and are both \underline{obliged} to fulfil this exchange.
+    \par All \textit{Forward Contracts} have the following components
+    \begin{itemize}
+      \item \textit{Delivery Date} $T$.
+      \item \textit{Delivery Price} $K$.
+    \end{itemize}
+  \end{definition}
+
+  \begin{remark}{Positions in a Forward Contract}
+    In a \textit{Forward Contract} agents can take two positions
+    \begin{itemize}
+      \item \textit{Long Position} - Agree to buy the underlying asset for $\pounds K$ on date $T$. Makes a profit if the market-value of the underlying asset is \underline{greater} than $K$ in time-period $T$.
+      \item \textit{Short Position} - Agree to sell the underlying asset for $\pounds K$ on date $T$. Makes a profit if the market-value of the underlying asset is \underline{less} than $K$ in time-period $T$.
+    \end{itemize}
+  \end{remark}
+
+  \begin{remark}{Utility of Forwards Contracts}
+    \textit{Forward Contracts} allow you to agree terms of a purchase/sale some time in advance of actually transacting. This means business have greater certainty about their future cash-flows.\footnote{e.g. Farmers may agree to a price for their whole harvest a year in advance. Thus their next years income is completely known.}
+  \end{remark}
+
+  \begin{theorem}{Fair Delivery Price of a Forward Contract}\label{the_fair_price_of_a_forward_contract}
+    Consider a \textit{Forward Contract} with delivery date $T$, where the underlying asset has value $S_0$ at time $t=0$ and pays a dividend $D$ at time $t_0\in(0,T)$. Suppose there is a risk-free bank account with a constant interest rate $r$ during the interval $[0,T]$.\footnote{This means $B_t=e^{rt}$.}
+    \par Then
+    \begin{itemize}
+      \item If $D=0$ (ie no dividend is payed) then the fair \textit{Delivery Price} for this contract is
+      \[ K=S_0e^{rT} \]
+      \item If $D>0$ then the fair \textit{Delivery Price} for this contract is
+      \[ K=(S_0-I)e^{rT}\text{ where }I:=De^{-rt_0} \]
+    \end{itemize}
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_financial_terminology}.\ref{the_fair_price_of_a_forward_contract}}}
+    \textit{We use the ``No-Arbitrage Principle'' to prove that these $K$s are the fair prices under each scenario.}
+    \par \textit{Case 1} - Suppose, for the sake-of-contradiction, that $K>(S_0-I)e^{rT}$ with $I:=De^{-rt_0}$. Then an arbitrage opportunity exists and can be exploited by doing the following:
+    \begin{itemize}
+      \item At $t=0$
+      \begin{enumerate}
+        \item Borrow £$S_0$ from the bank, at an interest rate of $r$.
+        \item Buy the underlying asset.
+        \item Taking a short position in the forward contract (receiving $K>(S_0-I)e^{rT}$).
+      \end{enumerate}
+      \item At $t=t_0$
+      \begin{enumerate}
+        \item We will receive a dividend payment £$D$ which we shall use to partially repay our loan. This leaves an outstanding balance of $S_0e^{rt_0}-D$.
+      \end{enumerate}
+      \item At $t=T$
+      \begin{enumerate}
+        \item Sell the asset for $K$ using the forward contract.
+        \item Repay the outstanding balance on the loan ($(S_0e^{rt_0}-D)e^{r(T-t_0)}$).
+      \end{enumerate}
+    \end{itemize}
+    \par Doing all this will lead to a ``riskless'' profit of
+    \[ K-(S_0e^{rt_0}-D)e^{r(T-t_0)}=K-(S_0-I)e^{rT}>0\text{ by def. }K \]
+    This means that this definition of $K$ cannot be the fair-price, thus $K\leq(S_0-I)e^{rT}$.
+    \par \textit{Case 2} - Suppose, for the sake-of-contradiction, that $K<(S_0-I)e^{rT}$ with $I:=De^{-rt_0}$. Then an arbitrage opportunity exists and can be exploited by doing the following:
+    \begin{itemize}
+      \item At $t=0$
+      \begin{enumerate}
+        \item Short sell the underlying asset. (Receiving £$S_0$).
+        \item Invest this revenue, receiving an interest rate of $r$.
+        \item Take a long position on the forward contract.
+      \end{enumerate}
+      \item At $t=t_0$
+      \begin{enumerate}
+        \item Pay the dividend £$D$ to our lender, from our bank account.
+      \end{enumerate}
+      \item At $t=T$
+      \begin{enumerate}
+        \item Buy the asset for $K$ using the forward contract.
+      \end{enumerate}
+    \end{itemize}
+    \par Doing all this will lead to a ``riskless'' profit of
+    \[ (S_0e^{rt_0}-D)e^{r(T-t_0)}-K=(S_0-I)e^{rT}-K>0\text{ by def. }K \]
+    This means that this definition of $K$ cannot be the fair-price, thus $K\geq(S_0-I)e^{rT}$.
+    \par Thus, by combining these two inequalities, the fair price for this \textit{Forward Contract} is
+    \[ K=(S_0-I)e^{rT} \]
+  \end{proof}
+
+  \begin{definition}{Options Contract}
+    An \textit{Options Contract} is a type of \textit{Derivative Security}. In an \textit{Options Contract} two parties agree to an exchange on (or before) a predetermined future date for a predetermined amount, but the holder is \underline{not obliged} to fulfil this exchange.
+    \par All \textit{Options Contracts} have the following components
+    \begin{itemize}
+      \item \textit{Delivery Date} $T$.
+      \item \textit{Strike Price} $K$.
+    \end{itemize}
+    There are two classes of \textit{Options Contract}
+    \begin{itemize}
+      \item \textit{Call Option} - The holder has the right to buy.
+      \item \textit{Put Option} - The holder has the right to sell.
+    \end{itemize}
+  \end{definition}
+
+  \begin{definition}{European \& American Options}
+    There are two categories of \textit{Options Contract} which determine when the contract can be exercised
+    \begin{itemize}
+      \item \textit{European Option} - The holder can only execute on the delivery date $t=T$.
+      \item \textit{American Option} - The holder can execute on \underline{any} date before the delivery date $T$.
+    \end{itemize}
+  \end{definition}
+
+  \begin{definition}{Positions in an Options Contract}
+    In \textit{Options Contracts} agents can take one of two positions. The position they take determines their rights \& potential cash-flows.
+    \begin{itemize}
+      \item \textit{Holder} - Decides whether to execute the contract of not. Will pay the \textit{Writer} a fee for creating the contract.
+      \par The \textit{Holder's} only expense is the fee they pay the \textit{Writer} and they may make an income if they execute the contract.
+      \item \textit{Write} - Must complete the transaction if the \textit{Holder} wishes to. Receives a fee from the \textit{Holder}.
+      \par The \textit{Writer's} only income is the fee they receive from the \textit{Holder} and they may incur a loss if the contract is executed.
+    \end{itemize}
+  \end{definition}
+
+  \begin{remark}{When are options executed?}
+    Whether the holder should execute their option depends on the market price $S_T$ at time $T$, the strike price $K$ and the class of contract. Assuming (justifiably) that the holder will only execute the option if it will make them money, the holder should do the following
+    \begin{itemize}
+      \item For a \textit{Call Option} the holder should execute if $S_T>K$. As they can immediately sell their newly bought asset for a profit of $S_T-K-F$ where $F$ is the fee payed to the writer.
+      \item For a \textit{Put Option} the holder should execute if $S_T<K$. As they can buy the asset from the market and sell it to the writer of their option for a profit of $S_T-K-F$ where $F$ is the fee payed to the writer.
+    \end{itemize}
+  \end{remark}
+
+  \begin{theorem}{Put-Call Parity\footnote{This is an application of \texttt{Theorem \ref{sec_financial_terminology}.\ref{the_equivalent_contract_valuations_over_time}} to European Put \& Call Options.}}\label{the_put_call_parity}
+    Consider a \textit{European Put Option} and a \textit{European Call Option} where both have the same: underlying asset, strike price $K$ and expiry date $T$. Let $S_t$ be the value of the underlying asset at time point $t$ and assume there is a ``risk-free'' interest rate of $r$ available.
+    \par Then, if \underline{no} \textit{Arbitrage Opportunities} exist then the following hold
+    \[ S_t+P_t-C_t=Ke^{-r(T-t)}\ \forall\ t\in[0,T] \]
+    where $P_t,C_t$ are the prices of the put \& call options at time $t$ respectively, and $Ke^{-r(T-t)}$ is the discounted value of our bank account.
+  \end{theorem}
+
+  \begin{theorem}{Lower-Bound for a European Call Option}\label{the_lower_bound_for_a_european_call_option}
+     Let $S_t$ be the value of an underlying asset at time $t$.
+     \par For a \textit{European Call Option} with strike price $K$ and delivery date $T$ we can determine the following lower bound on its price $C_t$
+    \[\begin{array}{rcl}
+      C_t&\geq&\{S_t-Ke^{-r(T-t)}\}_+
+    \end{array}\]
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_financial_terminology}.\ref{the_lower_bound_for_a_european_call_option}} }
+    By \textit{Put-Call Parity} (\texttt{Theorem \ref{sec_financial_terminology}.\ref{the_put_call_parity}}) we have that
+    \[\begin{array}{rrcl}
+      &S_t+P_t-C_t&=&Ke^{-r(T-t)}\\
+      \implies&C_t&=&S_t+P_t-Ke^{-r(T-t)}
+    \end{array}\]
+    Since \textit{Put Options} cannot have a negative price, $P_t\geq0$, we have that
+    \[ C_t\geq S_t+P_t-Ke^{-r(T-t)} \]
+    Further, since \textit{Call Options} cannot have a negative price, $C_t\geq0$, we have that
+    \[ C_t\geq \big\{S_t+P_t-Ke^{-r(T-t)}\big\}_+ \]
+  \end{proof}
+
+  \begin{theorem}{Value of American Call Options w/o Dividends}\label{the_value_of_america_call_options_wo_dividends}
+    Consider an \textit{American} \& a \textit{European Call Option}, for the same underlying asset, with the same strike price and expiry date.
+    \par Then, if the underlying asset does \underline{not} pay a \textit{Dividend}
+    \[ C_A=C_E\footnotemark \]
+    \footnotetext{This shows that if an underlying asset does not pay a dividend then it is suboptimal to exercise an \textit{American Call Option} early.}
+    where $C_A,C_E$ are the price of the American \& European call options, respectively.
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_financial_terminology}.\ref{the_value_of_america_call_options_wo_dividends}}}
+    If the \textit{American Call Option} is executed early at time-point $t<T$ then it generates an income of $S_t-K$.
+    \par However, \texttt{Theorem \ref{sec_financial_terminology}.\ref{the_lower_bound_for_a_european_call_option}} shows that selling a \textit{Call Option} generates
+    \[ \{S_t-Ke^{-r(T_t)}\}_+\geq S_t-Ke^{-r(T-t)}>S_t-K \]
+    This shows that it is sub-optimal to exercise the call at any time $t<T$.
+  \end{proof}
+
+\section{Discrete-Time}\label{sec_discrete_time_models}
+
+\subsection{Single-Period Model}
+
+  \begin{definition}{Single-Period Model}
+    The \textit{Single-Period Model} is a model for a financial market where actions can only occur on two days. It has the following components.
+    \begin{itemize}
+      \item \textit{Initial Date} $t=0$.
+      \item \textit{Terminal Date} $t=1$.
+      \item Trading is only allowed to occur on the \textit{Initial \& Terminal Dates}.
+      \item A finite \textit{Sample Space} $\Omega:=\{\omega_1,\dots,\omega_K\}$ with $K<\infty$.
+      \par Each event $\omega_1,\dots,\omega_K$ corresponds to some state of the world.
+      \item A \textit{Probability Measure} $\prob$ on the \textit{Sample Space} $\Omega$ with $\prob(\{\omega_i\})>0\ \forall\ i\in[1,K]$.
+    \end{itemize}
+  \end{definition}
+
+  \begin{definition}{Price-Process $S$\footnote{AKA \textit{Stock Process}}}
+    A \textit{Price Process} $S$ models the price of each security at each time-point
+    \[ S:=\{S(t):t=0,1\}\text{ where }S(t)=(S_1(t),\dots,S_N(t)) \]
+    where $S(t)$ is the collection of the prices of each available stock at time $t$, $S_i(t)$ is the price of the $i^{th}$ stock at time $t$ and there are $N$ different stock available.
+    \par The values of $S(0)$ are known to the investors, but $S(1)$ are unknown non-negative random variables whose value only become known at time $t=1$.
+  \end{definition}
+
+  \begin{definition}{Discounted Price-Process $S^*$}
+    A \textit{Discounted Price-Process} $S^*$ models the price of each security at each time-point \underline{but} normalised for the change in the value of money due to the \textit{Bank Process} $B$.
+    \[ S^*:=\{S^*(t):t=0,1\}\text{ where }S^*(t)=(S_1^*(t),\dots,S_N^*(t))\text{ and }S_i^*(t):=\frac{S_i(t)}{B_t} \]
+  \end{definition}
+
+  \begin{definition}{Trading Strategy $H$}
+    A \textit{Trading Strategy} $H$ describes the changes in an investors portfolio between the \textit{Initial Date} $t=0$ and \textit{Terminal Date} $t=1$.
+    \[ H:=(H_0,H_1,\dots,H_N) \]
+    where $H_0$ is the amount invested/borrowed in a risk-free bank account, $H_i$ is the amount bought/shorted of the $i^{th}$ stock for $i\in[1,N]$ and there are $N$ stocks available in the market.
+  \end{definition}
+
+  \begin{definition}{Value-Process $V$}
+    A \textit{Value Process} $V$ describes the total value of a \textit{Trading Strategy} $H$ at each time-point $t=0,1$
+    \[ V:=\{V_t:t=0,1\}\text{ where }V_t=H_0B_t+\sum_{i=1}^NH_iS_i(t) \]
+  \end{definition}
+
+  \begin{definition}{Discounted Value-Process $V^*$}
+    A \textit{Discounted Value-Process} $V^*$ describes the total value of a \textit{Trading Strategy} $H$ at each time-point \underline{but} normalised for the change in the value of money due to the \textit{Bank Process} $B$.
+    \[ V^*:=\{V_t^*:t=0,1\}\text{ where }V_t^*:=\frac{V_t}{B_t}=H_0+\sum_{i=1}^NH_iS_i^*(t) \]
+  \end{definition}
+
+  \begin{definition}{Gains-Process $G$}
+    A \textit{Gains Process} $G$ describes the total profit/loss generated made by a \textit{Trading Strategy} $H$ between time-points $t=0,1$
+    \[ G:=H_0r+\sum_{i=1}^NH_i\Delta_{S_i}\text{ where }\Delta_{S_i}=S_i(1)-S_i(0)\footnotemark \]
+    \footnotetext{$\Delta_{S_i}$ The change in value of the $i^{th}$ stock.}
+  \end{definition}
+
+  \begin{definition}{Discounted Gains-Process $G^*$}
+    A \textit{Discounted Gains-Process} $G^*$ describes the total profit/loss generated made by a \textit{Trading Strategy} $H$ between time-points $t=0,1$ \underline{but} normalised for the change in the value of money due to the \textit{Bank Process} $B$.
+    \[ G^*:=\frac{G}{B_t}=\sum_{i=1}^NH_i\Delta_{S_i^*}\text{ where }\Delta_{S_i^*}=S_i^*(1)-S_i^*(0) \]
+  \end{definition}
+
+  \begin{definition}{Arbitrage Opportunity - Single-Period Model}
+    Consider a \textit{Trading Strategy} $H=(H_0,H_1)$ for the \textit{Single-Period Model}.
+    \par $H$ exploits an \textit{Arbitrage Opportunity} if it has the following three properties
+    \begin{enumerate}
+      \item $V_0=0$.
+      \item $V_1(\omega)\geq0\ \forall\ \omega\in\Omega$.
+      \item $\prob(V_1(\omega)\geq0)>0\ \forall\ \omega\in\Omega$.\footnote{Equivalently $\expect[V_1]>0$}
+    \end{enumerate}
+  \end{definition}
+
+  \begin{theorem}{Arbitrage Opportunities \& Gains Process}\label{the_arbitrage_opportunities_and_gains_processes}
+    There exists an \textit{Arbitrage Opportunity} in a market \underline{iff} there exists a \textit{Trading Strategy} $H$ st\footnote{This means $H$ never loses money, and it is expected to make money.}
+    \[ G^*\geq0\quad\text{and}\quad\expect[G^*]>0 \]
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_discrete_time_models}.\ref{the_arbitrage_opportunities_and_gains_processes}}}
+    \begin{itemize}
+      \item[$\Rightarrow$] Let $H$ be a \textit{Trading Strategy} which exploits an \textit{Arbitrage Opportunity}.
+      \par By the definition of an \textit{Arbitrage Opportunity} $G^*=V_1^*-V_0^*$ and $B_t>0\ \forall\ t,\omega$, this means that $G^*\geq0$ and thus
+      \[ \expect[G^*]=\expect[V_1^*]>0 \]
+      \item[$\Leftarrow$] Let $H$ be a \textit{Trading Strategy} which satisfies $G^*\geq0$ and $\expect[G^*]>0$.
+      \par Define $\hat{H}:=(\hat{H_0},H_1,\dots,H_N)$ where $\hat{H}_0:=-\sum_{i=1}^NH_iS_i^*(0)$\footnote{This ensures $V_0$, a requirement for $H$ to exploit an \textit{Arbitrage Opportunity}.}.
+      \par Under $\hat{H}_0$ we have that $V_0^*=0$ and $V_1^*=V_0^*+G^*=G^*$.
+      \par Hence, $V_1^*\geq0$ and $\expect[V_1^*]=\expect[G^*]>0$, meaning $\hat{H}$ exploits an \textit{Arbitrage Opportunity}.
+    \end{itemize}
+    As the result holds in both directions, we can say it holds \underline{iff}.
+  \end{proof}
+
+\subsubsection{Risk-Neutral Probability Measures $\Q$}
+
+  \begin{definition}{Risk-Neutral Probability Measure $\Q$}
+    A \textit{Probabiltiy Measure} $\Q$ on \textit{Sample Space} $\Omega$ is said to be a \textit{Risk-Neutral Probability Measure} if the following hold
+    \begin{enumerate}
+      \item $\Q(\{\omega\})>0\ \forall\ \omega\in\Omega$.
+      \item $\expect_\Q[S_i*(1)]=S_i^*(0)\ \forall\ i\in[1,N]$
+    \end{enumerate}
+  \end{definition}
+
+  \begin{theorem}{Separating Hyperplane Theorem\footnote{This theorem is used to prove \texttt{Theorem \ref{sec_discrete_time_models}.\ref{the_no_arbitrage_theorem}}. The proof of this theorem is beyond the scope of this course.}}\label{the_separating_hyperplane_theorem}
+    Let $\mathbb{W}$ be a linear subspace of $\reals^K$ and $\mathbb{K}$ be a compact convex subset in $\reals^K$ which is disjoint from $\mathbb{W}$.
+    \par We can separate $\mathbb{W}$ and $\mathbb{K}$ strictly by using a hyperplane containing $\mathbb{W}$\footnote{ie $\exists\ v\in\reals^K$ which is \textit{Orthogonal} to $\mathbb{W}$\footnotemark{$u^Tv=0\ \forall\ u\in \mathbb{W}$}.} st
+    \[ u^Tv>0\ \forall\ u\in\mathbb{K} \]
+  \end{theorem}
+
+  \begin{theorem}{Arbitrage Opportunities \& Risk-Neutral Probability Measures}\label{the_no_arbitrage_theorem}
+    No \textit{Arbitrage Opportunities} exists \underline{iff} there exists a \textit{Risk-Neural Probability Measure} $\Q$.
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_discrete_time_models}.\ref{the_no_arbitrage_theorem}}}
+    \par Consider the three following sets
+    \begin{enumerate}
+      \item $\mathbb{W}=\left\{X\in\reals^K:X=G^*\text{ for some Trading Strategy }H\right\}$.
+      \par This is the set of possible \textit{Gains} in our market for \textit{Trading Strategies} which have zero initial investment. $\mathbb{W}$ is a linear subspace of $\reals^K$\footnote{Proved by showing it is complete under: addition, and scalar multiplication.}.
+      \item $\mathbb{A}=\left\{X\in\reals^K:X\geq0,X\neq0\right\}$\footnote{$\mathbb{A}$ is not compact, so can not be used for $\mathbb{K}$ in \textit{Separating Hyperplane Theorem}}.
+      \par There exists an arbitrage opportunity \underline{iff} $\mathbb{W}\cap\mathbb{A}\neq\emptyset$.
+      \item $\mathbb{A}^+=\left\{X\in\reals^N:X\geq0,X\neq0,\sum_{i=1}^KX_i=1\right\}$.
+      \par $\mathbb{A}^+$ is a convex and compact subset of $\reals^K$.
+    \end{enumerate}
+    \begin{itemize}
+      \item[$\Rightarrow$] Assume that there are no \textit{Arbitrage Opportunities}, then $\mathbb{W}\cap\mathbb{A}\neq\emptyset$. \par By the \textit{Separating Hyperplane Theorem} (\texttt{Theorem \ref{sec_discrete_time_models}.\ref{the_separating_hyperplane_theorem}}) $\exists\ Y\in\reals^K$ which is \textit{orthogonal} to $\mathbb{W}$ st
+      \[ X^TY>0\ \forall\ X\in\mathbb{A}^+ \]
+      For each $k\in\{1,\dots,K\}$ the $k^\text{th}$ unit vector $e_k$ is an element of $\mathbb{A}^+$. Therefore,
+      \[ Y_k:=e_k^TY>0\ \forall\ k\in\{1,\dots,K\} \]
+      meaning all entries of $Y$ are strictly positive.
+      \par Define a probability measure $\Q$ by setting
+      \[ \Q(\{\omega_k\})=\frac{Y(\omega_k)}{Y(\omega_1)+\dots+Y(\omega_k)} \]
+      Furthermore, $\Delta S_n^*\in\mathbb{W}\ \forall\ n$ because $\Delta S_n^*:=S_n^*(1)-S_n^*(0)$ is the discounted wealth for the portfolio $H:=e_n$ which consists of one unit of the $n^\text{th}$ asset only.
+      \par Since $Y$ is orthogonal to $\mathbb{W}$ we can conclude that
+      \[ \expect_\Q[\Delta S_n^*]=\sum_{k=1}^K\Delta S_n^*(\omega_k)\Q(\{\omega_k\})=0\ \forall\ n \]
+      In other words
+      \[ \expect_\Q[S_n^*(1)]=S_n^*(0)\ \forall\ n \]
+      Thus $\Q$ is a \textit{Risk-Neutral Probability Measure}.
+
+      \item[$\Leftarrow$] Let $\Q$ be a \textit{Risk-Neutral Probability Measure}.
+      \par Then for an arbitrary \textit{Trading Strategy} $H$ we have that
+      \[ \expect_\Q[G^*]=\expect_\Q\left[\sum_{n=1}^NH_n\Delta S_n^*\right]=\sum_{n=1}^NH_n\expect_\Q[\Delta S_n^*]=0 \]
+      and, in particular
+      \[ \sum_{k=1}^KG^*(\omega_k)\Q(\{\omega_k\})=0 \]
+      which shows that either $G^*(\omega_k<0)$ for some $k$ or $G^*=0$, but then $\expect_\Q[G^*]=0$.
+      \par Hence, by \texttt{Theorem \ref{sec_discrete_time_models}.\ref{the_arbitrage_opportunities_and_gains_processes}}, there cannot be any arbitrage opportunities.
+    \end{itemize}
+    The result holds in both directions.\proved
+  \end{proof}
+
+\subsubsection{Contingent Claims $X$}
+
+  \begin{definition}{Contingent Claim $X$ - Single-Period Model}
+    Consider a \textit{Single-Period Model} with a risk-free bank process and $K-1$ risky securities on offer.
+    \par A \textit{Contingent Claim} $X\in\reals^K$ in a \textit{Single-Period Model} is a random variable which represents a payoff at time $t=1$ for each security\footnote{This payoff is not necessarily achievable}.
+  \end{definition}
+
+  \begin{definition}{Attainable Contingent Claim $X$}
+    A \textit{Contingent Claim} $X$ is said to be ``\textit{attainable}'' if
+    \begin{center}
+      $\exists$ trading strategy $H$ st $V_1=X$ when using $H$\footnote{This $H$ called a \textit{Replicating Portfolio} and is said to ``\textit{generate}''$X$}.
+    \end{center}
+    Otherwise, $X$ is said to be ``\underline{un}\textit{attainable}''.
+  \end{definition}
+
+  \begin{remark}{Determining whether a Contingent Claim $X$ is Attainable}
+    Consider a \textit{Single-Period Model} with $K-1$ securities, which can be described the following matrix $A$, and a \textit{Contingent Claim} $X\in\reals^K$. Then
+    \begin{quote}
+      $X$ is \textit{Attainable} iff $\exists$ a trading strategy $H\in\reals^K$ st $AH=X$ where
+      \[ A:=\begin{pmatrix}
+          B_1(\omega_1)&S_1(1)(\omega_1)&\dots&S_N(1)(\omega_1)\\
+          B_1(\omega_2)&S_1(1)(\omega_2)&\dots&S_N(1)(\omega_2)\\
+          \vdots&\vdots&\ddots&\vdots\\
+          B_1(\omega_K)&S_1(1)(\omega_K)&\dots&S_N(1)(\omega_K)
+      \end{pmatrix} \]
+    \end{quote}
+  \end{remark}
+
+  \begin{theorem}{Fair Price of a Contingent Claim}\label{the_fair_price_of_a_contingent_claim}
+    Let $X$ be an \textit{Attainable Contingent Claim} and $H$ be a \textit{Replicating Portfolio} which generates $X$.
+    \begin{quote}
+      \text{The value of portfolio $H$ at time $t=0$ ($V_0$) is the ``fair-price'' of the contingent claim $X$.}
+    \end{quote}
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_discrete_time_models}.\ref{the_fair_price_of_a_contingent_claim}}}
+    Let $X$ be an \textit{Attainable Contingent Claim} and $H$ be a \textit{Replicating Portfolio} which generates $X$.
+    \par Let $p$ be the fair price for $X$ and assume, for the sake of contradiction, that $p$ does \underline{not} equal the value of $H$ at time $t=0$. This means we assuming that $p\neq V_0$.
+    \par We have two cases
+    \begin{itemize}
+      \item[Case 1] - $p>V_0$.
+      \par In this case, an \textit{arbitrage opportunity} exists and can be exploited by doing the following
+      \begin{itemize}
+        \item At $t=0$ - Short the \textit{Contingent Claim} for $p$; buy portfolio $H$ for $V_0$; and invest the difference $p-V_0>0$.
+        \item At $t=1$ - Our portfolio has the same value as $X$ so we sell $H$ to fulfil our short position on the contingent claim.
+      \end{itemize}
+      Our profit in this scenario is $(p-V_0)B_1=(p-V_0)(1+r)>0$.
+      \item[Case 2] - $p<V_0$.
+      \par In this case, an \textit{arbitrage opportunity} exists and can be exploited by doing the following
+      \begin{itemize}
+        \item At $t=0$ - Buy the \textit{Contingent Claim} for $p$; buy portfolio $-H$\footnote{Note this is equivalent to shorting portfolio $H$} for $-V_0$; and invest the difference $V_0-p>0$.
+        \item At $t=1$ - Our portfolio has value $-X$ so we sell our \textit{Contingent Claim} for $X$ to cover the portfolio, fulfilling any short positions.
+      \end{itemize}
+      Our profit in this scenario is $(V_0-p)B_1=(V_0-p)(1+r)>0$.
+    \end{itemize}
+    Hence, in all scenarios where $p\neq V_0$ an arbitrage opportunity exists.
+    This means $p\neq V_0$ cannot be the fair price for $X$ and thus $p=V_0$ is the fair price.\proved
+  \end{proof}
+
+  \begin{theorem}{Risk-Neutral Valuation Principle}\label{the_risk_neutral_valuation_principle}
+    Consider a \textit{Single-Period Model} where \underline{no} \textit{Arbitrage Opportunities} exists, and let $\Q$ be a \textit{Risk-Neutral Probability} for this model.
+    \par Then the ``fair-price'' of an \textit{Attainable Contingent Claim} $X$ at time $t=0$
+    \[ p=\expect_\Q[X/B_1] \]
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_discrete_time_models}.\ref{the_risk_neutral_valuation_principle}}}\label{prf_risk_neutral_valuation_principle}
+    \par Consider a \textit{Single-Period Model} with \underline{no} arbitrage opportunities and let $X$ be an \textit{Attainable Contingent Claim} under this model.
+    \par Here we derive the fair-price for $X$ and show that time price is unique.
+    \par Suppose there exists two trading strategies $H,\hat{H}$ st $V_1=\hat{V}_1=X$ but $\hat{V}_0\neq V_0$.
+    \par Let $\Q$ be a \textit{Risk-Neutral Probability Measure} under this model. Then, by the \textit{No-Arbitrage Principle} (\texttt{Theorem \ref{sec_financial_terminology}.\ref{the_no_arbitrage_theorem}}), we have that for any trading strategy $H$ $\expect_\Q[G^*]=0$. Thus we can deduce that
+    \[\begin{array}{rcl}
+      V_0&=&V_0^*\\
+      &=&\expect_\Q[V_0^*]\\
+      &=&\expect_\Q[V_1^*-G^*]\\
+      &=&\expect_\Q[V_1^*]-\expect_\Q[G^*]\\
+      &=&\expect_\Q[V_1^*]-0\\
+      &=&\expect_\Q[V_1/B_1]
+    \end{array}\]
+    This shows that any trading strategy $H$ with $V_1=X$ (ie is worth $X$ at time $t=1$), has the following value at time $t=0$
+    \[ V_0=\expect_\Q[V_1/B_1]=\expect_\Q[X/B_1] \]
+    This holds for all \textit{Risk-Neutral Probability Measures} $\Q$, so the fair-price for $X$ at time $t=0$ is constant between different \textit{Risk-Neutral Probability Measures}. Further, all trading strategies with the same value at time $t=1$ have the same value at time $t=0$ (and we have a formula for this value).\proved
+  \end{proof}
+
+\subsubsection{Complete Markets}
+
+  \begin{definition}{Complete \& Incomplete Markets}
+    A model of a market is said to be \textit{Complete} if each \textit{Contingent Claim} $X$ there exists a \textit{Trading Strategy} $H$ which generates $X$.
+    \par Otherwise, the model is said to be \underline{in}\textit{complete}.
+  \end{definition}
+
+  \begin{remark}{Checking if a Market is Complete}
+    We can check whether the model of a market is \textit{Complete} by defining the following matrix $A$, and if $A$ spans the same space as \textit{Contigent Claims}\footnote{This is done by determining whether $\text{rank}(A)=\text{dim}(X)$.} then the market \underline{is} \textit{Complete}.
+    \[ A=\begin{pmatrix}
+        B_1(\omega_1)&S_1(1)(\omega_1)&\dots&S_N(1)(\omega_1)\\
+        B_1(\omega_2)&S_1(1)(\omega_2)&\dots&S_N(1)(\omega_2)\\
+        \vdots&\vdots&\ddots&\vdots\\
+        B_1(\omega_K)&S_1(1)(\omega_K)&\dots&S_N(1)(\omega_K)
+    \end{pmatrix} \]
+  \end{remark}
+
+  \begin{theorem}{Complete Markets and Risk-Neutral Probability Measure}\label{the_complete_markets_and_risk_neutral_probability_measure}
+    Consider a model with \underline{no} \textit{Arbitrage Opportunities}, then
+    \begin{quote}
+      The model is \textit{Complete} \underline{iff} $\exists$ a \underline{unique} \textit{Risk-Neutral Probability Measure} $\Q$.
+    \end{quote}
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_discrete_time_models}.\ref{the_complete_markets_and_risk_neutral_probability_measure}}}
+    \everymath={\displaystyle}
+    Consider a \textit{Single-Period Model} with \underline{no} \textit{Arbitrage Opportunities} and let $\mathbb{M}$ denote the set of all \textit{Risk-Neutral Probability Measures} for this model.
+    \par Since there are \underline{no} arbitrage opportunities then $\mathbb{M}\neq\emptyset$.
+    \par As this theorem is ``iff'' I shall prove it in both directions separately
+    \begin{itemize}
+      \item[$\Longrightarrow$] Assume, for the sake of contraction, that the model \underline{is} \textit{Complete} but $\mathbb{M}=\{\Q,\hat\Q\}$  (ie contains two distinct elements).
+      \par Then $\exists\ \omega_k\in\Omega$ st $\Q(\omega_k)\neq\hat\Q(\omega_k)$. Consider the following \textit{Contingent Claim} $X$
+      \[\begin{array}{rcl}
+      X(\omega)&=&\begin{cases} B_1(\omega)&\text{if }\omega=\omega_k\\0&\text{otherwise}\end{cases}\\
+      &=&B_1\indexed\{\omega=\omega_k\}
+      \end{array}\]
+      Then
+      \[\begin{array}{rcl}
+        \expect_\Q[V_0]=\expect_\Q[X/B_1]&=&\expect_\Q[\indexed\{\omega=\omega_k\}]\\
+        &=&\Q(\{\omega_k\}))\\
+        &\neq&\Q(\{\omega_k\})\text{ by def. }X\\
+        &=&\expect_{\hat\Q}[\indexed\{\omega=\omega_k\}]\\
+        &=&\expect_{\hat\Q}[X/B_1]=\expect_{\hat\Q}[V_0]\\
+        \implies\ \expect_\Q[V_0]&\neq&\expect_{\hat\Q}[V_0]
+      \end{array}\]
+      This contradicts \texttt{Proof \ref{sec_discrete_time_models}.\ref{prf_risk_neutral_valuation_principle}}  when we showed that if $X$ is attainable then $\expect_\Q[V_0]$ is the same for all $\Q\in\mathbb{M}$.
+      \par Thus, if the model is \textit{Complete} then it has a unique \textit{Risk-Neutral Probability Measure}.
+      \item[$\Longleftarrow$] Assume, for the sake of contradiction, that the model has a unique \textit{Risk-Neutral Probability Measure} $\hat\Q$ but there exists a \textit{Contingent Claim} $X$ which is \underline{not} \textit{Attainable}.
+      \par Then, there does not exist a trading strategy $H$ which solves $AH=X$.
+      \par By the \textit{Separating Hyperplane Theorem} (\texttt{Theorem \ref{sec_discrete_time_models}.\ref{the_separating_hyperplane_theorem}}) it follows that
+      \[ \exists\ \pi\in\reals^K\text{ st }\pi^TA=0\footnotemark\text{ and }\pi^TX>0 \]
+      \footnotetext{ie $\pi$ is orthogonal to $A$.}
+      Let $\lambda>0$ be small enough that
+      \[ \Q(\{\omega_j\}):=\hat\Q(\{\omega_j\})+\lambda\pi_j\cdot B_1(\omega_j)>0\quad\forall\ j\in[1,K] \]
+      As $A$ is defined st all the terms in its first column are $B_1$ and $\pi^TA=0$, the $\Q$ defined above is a probability measure.
+      \par Moreover, for any \textit{Discounted Price Process} $s^*=(S_1^*,\dots,S_N^*)$ and any $n\in[1,N]$ we have
+      \[\begin{array}{rcl}
+        \expect_\Q[S_n^*(1)]&=&\sum_{j=1}^K\frac{S_n(1)(\omega_j)}{B_1(\omega)}\cdot\Q(\{\omega_j\})\\
+        &=&\sum_{j=1}^K\frac{S_n(1)(\omega_j)}{B_1(\omega)}\cdot\left(\hat\Q(\{\omega_j\})+\lambda\pi_jB_1(\omega_j)\right)\\
+        &=&\sum_{j=1}^K\frac{S_n(1)(\omega_j)}{B_1(\omega)}\cdot\hat\Q(\{\omega_j\})+\underbrace{\lambda\sum_{j=1}^K\pi_jS_n(1)(\omega_j)\right)}_{=0}\\
+        &=&\sum_{j=1}^K\frac{S_n(1)(\omega_j)}{B_1(\omega)}\cdot\hat\Q(\{\omega_j\})\\
+        &=&\sum_{j=1}^KS_n^*(1)(\omega_j)\hat\Q(\{\omega_j\})\\
+        &=&\expect_{\hat\Q}[S_n^*(1)]\\
+        &=&S_n^*[0]\footnotemark
+      \end{array}\]
+      \footnotetext{As $\hat\Q$ is a \textit{Risk-Neutral Probability Measure}.}
+      This shows that $\Q$ is a \textit{Risk-Neutral Probability Measure} and so $\Q\in\mathbb{M}$, a contradiction to the uniqueness of $\hat\Q$.
+      \par If there is a unique \textit{Risk-Neutral Probability Measure} for a model, then all \textit{Contingent Claims} are attainable under the model.
+    \end{itemize}
+    This has proved the theorem in both directions.\proved
+  \end{proof}
+
+% \subsection{Multi-Period Model}
+%
+%   \begin{definition}{Multi-Period Model}
+%
+%   \end{definition}
+%
+%   \begin{definition}{Bank Account Process}
+%
+%   \end{definition}
+%
+%   \begin{definition}{Price Process}
+%
+%   \end{definition}
+
+% \subsection{Stochastic Processes in Discrete-Time}
+%
+%   \begin{definition}{Measurable Function}
+%
+%   \end{definition}
+%
+%   \begin{definition}{Adapted Stochastic Process}
+%
+%   \end{definition}
+%
+%   \begin{definition}{Random Walk}
+%
+%   \end{definition}
+%
+%   \begin{theorem}{Distribution of Simple Random Walk Values}
+%
+%   \end{theorem}
+
+\section{Continuous-Time}\label{sec_continuous_time_models}
+
+\reference
+
+\subsection{Notation}
+
+\subsection{Definitions}
+
+\end{document}
