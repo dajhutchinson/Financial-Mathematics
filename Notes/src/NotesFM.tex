@@ -1096,6 +1096,80 @@
       \end{array}\]
     \end{proof}
 
+    \begin{example}{Gambler's Ruin}\label{example_gamblers_ruin}
+      Consider a gambler with an initial wealth of £$C$. He gambles by guessing whether a coin flip results in heads or tails. If he guess correctly then he receives £1 and he is wrong he loses £1. The game ends when he either becomes bankrupt or he reaches a wealth of £$C+G$ where $G>0$.
+    \end{example}
+
+    \begin{proposition}{Gambler's Ruin}\label{prop_gamblers_ruin}
+      \everymath={\displaystyle}
+      Let $\{X_t\}_{t\geq0}$ be a \textit{Simple Random Walk} with parameter $p$ and $X_0=0$, and $C,G>0$. Define the \textit{Stopping-Time} event $\tau=\inf\{t:X_t=G\text{ or }X_t=-C\}$\footnote{The event the game in \texttt{Example \ref{sec_stochastic_processes_in_discrete_time}.\ref{example_gamblers_ruin}}}.
+      \par If $p=1/2$ then
+      \[\begin{array}{rcl}
+        \prob(X_\tau=G)&=&\frac{C}{C+G}\\
+        \prob(X_\tau=-C)&=&\frac{G}{C+G}\\
+        \expect[\tau]&=&CG
+      \end{array}\]
+      \par Else, if $p\neq1/2$ then
+      \[\begin{array}{rcl}
+        \prob(X_\tau=G)&=&\frac{1-\left(\frac{p}{1-p}\right)^C}{\left(\frac{p}{1-p}\right)^G-\left(\frac{p}{1-p}\right)^C}\\
+        \prob(X_\tau=-C)&=&1-\prob(X_\tau=G)\\
+        \expect[\tau]&=&\frac{G\prob(X_\tau=G)+(-C)\prob(X_\tau)=-C}{2p-1}
+      \end{array}\]
+    \end{proposition}
+
+    \begin{proof}{\texttt{Proposition \ref{sec_stochastic_processes_in_discrete_time}.\ref{prop_gamblers_ruin}}}
+      \everymath={\displaystyle}
+      We want to apply the \textit{Optitional Stopping Theorem} (\texttt{Theorem \ref{sec_stochastic_processes_in_discrete_time}.\ref{the_optional_sampling_theorem}}).
+      \par The \textit{Stopping Time} $\tau$ is not bounded, but $X_\tau$ is bounded. Therefore we can use one of the alternative versions of the \textit{Optional Stopping Theorem} provided that $\prob(\tau<\infty=1)$.
+      \par Note that whenever there is a run of at least $k=C+G$ successive 1's in the process $Y$ which defines $X$, the process will stop and $\tau<\infty$. Thus for all $m$
+      \[\begin{array}{rcl}
+        \prob(\tau>km)&=&\prob(\text{No run of k 1's in }Y_1\text{ to }Y_{mk})\\
+        &=&\prod_{j=0}^{n-1}\prob(\text{No run of k 1's in }Y_{jk+1}\text{ to }Y_{(j+1)k})\\
+        &=&(1-p^k)^m\\
+        \implies\prob(\tau<\infty)&=&1
+      \end{array}\]
+      \begin{enumerate}
+        \item Consider the case $p=1/2$. Using the \textit{Optional Stopping Theorem} we can deduce that
+        \[\begin{array}{rrcl}
+          &0&=&\expect[X_\tau]\\
+          &&=&G\prob(X_\tau=G)+(-C)\prob(X_\tau=-C)\\
+          &&=&G\prob(X_\tau=G)+(-C)(1-\prob(X_\tau=G))\\
+          \implies&C&=&(G+C)\prob(X_\tau=G)\\
+          \implies&\prob(X_\tau=G)&=&\frac{C}{(G+C)}\\
+          \text{and}&\prob(X_\tau=-C)&=&1-\frac{C}{(G+C)}=\frac{G}{G+C}\\
+        \end{array}\]
+        We determine $\expect[X_\tau]$ by applying the \textit{Optional Stopping Theorem} to the process $\{Z_t\}_{t\geq0}$ where $Z_t:=X_t^2-t$. We know $\{Z_t\}_{t\geq0}$ is a \textit{Martingale} from \texttt{Example \ref{sec_stochastic_processes_in_discrete_time}.\ref{example_martingales} iv)}.
+        \par As $\{Z_t\}_{t\geq0}$ is a \textit{Martingale} it holds that
+        \[ 0=\expect[Z_0]=\expect[Z_\tau]=\expect[X_\tau^2-\tau] \]
+        Thus, we obtain that
+        \[\begin{array}{rcl}
+          \expect[\tau]&=&\expect[X_\tau^2]\\
+          &=&G^2\prob(X_\tau=G)+C^2\prob(X_\tau=-C)\\
+          &=&G^2\frac{C}{C+G}+C^2\frac{G}{C+G}\\
+          &=&CG
+        \end{array}\]
+        \item Consider the case $p\neq1/2$. Using the \textit{Optional Stopping Theorem} on the process $\{L_t\}_{t\geq0}$ where $L_t:=\left(\frac{1-p}p\right)^{X_t}$. We know $\{L_t\}_{t\geq0}$ is a \textit{Martingale} from \texttt{Example \ref{sec_stochastic_processes_in_discrete_time}.\ref{example_martingales} v)}.
+        \[
+          1=\expect[L_0]=\left(\frac{1-p}{p}\right)^G\prob(X_\tau=G)+\left(\frac{1-p}{p}\right)^C\prob(X_\tau=-C)
+        \]
+        Note that  $\prob(X_\tau=G)+\prob(X_\tau=-C)=1$, so we can derive each probability as
+        \[\begin{array}{rrcl}
+          &1&=&\left(\frac{1-p}{p}\right)^G\prob(X_\tau=G)+\left(\frac{1-p}{p}\right)^C(1-\prob(X_\tau=G))\\
+          &&=&\left(\frac{1-p}{p}\right)^C+\left[\left(\frac{1-p}{p}\right)^G-\left(\frac{1-p}{p}\right)^C\right]\prob(X_\tau=G)\\
+          \implies&\prob(X_\tau=G)&=&\frac{1-\left(\frac{1-p}{p}\right)^C}{\left(\frac{1-p}{p}\right)^G-\left(\frac{1-p}{p}\right)^C}
+        \end{array}\]
+        We determine $\expect[X_\tau]$ by apply the \textit{Optional Stopping Theorem} to the process $\{M_t\}_{t\geq0}$ where $M_\tau:=X_t-t(2p-1)$. We know $\{M_t\}_{t\geq0}$ is a \textit{Martingale} from \texttt{Example \ref{sec_stochastic_processes_in_discrete_time}.\ref{example_martingales} v)}. Thus
+        \[ 0=\expect[M_\tau]=G\prob(X_\tau=G)+(-C)\prob(X_\tau=-C)-\expect[\tau](2p-1) \]
+        Re-arranging this we can find an expression for $\expect[\tau]$
+        \[\begin{array}{rrcl}
+          &0&=&G\prob(X_\tau=G)+(-C)\prob(X_\tau=-C)-\expect[\tau](2p-1)\\
+          \implies&\expect[\tau](2p-1)&=&G\prob(X_\tau=G)+(-C)\prob(X_\tau=-C)\\
+          \implies&\expect[\tau]&=&\frac{G\prob(X_\tau=G)+(-C)\prob(X_\tau=-C)}{(2p-1)}\\
+        \end{array}\]
+      \end{enumerate}
+      \proved
+    \end{proof}
+
 \section{Multi-Period Models} \label{sec_multi_period_models}
 
 \subsection{Trading Strategies}
