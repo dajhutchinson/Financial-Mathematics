@@ -19,14 +19,16 @@
 \section{General}\label{sec_general}
 
   \begin{definition}{Modelling}
-
+    TODO
   \end{definition}
 
   \begin{definition}{Risk-Free}
     An activity is said to be ``\textit{Risk-Free}'' if the potential profits \& losses are completely known.\footnote{It does not refer to whether there no chance of making a loss.}
   \end{definition}
 
-\subsection{Probability}
+\section{Probability}\label{sec_probability}
+
+\subsection{General Probability}
 
   \begin{definition}{Sample Space $\Omega$}
     The \textit{Sample Space} $\Omega$ is the set consisting of all elementary outcomes from a (series of) event(s).
@@ -37,35 +39,582 @@
     \[ X:\Omega\to\reals \]
   \end{definition}
 
-  \begin{definition}{Stochastic Process}
-
-  \end{definition}
-
-  \begin{definition}{$\sigma$-Algebra}
-
-  \end{definition}
-
-  \begin{definition}{Generated $\sigma$-Algebra}
-
-  \end{definition}
-
-  \begin{definition}{Filtration}
-
-  \end{definition}
-
 \subsection{Information Structures}
 
-  % \begin{definition}{Partition}
-  %
-  % \end{definition}
-  %
-  % \begin{remark}{Flow of Information}
-  %
-  % \end{remark}
-  %
-  % \begin{definition}{Information Sequence}
-  %
-  % \end{definition}
+  \begin{definition}{Partition $\mathcal{P}$}
+    Let $\mathcal{P}:=\{A_1,\dots,A_N\}$ be a set (of sets) and $\Omega$ be a \textit{Sample Space}.
+    \par $\mathcal{P}$ is a \textit{Partition} of $\Omega$ if it has the following properties
+    \begin{enumerate}
+      \item All elements in $\mathcal{P}$ are mutually disjoint
+      \[ A_i\cap A_j=\emptyset\ \forall\ A_i,A_j\in\mathcal{P} \]
+      \item The union of the elements form the \textit{Sample Space} $\Omega$.
+      \[ \bigcup_{i=1}^NA_i=\Omega \]
+    \end{enumerate}
+  \end{definition}
+
+  \begin{remark}{Flow of Information}
+    At time $t=0$ every state $\omega\in\Omega$ is a possible outcome at time $t=T$. And, at time $t=T$ we know for certain which outcome has occurred.
+    \par At each time in-between $t\in(0,T)$ our information about the world increases\footnote{or, at least, does not decrease.} meaning the set of possible outcomes at time $t=T$ may decrease. Let $A_t$ denote the possible set of outcomes given we are at time $t$, then
+    \[\begin{array}{rcl}
+      A_0&=&\Omega\\
+      A_T&=&\{\omega\}\\
+      A_0&\supseteq&A_1\supseteq\dots\supseteq A_T
+    \end{array}\]
+    Flipping a coin 3 times is a motivating example. Before we start flipping ($t=0$) it is possible that we will flip three tails, but if the first flip ($t=1$) is heads then this is no longer possible.
+  \end{remark}
+
+  \begin{definition}{Information Sequence $\{\mathcal{P}_0,\dots,\mathcal{P}_T\}$}
+    An \textit{Information Sequence} is a set of \textit{Partitions} $\{\mathcal{P}_0,\dots,\mathcal{P}_T\}$ of the \textit{Sample Space} $\Omega$, which fulfil the following criteria
+    \begin{enumerate}
+      \item $\mathcal{P}_0=\big\{\Omega\big\}$.
+      \item For $t\in[1,T)$ each $A\in\mathcal{P}_t$ is equal to the union of a subset of elements in $\mathcal{P}_{t+1}$.
+      \item $\mathcal{P}_T=\big\{\{\omega_1\},\dots,\{\omega_N\}\big\}$.
+    \end{enumerate}
+    \textit{Information Sequences} show the set of possible events, at each time point $t$, which could still occur.\footnote{An \textit{Information Sequence} is a sequence of \textit{$\sigma$-Algebras}.}
+  \end{definition}
+
+  \begin{remark}{Visualising Information Structures}
+    TODO
+  \end{remark}
+
+  \begin{definition}{$\sigma$-Algebra $\mathcal{F}$}
+    A \textit{$\sigma$-Algebra} $\mathcal{F}$ is a set of subsets of the \textit{Sample Space} $\Omega$ which satisfy the following conditions
+    \begin{enumerate}
+      \item $\Omega\in\mathcal{F}$.
+      \item $\forall\ A\in\mathcal{F},\ A^c\in\mathcal{F}$.
+      \item $\forall\ A,B\in\mathcal{F},\ (A\cup B)\in\mathcal{F}$.
+    \end{enumerate}
+  \end{definition}
+
+  \begin{definition}{Filtration $\{\mathcal{F}_0,\dots,\mathcal{F}_T\}$}
+    A \textit{Filtration} is a sequence of \textit{$\sigma$-Algebras} $\{\mathcal{F}_t:t=0,1,\dots,T\}$ where
+    \begin{enumerate}
+      \item $\mathcal{F}_0=\{\emptyset,\Omega\}$.
+      \item $\forall\ n<T,\ \mathcal{F}_n\subset\mathcal{F}_{n+1}$ (Meaning each subset of $\mathcal{F}_n$ must be an element of $\mathcal{F}_{n+1}$).
+      \item $\mathcal{F}_T=2^\Omega$.\footnote{The set of all subsets of the sample space $\Omega$.}
+    \end{enumerate}
+    A \textit{Filtration} represents our understanding of available information at each time point.
+  \end{definition}
+
+  \begin{definition}{Measurable Function}
+    Consider a random variable $X:\Omega\to\reals$ and a \textit{$\sigma$-Algebra} $\mathcal{F}$.
+    \par $X$ is \textit{Measurable} wrt $\mathcal{F}$ if
+    \[ \forall\ x\in\reals, X^{-1}(x)\subset\mathcal{F}\text{ where }X^{-1}(x):=\{\omega\in\Omega:X(\omega)=x\} \]
+    This can be interpreted to mean that, if we known which set of $\mathcal{F}$ $\omega$ is in, then we know the values of $X(\omega)$.
+  \end{definition}
+
+  \begin{proposition}{Measurability and Filtrations}
+    Consider a \textit{Filtration} $\{\mathcal{F}_1,\dots,\mathcal{F}_T\}$ and a random variable $X:\Omega\to\reals$.
+    \par If $X$ is \textit{Measurable} wrt $\mathcal{F}_t$ then it is \textit{Measurable} wrt $\mathcal{F}_{t+1}$ since $\mathcal{F}_t\subseteq\mathcal{F}_{t+1}$.
+  \end{proposition}
+
+  \begin{proposition}{How to generate $\sigma$-Algebras}\label{prop_generate_sigma_algebras}
+    Let $\mathcal{P}$ be a \textit{Partition} of the \textit{Sample Space} $\Omega$.
+    \par We can generate a \textit{$\sigma$-Algebra} $\mathcal{F}$ from $\mathcal{P}$ be defining $\mathcal{F}$ to be the set of all possible unions from elements in $\mathcal{P}$ \underline{as well as} the compliments of all these unions.
+  \end{proposition}
+
+\subsection{Conditional Expectation}
+
+  \begin{definition}{Conditional Expectation $\expect[\cdot|\cdot]$}
+    \everymath={\displaystyle}
+    Let $\Omega$ be a finite sample space, $X$ be a discrete random variable and $A\subseteq\Omega$.
+    \par The \textit{Conditional Expectation} of $X$ given $A$ has occurred is defined as
+    \[ \expect[X|A]=\sum_xx\prob(X=x|A) \]
+  \end{definition}
+
+  \begin{remark}{Alternative Definitions of Conditional Expectation}
+    \everymath={\displaystyle}
+    Here are two restatements of the definition of \textit{Conditional Expectation}, both are consequences of \textit{Bayes Rule}.
+    \[\begin{array}{rcl}
+      \expect[X|A]&=&\sum_x\frac{\prob(X=x,A)}{\prob(A)}\\
+      \expect[X|A]&=&\sum_{\omega\in A}X(\omega)\frac{\prob(\omega)}{\prob(A)}
+    \end{array}\]
+  \end{remark}
+
+  \begin{definition}{Conditional Expectation \textbackslash{w} $\sigma$-Algebra $\expect[\cdot|\mathcal{F}]$}
+    Let $\mathcal{F}$ be a \textit{$\sigma$-algebra}, $\mathcal{P}$ be the corresponding \textit{Partition} of the sample space $\Omega$ and $X$ be a discrete random variable.
+    \par The \textit{Conditional Expectation} of $X$ given $\mathcal{F}$ is defined as
+    \[ \expect[X|\mathcal{F}]:=\sum_{A\in\mathcal{P}}\expect[X|A]\indexed\{A\}\footnotemark \]
+    \footnote{This is not really a summation as there is only \underline{one} event $A$ st $\indexed\{A\}=1$.}
+    \underline{Note} - This is a random variable as its value depends on which random event $A$ occurs. Moreover, it is \textit{Measurable} wrt $\mathcal{F}$ and for a given $A\in\mathcal{P}$
+    \[ \forall\ \omega\in A,\ \expect[X|\mathcal{F}](\omega)=\expect[X|A]\footnotemark \]
+    \footnotetext{This is intuitive from the definition of $\expect[\cdot|\mathcal{F}]$.}
+  \end{definition}
+
+  \begin{theorem}{Tower Law}\label{the_tower_law}
+    Let $X$ be a discrete random variable and $\mathcal{F}_1,\mathcal{F}_2$ be \textit{$\sigma$-Algebras} with $\mathcal{F}_1\subset\mathcal{F}_2$.
+    \par The \textit{Tower Law} states that
+    \[ \expect\big[\expect[X|\mathcal{F}]\big]=\expect[X] \]
+    The \textit{Generalised Tower Law} states that
+    \[ \expect\big[\expect[X|\mathcal{F}_2]\big|\mathcal{F}_1\big] = \expect[X|\mathcal{F}_1] = \expect\big[\expect[X|\mathcal{F}_1]\big|\mathcal{F}_2\big] \]
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_probability}.\ref{the_tower_law}} - Tower Law}
+    \everymath={\displaystyle}
+    Let $X$ be a discrete random variable, $\mathcal{F}$ be a \textit{$\sigma$-Algebra} and $\mathcal{P}$ be the partition of the sample space $\Omega$ associated with $\mathcal{F}$.
+    \[\begin{array}{rcl}
+      \expect\big[\expect[X|\mathcal{F}]\big]&=&\expect\left[\sum_{A\in\mathcal{P}}\expect[X|A]\indexed\{A\}\right]\text{ by def.}\\
+      &=&\sum_{A\in\mathcal{P}}\expect\big[\expect[X|A]\indexed\{A\}\big]\text{ by linearity of expectation}\\
+      &=&\sum_{A\in\mathcal{P}}\expect[X|A]\expect[\indexed\{A\}]\\
+      &=&\sum_{A\in\mathcal{P}}\prob(A)\cdot\left(\sum_{\omega\in A}\frac{X(\omega)\prob(\omega)}{\prob(A)}\right)\text{ by alt def.}\\
+      &=&\sum_{A\in\mathcal{P}}\sum_{\omega\in A}X(\omega)\prob(\omega)\text{ as }\sum \prob(A)=1\\
+      &=&\expect[X]\text{ by def.}
+    \end{array}\]\proved
+  \end{proof}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_probability}.\ref{the_tower_law}} - Generalised Tower Law}
+    \everymath={\displaystyle}
+    Let $X$ be a discrete random variable, $\mathcal{F}_1,\mathcal{F}_2$ be \textit{$\sigma$-Algebras} with $\mathcal{F}_1\subset\mathcal{F}_2$ and $\mathcal{P}_1,\mathcal{P}_2$ be the partitions associated to $\mathcal{F}_1,\mathcal{F}_2$.
+    \[\begin{array}{rcl}
+      \expect\big[\expect[X|\mathcal{F}_2]\big|\mathcal{F}_1\big]&=&\expect\left[\sum_{B\in\mathcal{P}_2}\expect[X|B]\indexed\{B\}\bigg|\mathcal{F}_1\right]\\
+      &=&\sum_{B\in\mathcal{P}_2}\expect[X|B]\expect[\indexed\{B\}|\mathcal{F}_1]\\
+      &=&\sum_{B\in\mathcal{P_2}}\expect[X|B]\left(\sum_{A\in\mathcal{P}_1}\expect[\indexed\{B\}|A]\indexed\{A\}\right)\\
+      &=&\sum_{A\in\mathcal{P}_1}\sum_{B\in\mathcal{P_2}}\expect[X|B]\expect[\indexed\{B\}|A]\indexed\{A\}\\
+      &=&\sum_{A\in\mathcal{P}_1}\sum_{B\in\mathcal{P_2}}\expect[X|B]\cdot\frac{\prob(A\cap B)}{\prob(A)}\cdot\indexed\{A\}
+    \end{array}\]
+    Since $\mathcal{P}_2$ is more refined than $\mathcal{P}_1$, either $B\subset A$ or $B\cap A=\emptyset$. Thus
+    \[\begin{array}{rcl}
+      \expect\big[\expect[X|\mathcal{F}_2]\big|\mathcal{F}_1\big]
+      &=&\sum_{A\in\mathcal{P}_1}\sum_{B\in\mathcal{P_2},B\subset A}\expect[X|B]\cdot\frac{\prob(B)}{\prob(A)}\cdot\indexed\{A\}\\
+      &=&\sum_{A\in\mathcal{P}_1}\sum_{B\in\mathcal{P_2},B\subset A}\left(\sum_{\omega\in B}X(\omega)\frac{\prob(\omega)}{\prob(B)}\right)\cdot\frac{\prob(B)}{\prob(A)}\cdot\indexed\{A\}\\
+      &=&\sum_{A\in\mathcal{P}_1}\sum_{\omega\in B}X(\omega)\frac{\prob(\omega)}{\prob(A)}\cdot\indexed\{A\}\\
+      &=&\sum_{A\in\mathcal{P}_1}\expect[X|A]\indexed\{A\}\\
+      &=&\expect[X|\mathcal{F}_1]
+    \end{array}\]
+    \proved
+  \end{proof}
+
+  \begin{theorem}{Conditional Expectation \& Measurable Random Variables}\label{the_cond_exp_and_measurable}
+    Let $\mathcal{F}$ be a \textit{$\sigma$-Algebra} and $X,Y$ be discrete random variables with $X$ being \textit{Measurable} wrt $\mathcal{F}$.
+    \par Then
+    \[\begin{array}{rcl}
+      \expect[X|\mathcal{F}]&=&X\\
+      \expect[XY|\mathcal{F}]&=&X\expect[Y|\mathcal{F}]
+    \end{array}\]
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_probability}.\ref{the_cond_exp_and_measurable}}}\label{proof_cond_exp_and_measurable}
+    \everymath={\displaystyle}
+    Let $\mathcal{F}$ be a \textit{$\sigma$-Algebra}, $\mathcal{P}$ be the partition associated with $\mathcal{F}$ and $X,Y$ be discrete random variables with $Y$ being \textit{Measurable} wrt $\mathcal{F}$.
+    \par Since $Y$ is \textit{Measurable} it is constant on sets of $\mathcal{P}$ we write $X$ as
+    \[ Y=\sum_{A\in\mathcal{P}}Y_A\indexed\{A\}\text{ with }Y_A\in\reals \]
+    Thus
+    \[\begin{array}{rcl}
+      \expect[XY|\mathcal{F}]&=&\sum_{A\in\mathcal{P}}\expect[XY|A]\indexed\{A\}\\
+      &=&\sum_{A\in\mathcal{P}}\expect[XY_A|A]\indexed\{A\}\\
+      &=&\sum_{A\in\mathcal{P}}Y_A\expect[X|A]\indexed\{A\}\text{ as }Y_A\text{ is a scalar}\\
+      &=&\sum_{A\in\mathcal{P}}Y\expect[X|A]\indexed\{A\}\footnotemark\\
+      &=&Y\sum_{A\in\mathcal{P}}\expect[X|A]\indexed\{A\}\\
+      &=&Y\expect[X|\mathcal{F}]
+    \end{array}\]
+    \proved
+    \footnotetext{As there is only one event $A$ where $\indexed\{A\}=1$.}
+  \end{proof}
+
+  \begin{theorem}{Conditional Expectation \& Independent Random Variables}\label{the_cond_exp_and_independent}
+    Let $\mathcal{F}$ be a \textit{$\sigma$-Algebra} and $X$ be a discrete random variable which is independent of $\mathcal{F}$.
+    \par Then
+    \[ \expect[X|\mathcal{F}]=\expect[X] \]
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_probability}.\ref{the_cond_exp_and_independent}}}
+    Let $\mathcal{F}$ be a \textit{$\sigma$-Algebra} and $X$ be a discrete random variable which is independent of $\mathcal{F}$.
+    \[\begin{array}{rcl}
+      \expect[X|A]&=&\sum_x\prob(X=x|A)\\
+      &=&\sum_x\prob(X=x)\text{ by independence}\\
+      &=&\expect[X]
+    \end{array}\]
+    \proved
+  \end{proof}
+
+  \begin{theorem}{General Conditional Expectation}\label{the_general_conditional_expectation}
+    Let $\mathcal{F}$ be a \textit{$\sigma$-Algebra} of a general sample space\footnote{i.e. Not necessarily finite} $\Omega$ and $X$ be a discrete random variable.
+    \par Then, the \textit{Conditional Expectation} $\expect[X|\mathcal{F}]$ is a \underline{unique} random variable with the following properties
+    \begin{enumerate}
+      \item $\expect[X|\mathcal{F}]$ is \textit{Measurable} wrt $\mathcal{F}$.
+      \item $\forall\ A\in\mathcal{F},\ \expect\big[\expect[X|\mathcal{F}]\indexed\{A\}\big]=\expect[X\indexed\{A\}]$
+    \end{enumerate}
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_probability}.\ref{the_general_conditional_expectation}}}
+    \everymath={\displaystyle}
+    Let $\mathcal{F}$ be a \textit{$\sigma$-Algebra} of a general sample space $\Omega$, $\mathcal{P}$ be the partition associated with $\mathcal{F}$ and $X$ be a discrete random variable.
+    \begin{enumerate}
+      \item
+      Let $Y$ be a random variable which is \textit{Measurable} wrt $\mathcal{F}$ and satisfies
+      \[ \expect[Y\indexed\{A\}]=\expect[X\indexed\{A\}]\ \forall\ A\in\mathcal{F} \]
+      Consider the expression $\expect[X\indexed\{A\}]$
+      \[\begin{array}{rcl}
+        \expect[X\indexed\{A\}]&=&\sum_{\omega\in A}X(\omega)\prob(\omega)\\
+        &=&\frac{\prob(A)}{\prob(A)}\sum_{\omega\in A}X(\omega)\prob(\omega)\\
+        &=&\prob(A)\sum_{\omega\in A}\frac{X(\omega)\prob(\omega)}{\prob(A)}\\
+        &=&\prob(A)\expect[X|A]
+      \end{array}\]
+      Now, Note that $Y=\sum_{A\in\mathcal{P}}Y_A\indexed\{A\}$ (As in \texttt{Proof \ref{sec_probability}.\ref{proof_cond_exp_and_measurable}}).
+      \par It follows that
+      \[ \forall\ A\in\mathcal{P},\ \expect[Y\indexed\{A\}]=Y_A\expect[\indexed\{A\}]=Y_A\prob(A) \]
+      We now have that
+      \[\begin{array}{rrcl}
+        &\expect[X\indexed\{A\}]&=&\expect[Y\indexed\{A\}]\text{ by def. }Y\\
+        \implies&\prob(A)\expect[X|A]&=&Y_A\prob(A)\\
+        \implies&Y_A&=&\expect[X|A]\ \forall\ A\in\mathcal{P}\\
+        \implies&Y&=&\expect[X|\mathcal{F}]
+      \end{array}\]
+      As we defined $Y$ to be \textit{Measurable} wrt $\mathcal{F}$, this means $\expect[X|\mathcal{F}]$ is \textit{Measurable} wrt $\mathcal{F}$.
+
+      \item \par For any event $A\in\mathcal{F}$, the indicator function $\indexed\{A\}$ is \textit{$\mathcal{F}$-Measurable}.
+      \par Thus, $\expect[X\indexed\{A\}|\mathcal{F}]=\indexed\{A\}\cdot\expect[X|\mathcal{F}]$ by \texttt{Theorem \ref{sec_probability}.\ref{the_cond_exp_and_measurable}}.
+      \par Hence, by the Tower Law (\texttt{Theorem \ref{sec_probability}.\ref{the_tower_law}}).
+      \[ \expect\big[\expect[X|\mathcal{F}]\cdot\indexed\{A\}\big]=\expect\big[\expect[X\indexed\{A\}|\mathcal{F}]\big]=\expect[X\indexed\{A\}] \]
+    \end{enumerate}
+    \proved
+  \end{proof}
+
+\subsection{Stochastic Processes in Discrete Time}
+
+  \begin{definition}{Stochastic Process}
+    A \textit{Stochastic Process} $S$ is a real-valued function $S(t)(\omega)$
+    \[ S:[0,T]\times\Omega\to\reals \]
+  \end{definition}
+
+  \begin{proposition}{Fixing components of a Stochastic Process}
+    Let a \textit{Stochastic Process} $S:[0,T]\times\Omega\to\reals$ and consider fixing different variables
+    \begin{itemize}
+      \item If we fix $t\in[0,T]$ then $S(t)(\cdot):\Omega\to\reals$\footnote{The event $\omega$ is the only variable} is a \textit{Random Variable}.
+      \item If we fix $\omega\in\Omega$ then $S(\cdot)(\omega):[0,T]\to\reals$\footnote{The time-point $t$ is the only variable} is called a \textit{Sample Path}.
+    \end{itemize}
+  \end{proposition}
+
+  \begin{definition}{Adapted Stochastic Process}
+    Let $S:[0,T]\times\Omega\to\reals$ be a \textit{Stochastic Process} and $\{\mathcal{F}_t\}_{t\in[0,T]}$ be a \textit{Filtration}.
+    \par $S$ is \textit{Adapted} to \textit{Filtration} $\{\mathcal{F}_t\}_{t\in[0,T]}$ if the \textit{Random Variable} $S(t)$ is \textit{Measurable} wrt $\sigma$-algebra $\mathcal{F}_t$, for all $t\in[0,T]$.\footnote{It is often easier to define a stochastic process first and then find a filtration for it (e.g. the \textit{Natural Filtration}).}
+  \end{definition}
+
+  \begin{definition}{Natural Filtration}
+    Let $S:[0,T]\times\Omega\to\reals$ be a \textit{Stochastic Process}.
+    \par We generate the \textit{Natural Filtration} $\{\mathcal{F}_t\}_{t\in[0,T]}$ for $S$ by doing the following for each $t=0,1,\dots,T$
+    \begin{enumerate}
+      \item Define $\mathcal{P}_t$ to be a partition of the \textit{Sample Space} $\Omega$ st $S(t)(\cdot)$ takes the same value for each element in each subset of $\mathcal{P}_t$.
+      \[ \mathcal{P}_t:=\big\{A_1,\dots,A_m:S(t)(a)=S(t)(a')\ \forall\ a,a'\in A\big\}\text{ and }A_1,\dots,A_m\text{ form a partition.} \]
+      \item Define $\mathcal{F}_t$ to be the \textit{$\sigma$-Algebra} generated by\footnote{See \texttt{Proposition \ref{sec_probability}.\ref{prop_generate_sigma_algebras}}.} partition $\mathcal{P}_t$.
+    \end{enumerate}
+  \end{definition}
+
+  \begin{definition}{Random Walk}
+    Let $Y_0,Y_1,\dots$ be IID random variables with finite variance $\sigma^2$ and finite mean $\mu$.
+    \par A \textit{Random Walk} is the sequence $\{X_t\}_{t\geq0}$ where $X_t:=\sum_{i=1}^tY_i$.
+  \end{definition}
+
+  \begin{definition}{Simple Random Walk}
+    Let $\{X_t\}_{t\geq0}$ be a \textit{Random Walk} with $X_t:=\sum_{i=1}^tY_i$ where $Y_0,Y_1,\dots$ are IID RVs.
+    \par We say that $\{X_t\}_{t\geq0}$ is a \textit{Simple Random Walk} if
+    \[ Y_t\in\{-1,1\}\quad\prob(Y_t=1)=p\quad\prob(Y_t=-1)=1-p \]
+    A \textit{Simple Random Walk} can be thought of as a process where you only ever step forward or step backwards, with fixed probabilities.
+  \end{definition}
+
+  \begin{theorem}{Distribution of a Simple Random Walk}\label{the_distribution_of_simple_random_walk}
+    Let $\{X_t\}_{t\geq0}$ be a \textit{Simple Random Walk}. Then
+    \[ \prob(X_t=x)={t \choose {\frac{t+x}2}}p^{(t+x)/2}(1-p)^{(t-x)/2}\quad\ \forall\ t\geq0,\ x\in\{-t,-t+2,\dots,t\} \]
+    Note that the set of possible $x$ values steps by 2.
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_probability}.\ref{the_distribution_of_simple_random_walk}}}
+    Note that $x=\frac12(2x+t-t)=(+1)\cdot\frac12(t+x)+(-1)\cdot\frac12(t-x)$.
+    \par For $X_t=x$ we require exact $\frac12(t+x)$ of $Y_1,\dots,Y_t$ to take value 1, and then the remaining $\frac12(t-x)$ will take value -1. There are ${t\choose{\frac{t+x}2}}$ different ways this can occur.
+    \par Note that each $Y_i$ takes its value independently and takes value 1 with probability $p$ and -1 with probability $1-p$. Thus
+    \[ \prob(X_t=x)={t \choose {\frac{t+x}2}}p^{(t+x)/2}(1-p)^{(t-x)/2}\quad\ \forall\ t\geq0,\ x\in\{-t,-t+2,\dots,t\} \]
+  \end{proof}
+
+\subsection{Martingales}
+
+  \begin{definition}{Martingale $\{Z_t\}_{t\in\nats_0}$}
+    % super-, sub- martingale
+    Let $\{Z_t\}_{t\in[0,T]}$ be an \textit{Adapted Stochastic Process} on a \textit{Sample Space} $\Omega$ with a \textit{Filtration} $\{\mathcal{F}_t\}_{t\in[0,T]}$.
+    \begin{itemize}
+      \item $\{Z_t\}_{t\in[0,T]}$ is a \textit{Martingale} if
+      \[ \forall\ t\geq1,\ \expect[Z_t|\mathcal{F}_{t-1}]=Z_{t-1} \]
+      This can be interpreted to mean that, given all available information $\mathcal{F}_{t-1}$, our present state $Z_{t-1}$ is the best indicator of the future state $Z_t$.
+      \item $\{Z_t\}_{t\in[0,T]}$ is a \underline{Super}\textit{-Martingale} if
+      \[ \forall\ t\geq1,\ \expect[Z_t|\mathcal{F}_{t-1}]\leq Z_{t-1} \]
+      This can be interpreted to mean that, given all available information $\mathcal{F}_{t-1}$, our present state $Z_{t-1}$ provides an upper-bound on the future state $Z_t$.
+      \item $\{Z_t\}_{t\in[0,T]}$ is a \underline{Sub}\textit{-Martingale} if
+      \[ \forall\ t\geq1,\ \expect[Z_t|\mathcal{F}_{t-1}]\geq Z_{t-1} \]
+      This can be interpreted to mean that, given all available information $\mathcal{F}_{t-1}$, our present state $Z_{t-1}$ provides a lower-bound on the future state $Z_t$.
+    \end{itemize}
+  \end{definition}
+
+  \begin{proposition}{Notable Martingales}\label{prop_notable_martingales}
+    Let $\{X_t\}_{t\in\nats_0}$ be a \textit{Simple Random Walk} with parameter $p$ and let $\mathcal{F}_t$ be the \textit{$\sigma$-Algebra} generated by $X_t$. Then
+    \begin{enumerate}
+      \item If $p=1/2$ $\{X_t\}_{t\in\nats_0}$ is a \textit{Martingale}.
+      \item If $p\leq1/2$ $\{X_t\}_{t\in\nats_0}$ is a \textit{Super-Martingale}.
+      \item If $p\geq1/2$ $\{X_t\}_{t\in\nats_0}$ is a \textit{Sub-Martingale}.
+      \item If $p=1/2$ then $\{Z_t\}_{t\in\nats_0}$ where $Z_t:=(X_t^2-t)$ is a \textit{Martingale}.
+      \item If $p\neq1/2$ then $\{L_t\}_{t\in\nats_0}$ where $L_0:=1,L_t:=\left(\frac{1-p}p\right)^{X_t}$ is a \textit{Martingale} \textit{Martingale}.
+      \item If $p\neq1/2$ then $\{M_t\}_{t\in\nats_0}$ where $M_t:=\big(X_t-t(2p-1)\big)$ is a \textit{Martingale}. \textit{Martingale}.
+    \end{enumerate}
+  \end{proposition}
+
+  \begin{proof}{\texttt{Proposition \ref{sec_probability}.\ref{prop_notable_martingales}} i)-iii)}
+    Let $\{X_t\}_{t\in\nats_0}$ be a \textit{Simple Random Walk} with parameter $p$ and let $\mathcal{F}_t$ be the \textit{$\sigma$-Algebra} generated by $X_t$.
+    \par Since $\{\mathcal{F}_t\}_{t\in\nats}$ is the \textit{Natural Filtration} of $\{X_t\}_{t\in\nats}$, then $\{X_t\}_{t\in\nats}$ is \mathit{Measurable} wrt $\mathcal{F}_t$ and $Y_t$\footnote{The $t^{th}$ step of the random walk.} is independent of $\mathcal{F}_{t-1}$.
+    \par Then
+    \[\begin{array}{rcl}
+      \expect[X_t|\mathcal{F}_{t-1}]&=&\expect[X_{t-1}+Y_t|\mathcal{F}_{t-1}]\text{ by def. }X_t\\
+      &=&\expect[X_{t-1}|\mathcal{F}_{t-1}]+\expect[Y_t|\mathcal{F}_{t-1}]\text{ by linearity of exp.}\\
+      &=&X_{t-1}+\expect[Y_t]\text{ by \texttt{Theorem \ref{sec_probability}.\ref{the_cond_exp_and_independent}}}
+    \end{array}\]
+    Thus
+    \begin{itemize}
+      \item If $p=1/2$ then $\expect[Y_t]=0\implies\expect[X_t|\mathcal{F}_{t-1}]=X_{t-1}$. This is the definition of a \textit{Martingale}.
+      \item If $p\leq1/2$ then $\expect[Y_t]\leq0\implies\expect[X_t|\mathcal{F}_{t-1}]\leq X_{t-1}$. This is the definition of a \textit{Super-Martingale}.
+      \item If $p\geq1/2$ then $\expect[Y_t]\geq0\implies\expect[X_t|\mathcal{F}_{t-1}]\geq X_{t-1}$. This is the definition of a \textit{Sub-Martingale}.
+    \end{itemize}
+    \proved
+  \end{proof}
+
+  \begin{proof}{\texttt{Proposition \ref{sec_probability}.\ref{prop_notable_martingales}} iv)}
+    Let $\{X_t\}_{t\in\nats_0}$ be a \textit{Simple Random Walk} with parameter $p$ and let $\mathcal{F}_t$ be the \textit{$\sigma$-Algebra} generated by $X_t$.
+    \par As the definition of a \textit{Martingale} depends on the conditional expectation of $Z_t$ given $\mathcal{F}_{t-1}$ we consider its value
+    \[\begin{array}{rcl}
+      \expect[Z_t|\mathcal{F}_{t-1}]&=&\expect[X_t^2-t|\mathcal{F}_{t-1}]\text{ by def. }Z_t\\
+      &=&\expect[(X_{t-1}+Y_t)^2-t|\mathcal{F}_{t-1}]\text{ by def. }X_t\\
+      &=&\expect[(X_{t-1}+Y_t)^2|\mathcal{F}_{t-1}]-t\\
+      &=&\expect[X_{t-1}^2+2X_{t-1}Y_t+Y_t^2|\mathcal{F}_{t-1}]-t\\
+      &=&\expect[X_{t-1}^2|\mathcal{F}_{t-1}]+2\expect[X_tY_t|\mathcal{F}_{t-1}]+\expect[Y_t^2|\mathcal{F}_{t-1}]-t\\
+      &=&X_{t-1}^2+2X_{t-1}\expect[Y_t|\mathcal{F}_{t-1}]+\expect[Y_t^2]-t\\
+    \end{array}\]
+    Since $p=1/2\implies \expect[Y_t]=0,\expect[Y_t^2=1]$.
+    \[\begin{array}{rcl}
+      \expect[Z_t|\mathcal{F}_{t-1}]&=&X_{t-1}^2+2X_{t-1}\expect[Y_t|\mathcal{F}_{t-1}]+\expect[Y_t^2]-t\\
+      &=&X_{t-1}^2+0+1-t\\
+      &=&X_{t-1}^2-(t-1)\\
+      &=&Z_{t-1}\\
+      \implies\expect[Z_t|\mathcal{F}_{t-1}]&=&Z_{t-1}
+    \end{array}\]
+    This is the definition of a \textit{Martingale}.\proved
+  \end{proof}
+
+  \begin{proof}{\texttt{Proposition \ref{sec_probability}.\ref{prop_notable_martingales}} v)}
+    TODO (Homework)
+  \end{proof}
+
+  \begin{proof}{\texttt{Proposition \ref{sec_probability}.\ref{prop_notable_martingales}} vi)}
+    TODO (Homework)
+  \end{proof}
+
+  \begin{theorem}{Adapted Stochastic Processes as Martingales}\label{the_adapated_stochastic_processes_as_martingales}
+    Let $\{Z_t\}_{t\in[0,T]}$ be an \textit{Adapted Stochastic Process}.
+    \par $\{Z_t\}_{t\in[0,T]}$ is a \textit{Martingale} \underline{iff}
+    \[ \forall\ t\geq s,\  \expect[Z_t|\mathcal{F}_s]=Z_s\footnotemark \]
+    \footnotetext{Equivalent results can be made for \textit{Super-} and \textit{Sup-Martingales} by replacing $=$ with $\leq,\geq$ respectively.}
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_probability}.\ref{the_adapated_stochastic_processes_as_martingales}}}
+    Let $\{Z_t\}_{t\in[0,T]}$ be an \textit{Adapted Stochastic Process}.
+    \par I prove this statement in both directions\footnote{The proofs for \textit{Super-} and \textit{Sup-Martingales} are very similar.}
+    \begin{itemize}
+      \item[$\Longrightarrow$] Suppose $\{Z_t\}_{t\in[0,T]}$ is a \textit{Martingale}.
+      \par Using \texttt{Theorem \ref{sec_probability}.\ref{the_general_conditional_expectation}} we can deduce that
+      \[\begin{array}{rcll}
+        \expect[Z_t|\mathcal{F}_s]&=&\expect\big[\expect[Z_t|\mathcal{F}_{t-1}]\big|\mathcal{F}_s\big]&\text{by \texttt{Theorem \ref{sec_probability}.\ref{the_general_conditional_expectation}}}\\
+        &=&\expect[Z_{t-1}|\mathcal{F}_s]&\text{as }Z\text{ is a Martingale}\\
+        &=&\expect[Z_s|\mathcal{F}_s]&\text{by recursion}\\
+        &=&\expect[Z_s]&\text{ by \texttt{Theorem \ref{sec_probability}.\ref{the_cond_exp_and_measurable}} }\\
+        &=&Z_s
+      \end{array}\]
+      \item[$\Longleftarrow$] Suppose it holds that
+      \[ \forall\ t\geq s,\  \expect[Z_t|\mathcal{F}_s]=Z_s \]
+      Consider the case where $s=t-1$, it holds that
+      \[ \expect[Z_t|\mathcal{F}_{t-1}]=Z_{t-1} \]
+      This is the definition of a \textit{Martingale}.
+    \end{itemize}
+    \proved
+  \end{proof}
+
+  \begin{definition}{Stopping Times $\tau$}
+    Let $\{\mathcal{F}_t\}_{t\in\nats_0}$ be a \textit{Filtration} of \textit{Sample Space} $\Omega$ and $\tau$ be a random variable which takes values in $(\reals\geq0\cup\{\infty\})$\footnote{$\infty$ is used for impossible events.}.
+    \par $\tau$ is a \textit{Stopping Time} if the event $\{\tau<t\}$ is an element of the \textit{$\sigma$-Algebra} $\mathcal{F}_t$.
+    \par \textit{Stopping Times} are used to determine whether an event has occurred, or not.\footnote{Examples of \textit{Stopping Times} are ``RBS shares hit £1''.}
+  \end{definition}
+
+  \begin{definition}{Bounded Stopping Time $\tau$}
+    Let $\tau$ be a \textit{Stopping Time}.
+    \par A $\tau$ is a \textit{Bounded Stopping Time} if
+    \[ \exists\ t\in\reals^{\geq0},\ \prob(\tau<t)=1 \]
+  \end{definition}
+
+  \begin{theorem}{Stopping Times \& $\sigma$ Algebras}\label{the_stopping_times_and_sigma_algebras}
+    Let $\tau$ be a random variable.
+    \par $\tau$ is a \textit{Stopping Time} \underline{iff} $\forall\ t\in\nats_0$ the event $\{\tau=t\}$  is an element of the \textit{$\sigma$-Algebra} $\mathcal{F}_t$.
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_probability}.\ref{the_stopping_times_and_sigma_algebras}}}
+    Let $\tau$ be a random variable.
+    \par I prove this statement in both directions
+    \begin{itemize}
+      \item[$\Longrightarrow$] Suppose $\tau$ is a \textit{Stopping Time}.
+      \par Then the event $\{\tau\leq t\}$ is an element of the \textit{$\sigma$-Algebra} $\mathcal{F}_t\ \forall\ t\in\nats_0$.
+      \par We can restate this event as
+      \[ \{\tau\leq t\}=\bigcup_{k\leq t}\{\tau=k\} \]
+      As $\{\tau\leq t\}\in\mathcal{F}_t$, then each of $\{\tau=k\}\in\mathcal{F}_t$ due to the definition of a \textit{$\sigma$-Algebra}.
+
+      \item[$\Longleftarrow$] Suppose the event $\{\tau=t\}$  is an element of the \textit{$\sigma$-Algebra} $\mathcal{F}_t\ \forall\ t\in\nats_0$.
+      \par We can restate this event as
+      \[ \{\tau\leq t\}=\big(\{\tau\leq t\}\setminus\{\tau\leq t-1\}\big) \]
+      Since $\{\tau\leq t\},\{\tau\leq t-1\}$ are elements of $\mathcal{F}_t$, then $\{\tau\leq t\}\in\mathcal{F}_t$ due to the definition of a \textit{$\sigma$-Algebra}.
+    \end{itemize}
+    \proved
+  \end{proof}
+
+  \begin{theorem}{Stopping Time for an Adapted Stochastic Process}\label{the_stopping_time_adapted_stochastic_process}
+    Let $\{X_t\}_{t\in\nats_0}$ be an \textit{Adapted Stochastic Process} and $c\in\reals$.
+    \par The event $\tau_c:=\inf\{t\geq0:X_t\geq c\}$\footnote{The first time $X_t$ reaches value $c$.} is a \textit{Stopping Time}.
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_probability}.\ref{the_stopping_time_adapted_stochastic_process}}}
+    Let $\{X_t\}_{t\in\nats_0}$ be an \textit{Adapted Stochastic Process} and $c\in\reals$.
+    \par Note that $\tau\leq t$ \underline{iff} $\exists\ k\leq t$ st $X_k\geq c$ due to the definition of $\tau_c$.
+    \par Therefore
+    \[ \{\tau_c\leq t\}=\bigcup_{k\leq t}\{X_k\geq c\} \]
+    Since each $\{X_k\geq c\}\in\mathcal{F}_t$ then $\{\tau_c\leq t\}\in\mathcal{F}_t$ by the definition of \textit{$\sigma$-Fields}.
+    \par Thus $\tau_c$ is a \textit{Stopping Time}.\proved
+  \end{proof}
+
+  \begin{theorem}{Optional Stopping Theorem\footnote{AKA \textit{Optional Sampling Theorem}} - Martingale}\label{the_optional_stopping_theorem_martingale}
+    Let $\tau$ be a \textit{Bounded Stopping Time} and $\{X_t\}_{t\in\nats_0}$ be a \textit{Martingale}.
+    \par Then
+    \[ \expect[X_\tau]=\expect[X_0]=X_0 \]
+  \end{theorem}
+
+  \begin{theorem}{Optional Stopping Theorem - Super-Martingale}
+    Let $\tau$ be a \textit{Bounded Stopping Time} and $\{X_t\}_{t\in\nats_0}$ be a \underline{Super}\textit{-Martingale}.
+    \par Then
+    \[ \expect[X_\tau]\leq\expect[X_0]=X_0 \]
+  \end{theorem}
+
+  \begin{remark}{Weaker Conditions for Optional Stopping Theorem}\label{rem_weaker_optional_stopping_theorem}
+    The following are weaker conditions\footnote{Rather than $\tau$ being a bounded stopping time} that suffice for the \textit{Optional Stopping Theorem} to hold
+    \begin{enumerate}
+      \item $\prob(\tau<\infty)=1$ and $X_\tau$ is bounded.
+      \item $\expect[\tau]<\infty$ and $(X_t-X_{t-1})$ is bounded.
+    \end{enumerate}
+  \end{remark}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_probability}.\ref{the_optional_stopping_theorem_martingale}}}
+    \everymath={\displaystyle}
+    Let $\tau$ be a \textit{Bounded Stopping Time} and $\{X_t\}_{t\in\nats_0}$ be a \textit{Martingale}.
+    \par Assume that $\tau\leq K$ (This is reasonable since $\tau$ is bounded). We can write
+    \[ X_{\tau(\omega)}{\omega}=\sum_{t=0}^KX_t(\omega)\indexed\{\tau(\omega)=t\} \]
+    Note that this is not really a sum as there is only one event $\omega$ st $\indexed\{\tau(\omega)=t\}=1$, the rest equal 0.
+    \par Then
+    \[\begin{array}{rcl}
+      \expect[X_\tau]&=&\expect\left[\sum_{t=0}^KX_t\indexed\{\tau=t\}\right]\\
+      &=&\sum_{t=0}^K\expect\left[X_t\indexed\{\tau=t\}\right]\text{ by linearity of exp.}\\
+      &=&\sum_{t=0}^K\expect\left[\expect[X_K|\mathcal{F}_t]\indexed\{\tau=t\}\right]\text{ by \texttt{Theorem \ref{sec_probability}.\ref{the_adapated_stochastic_processes_as_martingales}}}
+    \end{array}\]
+    Since $\tau$ is a \textit{Stopping Time} then $\{\tau=t\}$ is \mathit{Measurable} wrt $\mathcal{F}_t$.
+    \par Thus, by \texttt{Theorem \ref{sec_probability}.\ref{the_cond_exp_and_measurable}}
+    \[ \expect[X_K|\mathcal{F}_t]\indexed\{\tau=t\}=\expect[X_K\indexed\{\tau=t\}|\mathcal{F}_t] \]
+    We continue the analysis of $\expect[X_\tau]$
+    \[\begin{array}{rcl}
+    \expect[X_\tau]&=&\sum_{t=0}^K\expect\left[\expect[X_K|\mathcal{F}_t]\indexed\{\tau=t\}\right]\\
+    &=&\sum_{t=0}^K\expect\left[\expect[X_K\cdot \indexed\{\tau=t\}|\mathcal{F}_t]\right]\\
+    &=&\sum_{t=0}^K\expect[X_K\cdot \indexed\{\tau=t\}]\text{ by Tower Law}\\
+    &=&\expect\left[X_K\sum_{t=0}^K\indexed\{\tau=t\}\right]\\
+    &=&\expect\left[X_K\cdot1\right]\\
+    &=&\expect\left[X_K\right]\\
+    &=&\expect[X_0]\text{ as }\{X_t\}_{t\in\nats_0}\text{ is a Martingale}\\
+    &=&X_0\text{ as its value is known}
+    \end{array}\]
+  \end{proof}
+
+  \begin{definition}{Gambler's Ruin Problem}\label{def_gamblers_ruin}
+    The \textit{Gambler's Ruin Problem} involves considering a gambler with an initial wealth of £$C$. The gambler is allowed to play a game until either they become bankrupt (i.e. have £0) or reach a target of £$(C+G)$ where $G>0$.
+    \par The simplest specification of the game is flipping a coin\footnote{potentially fair, potentially not.} and the gambler receives £1 if it lands heads, or loses £1 if it lands tails.
+  \end{definition}
+
+  \begin{proposition}{Stopping Time in Gambler's Ruin Problem}\label{prop_stopping_time_gamblers_ruin}
+    \everymath={\displaystyle}
+    Consider the \textit{Gambler's Ruin Problem} using the simple game described in \texttt{Definition \ref{sec_probability}.\ref{def_gamblers_ruin}}.
+    \par Let $\{X_t\}_{t\in\nats_0}$ be a \textit{Simple Random Walk} with parameter $p$\footnote{$\{X_t\}_{t\in\nats_0}$ can be consider to model the net winnings of the gambler and $p$ is the probability of the coin landing heads (i.e. the gambler wins money).} and $X_0=0$ and $C,G>0$.
+    \par Consider the \textit{Stopping Time} $\tau:=\inf\{t:X_t=G\text{ or }X_t=-C\}$, the event the gambler stops playing\footnote{Either due to reaching goal or going bankrupt.}. Then
+    \begin{itemize}
+      \item If $p=1/2$ then
+        \[\begin{array}{rcl}
+          \prob(X_\tau=G)\footnotemark&=&\frac{C}{C+G}\\
+          \prob(X_\tau=-C)\footnotemark&=&\frac{G}{C+G}\\
+          \expect[\tau]&=&CG
+        \end{array}\]
+        \footnotetext{Gambler reaches goal.}
+        \footnotetext{Gambler goes bankrupt.}
+      \item If $p\neq1/2$ then
+        \[\begin{array}{rcl}
+          \prob(X_\tau=G)&=&\frac{1-\left(\frac{p}{1-p}\right)^C}{\left(\frac{p}{1-p}\right)^G-\left(\frac{p}{1-p}\right)^C}\\
+          \prob(X_\tau=-C)&=&1-\prob(X_\tau=G)=\frac{\left(\frac{p}{1-p}\right)^G-1}{\left(\frac{p}{1-p}\right)^G-\left(\frac{p}{1-p}\right)^C}\\
+          \expect[\tau]&=&\frac{G\prob(X_\tau=G)+(-C)\prob(X_\tau=-C)}{2p-1}
+        \end{array}\]
+    \end{itemize}
+  \end{proposition}
+
+  \begin{proof}{\texttt{Proposition \ref{sec_probability}.\ref{prop_stopping_time_gamblers_ruin}}}
+    \everymath={\displaystyle}
+    Since $\tau$ is \underline{not} \textit{Bounded}, but $X_\tau$ is \textit{Bounded} by $G,-C$, we can use a weaker condition from \texttt{Remark \ref{sec_probability}.\ref{rem_weaker_optional_stopping_theorem}} to apply the \textit{Optional Stopping Theorem} (\texttt{Theorem \ref{sec_probability}.\ref{the_optional_stopping_theorem_martingale}}) provided we can show that $\prob(\tau<\infty)=1$.
+    \par Note that whenever there is a run of $k\geq C+G$ successive 1's in the process $\{Y_t\}_{t\in\nats_0}$ which defines the random walk $X$, the process will stop and $\tau<\infty$. Thus, for all $m$, the following hold
+    \[\begin{array}{rcl}
+      \prob(\tau>km)&=&\prob(\text{No run of }k\text{ 1's in }Y_1\text{ to }Y_{mk})\\
+      &=&\prod_{j=0}^{m-1}\prob(\text{No run of }k\text{ 1's in }Y_{jk+1}\text{ to }Y_{(j+1)k})\\
+      &=&(1-p^k)^m\\
+      \implies\prob(\tau<\infty)&=&1
+    \end{array}\]
+    We can now consider the two cases for the value of $p$
+    \begin{itemize}
+      \item If $p=1/2$. Then by the \textit{Optional Stopping Theorem} we can deduce the following
+      \[\begin{array}{rrcl}
+        &0&=&\expect[X_\tau]\text{ as }p=1/2\\
+        &&=&G\prob(X_\tau=G)+(-C)\prob(X_\tau=-C)\\
+        &&=&G\prob(X_\tau=G)+(-C)(1-\prob(X_\tau=G))\\
+        \implies&C&=&(G+C)\prob(X_\tau=G)\\
+        \implies&\prob(X_\tau=G)&=&\frac{C}{G+C}\\
+        \text{and }&\prob(X_\tau=-C)&=&1-\prob(X_\tau=G)=\frac{G}{G+C}
+      \end{array}\]
+      To determine $\expect[X_\tau]$ we apply the \textit{Optional Stopping Theorem} to the process $\{Z_t\}_{\nats_0}$ where $Z_t:=X_t^2-t$. It was shown in \texttt{Proposition \ref{sec_probability}.\ref{prop_notable_martingales}}  that $\{Z_t\}_{t\in\nats_0}$ is a \textit{Martingale}.
+      \par As $\{Z_t\}_{t\in\nats_0}$ is a \textit{Martingale} it holds that
+      \[ 0=\expect[Z_0]=\expect[Z_\tau]=\expect[X_\tau^2-\tau]=\expect[X_\tau^2]-\expect[\tau] \]
+      By rearranging we obtain that
+      \[\begin{array}{rcl}
+        \expect[\tau]&=&\expect[\tau]\\
+        &=&G^2\prob(X_\tau=G)+C^2\prob(X_\tau=-C)\\
+        &=&G^2\cdot\frac{C}{C+G}+C^2\frac{G}{C+G}\\
+        &=&CG
+      \end{array}\]
+      \item Consider the case $p\neq1/2$ and the process $\{L_t\}_{t\in\nats_0}$ where $L_t:=\left(\frac{1-p}p\right)^{X_t}$. It was shown in \texttt{Proposition \ref{sec_probability}.\ref{prop_notable_martingales}} that $\{L_t\}_{t\in\nats_0}$ is a \textit{Martingale}.
+      \par By the \textit{Optional Stopping Theorem}
+      \[\begin{array}{rcl}
+        1&=&\expect[L_0]\\
+        &=&\left(\frac{1-p}p\right)^G\prob(X_\tau=G)+\left(\frac{1-p}p\right)^C\prob(X_\tau=-C)
+      \end{array}\]
+      Remembering that $\prob(X_\tau=G)+\prob(X_\tau=-C)=1$, we can derive the probabilities of each end event occurring
+      \[\begin{array}{rcl}
+        1&=&\left(\frac{1-p}p\right)^G\prob(X_\tau=G)+\left(\frac{1-p}p\right)^C(1-\prob(X_\tau=G))\\
+        &=&\left(\frac{1-p}p\right)^C+\left[\left(\frac{1-p}p\right)^G-\left(\frac{1-p}p\right)^C\right]\prob(X_\tau=G)\\
+        \implies\prob(X_\tau=G)&=&\frac{1-\left(\frac{1-p}p\right)^C}{\left(\frac{1-p}p\right)^G-\left(\frac{1-p}p\right)^C}
+      \end{array}\]
+      Consider the process $\{M_t\}_{t\in\nats_0}$ where $M_t:=X_t-t(2p-1)$. It was shown in \texttt{Proposition \ref{sec_probability}.\ref{prop_notable_martingales}} that $\{M_t\}_{t\in\nats_0}$ is a \textit{Martingale}.
+      \par We determine $\expect[X_\tau]$ by applying the \textit{Optional Stopping Theorem} to $\{M_t\}_{t\in\nats_0}$.
+      \[\begin{array}{rcl}
+        0&=&\expect[M_\tau]\\
+        &=&G\prob(X_\tau=G)+(-C)\prob(X_\tau=-C)-\expect[\tau](2p-1)
+      \end{array}\]
+      By rearranging we obtain that
+      \[\begin{array}{rrcl}
+        &0&=&G\prob(X_\tau=G)+(-C)\prob(X_\tau=-C)-\expect[\tau](2p-1)\\
+        \implies&\expect[\tau](2p-1)&=&G\prob(X_\tau=G)+(-C)\prob(X_\tau=-C)\\
+        \implies&\expect[\tau]&=&\frac{G\prob(X_\tau=G)+(-C)\prob(X_\tau=-C)}{2p-1}
+      \end{array}\]
+    \end{itemize}
+    \proved
+  \end{proof}
 
 \section{Financial Terminology}\label{sec_financial_terminology}
 
@@ -108,7 +657,7 @@
     IRL the value of money is not constant due to inflation, interest rates \& exchange rates. We generally want to normalise the returns of our portfolio wrt the change in value of money in order to determine the ``real returns''.
   \end{remark}
 
-  \begin{definition}{Bank Account Process, $B_t$}
+  \begin{definition}{Bank Account Process, $B_t$}\label{def_bank_account_process}
     A \textit{Bank Account Process}\footnote{AKA a \textit{Bond} or a \textit{Numeraire}.} $B_t$ is how much an initial deposit of one unit at time $t=0$ would be worth at time point $t$ if the deposit was made into a ``Risk-Free Bank Account'', given some risk-free \textit{Interest Rate} $r$. This is a measure of how the value of money changes over the $t$ time-periods.
     \par The \textit{Bank Account Process} must fulfil the following criteria
     \[ B_0=1\quad\text{and}\quad B_t(\omega)\geq0\ \forall\ \omega\in\Omega \]
@@ -329,7 +878,7 @@
 \subsection{Single-Period Model}
 
   \begin{definition}{Single-Period Model}
-    The \textit{Single-Period Model} is a model for a financial market where actions can only occur on two days. It has the following components.
+    The \textit{Single-Period Model} is a model for a financial market where actions can only occur on two dates. It has the following components
     \begin{itemize}
       \item \textit{Initial Date} $t=0$.
       \item \textit{Terminal Date} $t=1$.
@@ -340,14 +889,14 @@
     \end{itemize}
   \end{definition}
 
-  \begin{definition}{Price-Process $S$\footnote{AKA \textit{Stock Process}}}
+  \begin{definition}{Price-Process $S$\footnote{AKA \textit{Stock Process}}}\label{def_price_process}
     A \textit{Price Process} $S$ models the price of each security at each time-point
     \[ S:=\{S(t):t=0,1\}\text{ where }S(t)=(S_1(t),\dots,S_N(t)) \]
     where $S(t)$ is the collection of the prices of each available stock at time $t$, $S_i(t)$ is the price of the $i^{th}$ stock at time $t$ and there are $N$ different stock available.
     \par The values of $S(0)$ are known to the investors, but $S(1)$ are unknown non-negative random variables whose value only become known at time $t=1$.
   \end{definition}
 
-  \begin{definition}{Discounted Price-Process $S^*$}
+  \begin{definition}{Discounted Price-Process $S^*$}\label{def_discounted_price_process}
     A \textit{Discounted Price-Process} $S^*$ models the price of each security at each time-point \underline{but} normalised for the change in the value of money due to the \textit{Bank Process} $B$.
     \[ S^*:=\{S^*(t):t=0,1\}\text{ where }S^*(t)=(S_1^*(t),\dots,S_N^*(t))\text{ and }S_i^*(t):=\frac{S_i(t)}{B_t} \]
   \end{definition}
@@ -358,23 +907,23 @@
     where $H_0$ is the amount invested/borrowed in a risk-free bank account, $H_i$ is the amount bought/shorted of the $i^{th}$ stock for $i\in[1,N]$ and there are $N$ stocks available in the market.
   \end{definition}
 
-  \begin{definition}{Value-Process $V$}
+  \begin{definition}{Value-Process $V$}\label{def_value_process}
     A \textit{Value Process} $V$ describes the total value of a \textit{Trading Strategy} $H$ at each time-point $t=0,1$
     \[ V:=\{V_t:t=0,1\}\text{ where }V_t=H_0B_t+\sum_{i=1}^NH_iS_i(t) \]
   \end{definition}
 
-  \begin{definition}{Discounted Value-Process $V^*$}
+  \begin{definition}{Discounted Value-Process $V^*$}\label{def_discounted_value_process}
     A \textit{Discounted Value-Process} $V^*$ describes the total value of a \textit{Trading Strategy} $H$ at each time-point \underline{but} normalised for the change in the value of money due to the \textit{Bank Process} $B$.
     \[ V^*:=\{V_t^*:t=0,1\}\text{ where }V_t^*:=\frac{V_t}{B_t}=H_0+\sum_{i=1}^NH_iS_i^*(t) \]
   \end{definition}
 
-  \begin{definition}{Gains-Process $G$}
+  \begin{definition}{Gains-Process $G$}\label{def_gains_process}
     A \textit{Gains Process} $G$ describes the total profit/loss generated made by a \textit{Trading Strategy} $H$ between time-points $t=0,1$
     \[ G:=H_0r+\sum_{i=1}^NH_i\Delta_{S_i}\text{ where }\Delta_{S_i}=S_i(1)-S_i(0)\footnotemark \]
     \footnotetext{$\Delta_{S_i}$ The change in value of the $i^{th}$ stock.}
   \end{definition}
 
-  \begin{definition}{Discounted Gains-Process $G^*$}
+  \begin{definition}{Discounted Gains-Process $G^*$}\label{def_discounted_gains_process}
     A \textit{Discounted Gains-Process} $G^*$ describes the total profit/loss generated made by a \textit{Trading Strategy} $H$ between time-points $t=0,1$ \underline{but} normalised for the change in the value of money due to the \textit{Bank Process} $B$.
     \[ G^*:=\frac{G}{B_t}=\sum_{i=1}^NH_i\Delta_{S_i^*}\text{ where }\Delta_{S_i^*}=S_i^*(1)-S_i^*(0) \]
   \end{definition}
@@ -603,10 +1152,10 @@
       As $A$ is defined st all the terms in its first column are $B_1$ and $\pi^TA=0$, the $\Q$ defined above is a probability measure.
       \par Moreover, for any \textit{Discounted Price Process} $s^*=(S_1^*,\dots,S_N^*)$ and any $n\in[1,N]$ we have
       \[\begin{array}{rcl}
-        \expect_\Q[S_n^*(1)]&=&\sum_{j=1}^K\frac{S_n(1)(\omega_j)}{B_1(\omega)}\cdot\Q(\{\omega_j\})\\
-        &=&\sum_{j=1}^K\frac{S_n(1)(\omega_j)}{B_1(\omega)}\cdot\left(\hat\Q(\{\omega_j\})+\lambda\pi_jB_1(\omega_j)\right)\\
-        &=&\sum_{j=1}^K\frac{S_n(1)(\omega_j)}{B_1(\omega)}\cdot\hat\Q(\{\omega_j\})+\underbrace{\lambda\sum_{j=1}^K\pi_jS_n(1)(\omega_j)\right)}_{=0}\\
-        &=&\sum_{j=1}^K\frac{S_n(1)(\omega_j)}{B_1(\omega)}\cdot\hat\Q(\{\omega_j\})\\
+        \expect_\Q[S_n^*(1)]&=&\sum_{j=1}^K\frac{S_n(1)(\omega_j)}{B_1(\omega_j)}\cdot\Q(\{\omega_j\})\\
+        &=&\sum_{j=1}^K\frac{S_n(1)(\omega_j)}{B_1(\omega_j)}\cdot\left(\hat\Q(\{\omega_j\})+\lambda\pi_jB_1(\omega_j)\right)\\
+        &=&\sum_{j=1}^K\frac{S_n(1)(\omega_j)}{B_1(\omega_j)}\cdot\hat\Q(\{\omega_j\})+\underbrace{\lambda\sum_{j=1}^K\pi_jS_n(1)(\omega_j)}_{=0}\\
+        &=&\sum_{j=1}^K\frac{S_n(1)(\omega_j)}{B_1(\omega_j)}\cdot\hat\Q(\{\omega_j\})\\
         &=&\sum_{j=1}^KS_n^*(1)(\omega_j)\hat\Q(\{\omega_j\})\\
         &=&\expect_{\hat\Q}[S_n^*(1)]\\
         &=&S_n^*[0]\footnotemark
@@ -618,37 +1167,28 @@
     This has proved the theorem in both directions.\proved
   \end{proof}
 
-% \subsection{Multi-Period Model}
-%
-%   \begin{definition}{Multi-Period Model}
-%
-%   \end{definition}
-%
-%   \begin{definition}{Bank Account Process}
-%
-%   \end{definition}
-%
-%   \begin{definition}{Price Process}
-%
-%   \end{definition}
+\subsection{Multi-Period Model}
 
-% \subsection{Stochastic Processes in Discrete-Time}
-%
-%   \begin{definition}{Measurable Function}
-%
-%   \end{definition}
-%
-%   \begin{definition}{Adapted Stochastic Process}
-%
-%   \end{definition}
-%
-%   \begin{definition}{Random Walk}
-%
-%   \end{definition}
-%
-%   \begin{theorem}{Distribution of Simple Random Walk Values}
-%
-%   \end{theorem}
+  \begin{definition}{Multi-Period Model}
+    The \textit{Single-Period Model} is a model for a financial market where actions can only occur on multiple dates. This provides a more realistic model than the \textit{Single-Period Mdeol}. It has the following components
+    \begin{itemize}
+      \item \textit{Initial Date} $t=0$.
+      \item \textit{Terminal Date} $t=T\in\nats$.
+      \item Trading can occur at any times $t\in\{0,1,\dots,T\}$
+      \item A finite \textit{Sample Space} $\Omega=\{\omega_1,\dots,\omega_K\}$ with $K<\infty$. Each event $\omega_1,\dots,\omega_K$ corresponds to a state of the world.
+      \item A \textit{Probability Space} $\prob$ on $\Omega$ with $\prob(\omega)>0\ \forall\ \omega\in\Omega$.
+    \end{itemize}
+  \end{definition}
+
+  \begin{remark}{Processes}
+    When studying \textit{Multi-Period Models} we use many of the same processes as are used to study \textit{Single-Period Model}, but with their definitions extended to allow for more time periods. Namely
+    \begin{itemize}
+      \item Bank Account Process (\texttt{Definition \ref{sec_financial_terminology}.\ref{def_bank_account_process}}).
+      \item Price-Process (\texttt{Definition \ref{sec_discrete_time_models}.\ref{def_price_process}}) \& Discounted Price-Process (\texttt{Definition \ref{sec_discrete_time_models}.\ref{def_discounted_price_process}}).
+      \item Value-Process (\texttt{Definition \ref{sec_discrete_time_models}.\ref{def_value_process}}) \& Discounted Value-Process (\texttt{Definition \ref{sec_discrete_time_models}.\ref{def_discounted_value_process}}).
+      \item Gains-Process (\texttt{Definition \ref{sec_discrete_time_models}.\ref{def_gains_process}}) \& Discounted Gains-Process (\texttt{Definition \ref{sec_discrete_time_models}.\ref{def_discounted_gains_process}}).
+    \end{itemize}
+  \end{remark}
 
 \section{Continuous-Time}\label{sec_continuous_time_models}
 
