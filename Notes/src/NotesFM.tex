@@ -1058,12 +1058,12 @@
       \par A \textit{Stopping Time} $\tau_c$ can be defined as $\tau_c=\inf\{t\geq0:X_t\geq \}$\footnote{The event which stops the moment $X_t$ reaches $c$}.
     \end{theorem}
 
-    \begin{proposition}{\texttt{Theorem \ref{sec_stochastic_processes_in_discrete_time}.\ref{the_stopping_time_for_an_adapted_stochastic_process}}}
+    \begin{proof}{\texttt{Theorem \ref{sec_stochastic_processes_in_discrete_time}.\ref{the_stopping_time_for_an_adapted_stochastic_process}}}
       We note that $\tau_c\leq t$ \underline{iff} $\exists\ k\leq t$ st $X_k\geq c$.
       \par Therefore
       \[ \{\tau_c\leq t\}=\bigcup\limits_{k\leq t}\underbrace{\{X_k\geq c\}}_{\in\mathcal{F}_t}\in\mathcal{F}_t \]
       Thus $\tau_c$ is a \textit{Stopping Time}.
-    \end{proposition}
+    \end{proof}
 
     \begin{theorem}{Optional Sampling Theorem\footnote{AKA \textit{Optional Stopping Theorem}} - Martingales}\label{the_optional_sampling_theorem}
       Let $\tau$ be a \textit{Bounded Stopping Time} and $X=\{X_t\}_{t\in\nats_0}$ be a \textit{Martingale}. Then
@@ -1174,7 +1174,149 @@
 
 \subsection{Trading Strategies}
 
+  \begin{definition}{Predictable Stochastic Process}
+    A \textit{Stochastic Process} $\{X_t\}_{t\in\nats_0}$ is called \textit{Predictable} if it is \textit{Measurable} wrt \textit{$\sigma$-Algebra}  $\mathcal{F}_{t-1}$.
+  \end{definition}
+
+  \begin{definition}{Trading Strategy $H$}
+    A vector of \textit{Stochastic Processes} $H:=(H_0,H_1,\dots,H_N)$ is called a \textit{Trading Strategy} if, for all $n$, the process $H_n$ is \textit{Predictable}.
+    \par Note that $H_n(t)\in\ints$ denotes the number of units\footnote{Negative values indicate a short position.} the investor carries forward of the $n^{th}$ security from time $t-1$ to $t$. And, $H_0(t)B_{t-1}$ is the amount of money in the \textit{Bank Account} at time $t-1$.
+  \end{definition}
+
+  \begin{figure}[H]
+    \centering\includegraphics[width=.7\textwidth]{TradingStrategiesAndValueProcess.PNG}
+    \caption{Diagram to show relationship between trading strategies $H$, values processes $V$ and stock processes $S$.}
+    \label{fig_trading_strats_and_value_processes}
+  \end{figure}
+
+  \begin{definition}{Value Process $V$}
+    The \textit{Value Process} $\{V_t\}_{t\in[0,T]}$ is a stochastic process defined by
+    \[ V_t=\begin{cases}
+      H_0(1)B_0+\sum_{n=1}^NH_n(1)S_n(0)&\text{if }t=0\\
+      H_0(t)B_t+\sum_{n=1}^NH_n(t)S_n(t)&\text{if }t\geq1
+    \end{cases} \]
+    See \texttt{Figure \ref{fig_trading_strats_and_value_processes}}.
+  \end{definition}
+
+  \begin{definition}{Gains Process $G$}
+    The \textit{Gains Process} $\{G_t\}_{t\in[0,T]}$ of a \textit{Trading Strategy} $H$ is given by
+    \[ G_t=\left(\sum_{u=1}^tH_0(u)\Delta B_u\right)+\sum_{n=1}^N\sum_{u=1}^tH_n(u)\Delta S_n(u)\text{ where }\Delta S_n(t):=S_n(t)-S_n(t-1)\text{ for }t\geq1 \]
+    This is an example of a stochastic integral of the trading strategy $H$ wrt to the price process $S$.
+  \end{definition}
+
+  \begin{definition}{Self-Financing Trading Strategies}
+    A \textit{Trading Strategy} $H$ is \textit{Self-Financing} if
+    \[ V_t=H_0(t+1)B_t+\sum_{n=1}^NH_n(t+1)S_n(t) \]
+    You cannot introduce money into or take money out of a \textit{Self-Financing Trading Strategy} at any time-points $t$, except the first $t=0$ and last $t=T$.
+  \end{definition}
+
+  \begin{definition}{Discounted Processes $S_n^*,V^*$}
+    The \textit{Discounte3d Price Process} $S_n^*=\{S_n^*(t)\}_{t\in[0,T]}$ for $n\in[1,N]$ is defined as
+    \[ S_n^*(t)=\frac{S_n(t)}{B_t} \]
+    The \textit{Discounted Value Process} $V^*=\{V_t^*\}_{t\in[0,T]}$ is defined as
+    \[ V_t^*=\begin{cases}
+      H_0(1)+\sum_{n=1}^nH_n(1)S_n^*(0)&\text{if }t=0\\
+      H_0(t)+\sum_{n=1}^nH_n(t)S_n^*(t)&\text{if }t\geq1
+    \end{cases} \]
+    The \textit{Discounted Gains Process} $\{G_t^*\}_{t\in[1,T]}$ is defined as
+    \[ G_t^*=\sum_{n=1}^N\sum_{u=1}^tH_n(u)\Delta S_n^*(u)\text{ for }t\geq1 \]
+  \end{definition}
+
+  \begin{proposition}{Self-Financing Trading Strategy and Value Process}\label{the_self_financing_and_value_process}
+    A \textit{Trading Strategy} $H$ is \textit{Self-Financing} \underline{iff} $V_t^*=V_0^*+G_t^*$ for $t=1,\dots,T$.
+  \end{proposition}
+
+  \begin{proof}{\texttt{Proposition \ref{sec_multi_period_models}.\ref{the_self_financing_and_value_process}}}
+    For all $t=1,\dots,T$ it holds that
+    \[ G_t^*=G_{t-1}^*+\sum_{n=1}^NH_n(t)\Delta S_n^*(t) \]
+    For convenience we define $G_0^*=0$.
+    \par I prove the statement in both directions
+    \begin{itemize}
+      \item[$\Longrightarrow$] Assume that $H$ is \textit{Self-Financing}.
+      \par By the definitions of \textit{Self-Financing}, \textit{Discounted Processes} and the above result, we can show the following for all $t=1,\dots,T$
+      \[\begin{array}{rcl}
+        V_t^*-G_t^*&=&H_0(t)+\left(\sum_{n=1}^NH_n(t)S_n^*(t)\right)-\left(\sum_{n=1}^NH_n(t)\Delta S_n^*(t)\right)-G_{t-1}^*\\
+        &=&H_0(t)+\left(\sum_{n=1}^NH_n(t)(S_n^*(t)-\Delta S_n^*(t))\right)-G_{t-1}^*\\
+        &=&H_0(t)+\left(\sum_{n=1}^NH_n(t)S_n^*(t-1)\right)-G_{t-1}^*\\
+        &=&V_{t-1}^*-G_{t-1}^*
+      \end{array}\]
+      By recursion we find that $V_t^*-G_t^*=V_0^*$.
+
+      \item[$\Longleftarrow$] Assume that $V_t^*=V_0^*+G_t^*$ for all $t=1,\dots,T$.
+      \par Then, for all $t=1,\dots,T_1$ we have the following
+      \[\begin{array}{rcl}
+        V_t^*-V_{t+1}^*&=&V_0^*+G_t^*-(V_0^*+G_{t+1}^*)\\
+        &=&G_t^*-G_{t-1}^*
+      \end{array}\]
+      Therefore, by the definitions of discounted process and the result at the start of this proof
+      \[\begin{array}{rcl}
+        V_t^*&=&V_{t+1}^*-(G_{t+1}^*-G_t^*)\\
+        &=&H_0(t+1)+\sum_{n=1}^NH_n(t+1)S_n^*(t+1)-\sum_{n=1}^NH_n(t+1)\Delta S_n^*(t+1)\\
+        &=&H_0(t+1)+\sum_{n=1}^NH_n(t+1)
+      \end{array}\]
+      Thus $H$ is \textit{Self-Financing}.
+    \end{itemize}
+  \end{proof}
+
 \subsection{Arbitrage in Multi-Period Model and Martingale Measures}
+
+  \begin{example}{}
+    Consider a model with $N=1$ stocks over $T=2$ time-periods and $K=4$ possible states.
+    \par For simplicity we change the notation of the price process to $S_t$ instead of $S_1(t)$. The process is given by the following table
+    \begin{center}
+      $S_t(\omega)=$
+      \begin{tabular}{c|ccc}
+        $\omega\setminus t$&0&1&2\\\hline
+        $\omega_1$&6&9&10\\
+        $\omega_2$&6&9&7\\
+        $\omega_3$&6&3&7\\
+        $\omega_4$&6&3&1
+      \end{tabular}
+    \end{center}
+    We further assume that the interest-rate $r$ is constant in both periods. Therefore the bank account process is $B_t=(1+r)^t$.
+    \par The filtration generated by this price process is
+    \[\begin{array}{rcl}
+      \mathcal{F}_0&=&\big\{\emptyset,\Omega\big\}\\
+      \mathcal{F}_1&=&\big\{\emptyset,\{\omega_1,\omega_2\},\{\omega_3,\omega_4\},\Omega\big\}\\
+      \mathcal{F}_2&=&\big\{\emptyset,\{\omega_1\},\{\omega_2\},\{\omega_3\},\{\omega_4\},\{\omega_1,\omega_2\},\{\omega_1,\omega_3\},\{\omega_1,\omega_4\},\{\omega_2,\omega_3\},\{\omega_3,\omega_4\},\{\omega_3,\omega_4\},\\
+      &&\{\omega_1,\omega_2,\omega_3\},\{\omega_1,\omega_2,\omega_4\},\{\omega_1,\omega_3,\omega_4\},\{\omega_2,\omega_3,\omega_4\},\Omega\big\}
+    \end{array}\]
+    Recall that the trading strategy has components $H_n(t)(\omega)$ giving the number of units of a stock held between time periods $t-1$ and $t$.
+    \par Let $H$ be an arbitrary trading strategy, then for the value process for this problem we have
+    \[ V_0(\omega)=H_0(1)(\omega)+6H_1(1)(\omega) \]
+    Further
+    \[\begin{array}{rcl}
+      V_1(\omega)&=&\begin{cases}
+        (1+r)H_0(1)(\omega)+9H_1(1)(\omega)&\text{if }\omega\in\{\omega_1,\omega_2\}\\
+        (1+r)H_0(1)(\omega)+3H_1(1)(\omega)&\text{if }\omega\in\{\omega_3,\omega_4\}
+      \end{cases}\\
+      V_2(\omega)&=&\begin{cases}
+        (1+r)^2H_0(2)(\omega)+10H_1(2)(\omega)&\text{if }\omega=\omega_1\\
+        (1+r)^2H_0(2)(\omega)+7H_1(2)(\omega)&\text{if }\omega\in\{\omega_2,\omega_3\}\\
+        (1+r)^2H_0(2)(\omega)+1H_1(2)(\omega)&\text{if }\omega=\omega_4
+      \end{cases}
+    \end{array}\]
+    The \textit{Trading Strategy} $H$ is \textit{Predictable} so $H_i(1)(\omega)$ is constant for all $\omega$,
+    $H_i(2)(\omega_1)=H_i(2)(\omega_2)$ and $H_i(2)(\omega_3)=H_i(2)(\omega_4)$.
+    \par Now consider the gains process in this model
+    \[ G_1(\omega)=\begin{cases}
+      rH_0(1)+3H_1(1)&\text{if }\omega\in\{\omega_1,\omega_2\}\\
+      rH_0(1)-3H_1(1)&\text{if }\omega\in\{\omega_3,\omega_4\}\\
+    \end{cases} \]
+    For brevity, we write $H_n(t)$ instead of $H_n(t)(\omega)$
+    \[ G_2(\omega)=\begin{cases}
+      rH_0(1)+3H_1(1)+r(1+r)H_0(2)+H_1(2)&\text{if }\omega=\omega_1\\
+      rH_0(1)+3H_1(1)+r(1+r)H_0(2)-2H_1(2)&\text{if }\omega=\omega_2\\
+      rH_0(1)-3H_1(1)+r(1+r)H_0(2)+4H_1(2)&\text{if }\omega=\omega_3\\
+      rH_0(1)-3H_1(1)+r(1+r)H_0(2)-2H_1(2)&\text{if }\omega=\omega_4
+    \end{cases} \]
+    For the \textit{Trading Strategy} $H$ to be \textit{Self-Financing}, we must have that at time-point $t=1$ in states $\omega_1,\omega_2$
+    \[ V_1=(1+r)H_0(1)+9H_1(1)=\footnotemark(1+r)H_0(2)+9H_1(2) \]
+    \footnotetext{Condition for $H$ to be \textit{Self-Financing}.}
+    In states $\omega_3,\omega_4$ we require
+    \[ V_1=(1+r)H_0(1)+3H_1(1)=\footnotemark(1+r)H_0(2)+3H_1(2) \]
+    \footnotetext{Condition for $H$ to be \textit{Self-Financing}.}
+  \end{example}
 
 \subsection{Valuation of Contingent Claims}
 
