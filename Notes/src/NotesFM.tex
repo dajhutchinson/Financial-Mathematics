@@ -1226,7 +1226,7 @@
     A \textit{Trading Strategy} $H$ is \textit{Self-Financing} \underline{iff} $V_t^*=V_0^*+G_t^*$ for $t=1,\dots,T$.
   \end{proposition}
 
-  \begin{proof}{\texttt{Proposition \ref{sec_multi_period_models}.\ref{the_self_financing_and_value_process}}}
+  \begin{proof}{\texttt{Proposition \ref{sec_multi_period_models}.\ref{the_self_financing_and_value_process}}}\label{proof_self_financing_and_value_process}
     For all $t=1,\dots,T$ it holds that
     \[ G_t^*=G_{t-1}^*+\sum_{n=1}^NH_n(t)\Delta S_n^*(t) \]
     For convenience we define $G_0^*=0$.
@@ -1317,6 +1317,114 @@
     \[ V_1=(1+r)H_0(1)+3H_1(1)=\footnotemark(1+r)H_0(2)+3H_1(2) \]
     \footnotetext{Condition for $H$ to be \textit{Self-Financing}.}
   \end{example}
+
+  \begin{definition}{Arbitrage Opportunity - Muliti-Period Model}
+    An \textit{Arbitrage Opportunity} in the case of a multi-period model is a \textit{Trading Strategy} $H$ st
+    \begin{enumerate}
+      \item $V_0=0$ - It starts with zero money.
+      \item $V_T\geq0$ - It does note loose money at the end.\footnote{It is possible for $V_t<0$ for $t\in(0,T)$.}
+      \item $\expect[V_T]>0$ - It is expect that you always make money; And,
+      \item $H$ is \textit{Self-Financing}.
+    \end{enumerate}
+  \end{definition}
+
+  \begin{proposition}{Self-Financing Strategies and Arbitrage Opportunity}
+    A \textit{Self-Financing Strategy} $H$ is an \textit{Arbitrage Opportunity} \underline{iff} all the following hold
+    \[ G_T^*\geq0\quad\expect[G_T^*]>0\quad V_0^*=0 \]
+  \end{proposition}
+
+  \begin{definition}{Martingale Measure $\Q$}
+    A \textit{Martingale Measure} is a probability measure $\Q$ st\footnote{This is similar to a \textit{Risk-Neutral Probability Measure}.}
+    \begin{enumerate}
+      \item $\Q(\{\omega\})>0\ \forall\ \omega\in\Omega$; and,
+      \item The \textit{Discounted Price Process} $S_n^*$ is a \textit{Martingale} under $\Q$ for every $n=1,\dots,N$
+      \[ \expect_\Q\left[S_n^*(t+s)|\mathcal{F}_t\right]=S_n^*(t)\ \forall\ t,s\geq0 \]
+      More precisely, a \textit{Martingale Measure} $\Q$ must satisfy
+      \[ \expect_\Q[S_n(t+s)/B_{t+s}|\mathcal{F}_t]=S_n(t)\ \forall\ t,s\geq0 \]
+    \end{enumerate}
+  \end{definition}
+
+  \begin{theorem}{Extension of No-Arbitrage Principle}\label{the_extension_of_no_arbitrage_principle}
+    There are no \textit{Arbitrage Opportunities} \underline{iff} there exists a \textit{Martingale Measure} $\Q$.\footnote{This is an extension of the ``No-Arbitrage Principle'' from the single-period model to the multi-period model.}
+  \end{theorem}
+
+  \begin{proposition}{Finance Processes which are Martingales\footnote{This proposition is useful for proving the Extension of No-Arbitrage Principle}}\label{prop_finance_processes_which_are_martingales}
+    If $\Q$ is a \textit{Martingale Measure} and $H$ is a \textit{Self-Financing Strategy} then
+    \begin{enumerate}
+      \item The \textit{Discounted Value Process} $V^*$, and
+      \item The \textit{Discounted Gains Process} $G^*$
+    \end{enumerate}
+    are \textit{Martingales} under $\Q$.
+  \end{proposition}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_multi_period_models}.\ref{prop_finance_processes_which_are_martingales}}}
+    \everymath={\displaystyle}
+    We have to show that $\expect_\Q\left[V_{t+1}^*|\mathcal{F}_t\right]=V_t^*\ \forall\ t>0$.
+    \par This is equivalent to showing that $\expect_\Q[G_{t+1}^*|\mathcal{F}_t]=G_t^*$ using \texttt{Proposition \ref{sec_multi_period_models}.\ref{the_self_financing_and_value_process}}.
+    \par Using the expression for $G_{t+1}^*-G_t^*$ derived in \texttt{Proof \ref{sec_multi_period_models}.\ref{proof_self_financing_and_value_process}} we can conclude that
+    \[\begin{array}{rcl}
+      \expect_\Q\left[G_{t+1}^*-G_t^*|\mathcal{F}_t\right]&=&\expect_\Q\left[\sum_{n=1}^NH_n(t+1)\Delta S_n^*(t+1)\bigg|\mathcal{F}_t\right]\\
+      &=&\sum_{n=1}^N\expect_\Q\big[\underbrace{H_n(t+1)}_{\in\mathcal{F}_t\footnotemark}\Delta S_n^*(t+1)|\mathcal{F}_t\big]\\
+      &=&\sum_{n=1}^NH_n(t+1)\expect_\Q\left[\Delta S_n^*(t+1)|\mathcal{F}_t\right]
+    \end{array}\]
+    \footnotetext{This is due to $H_n(t+1)$ being the strategy we are building for time-step $t+1$ and thus we use all the information available in time-step $t$.}
+    The last result is due to $H_n$ being a \textit{Trading Strategy} and thus \textit{Predictable}.
+    \par Furthermore, $\expect_\Q\left[\Delta S_n^*(t+1)|\mathcal{F}_t\right]=$ for all $t>0$ since $S_n^*$ is a under $\Q$.
+    \par Hence $G_t^*,V_t^*$ are \textit{Martingales}.\proved
+  \end{proof}
+
+  \begin{proposition}{Arbitrage Opportunities between Single-Period and Multi-Period Models}\label{prop_arbitrage_opportunities_single_and_multi_period_model}
+    If the multi-period model does \underline{not} have any arbitrage opportunities, then all of the underlying single period model \underline{have} arbitrage opportunities.
+  \end{proposition}
+
+  \begin{proof}{\texttt{Proposition \ref{sec_multi_period_models}.\ref{prop_arbitrage_opportunities_single_and_multi_period_model}}}
+    For each $t<T$ and for each $A\in\mathcal{P}_t$ there is one underlying single-period model where
+    \begin{itemize}
+      \item \textit{Initial Time Discounted Price} is $S_n^*(t,\omega)$ for an arbitrary $\omega\in A$ since $S_n^*(t,\omega)$ are constant on $A$.
+      \item \textit{Sample Space} contains one state for each cell $A'\in\mathcal{P}_{t+1}$ st $A'\subset A$.
+      \item \textit{Terminal Time Discounted Price} is $S_n^*(t+1,\omega)$ for each $n=1,\dots,N$ for some $\omega\in A$.
+    \end{itemize}
+    If any underlying single-period model has an arbitrage opportunity in the single-period sense, then the multi-period model must have an arbitrage opportunity in the multi-period sense.
+    \par To see this, suppose there exists an \textit{Arbitrage Opportunity} $\hat{H}$ for the single period model corresponding to some $A\in\mathcal{P}_t$ for $t<T$. This means that the discounted gain, given as
+    \[ \hat{H}_1\Delta S_n^*(t+1)+\dots+\hat{H}_N\Delta S_N^*(t+1) \]
+    , is \textit{non-negative} and \underline{not} identical to zero on the event $A$.
+    \par We now construct a multi-period \textit{Trading Strategy} $H$ which is an \textit{Arbitrage Opportunity}.
+    \[ H_n(s,\omega)=\begin{cases}
+      0&\text{if }s\leq t\text{ or }\omega\not\in A\\
+      \hat{H}_n&\text{if }s=t+1,\ \omega\in A\text{, and }n=1,\dots,N\\
+      -\sum_{i=1}^N\hat{H}_iS_i^*(t)&\text{if }s=t+1,\ \omega\in A\text{ and }n=0\\
+      \sum_{i=1}^N\hat{H}_1\Delta S_1^*(t+1)&\text{if }s>t+1,\ \omega\in A\text{ and }n=0\\
+      0&\text{if }s>t+1,\ \text{ and }n=0\\
+    \end{cases} \]
+    This strategy starts with zero money and does nothing unless the event $A$ occurs at time $t$, in which case at time $t$ the position $\hat{H}_n$ is taken in the $n^{th}$ risky security while the position in the bank account is used to self-finance.
+    \par Subsequently, no position is taken in any of the risky securities, and non-zero value of the portfolio is reflected by a position in the bank account.
+    \par THis \textit{Trading Strategy} $H$ is an \textit{Arbitrage Opportunity} in the multi-period model.\proved
+  \end{proof}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_multi_period_models}.\ref{the_extension_of_no_arbitrage_principle}}}
+    \begin{itemize}
+      \item[$\longleftarrow$] We first show that there can be \underline{no} \textit{Arbitrage Opportunities} provided the existence of a \textit{Martingale Measure} $\Q$.
+      \par Suppose $H$ is any \textit{Self-Finacing Trading Strategy} with
+      \[ V_T^*\geq0\text{ and }\expect[V_T^*]>0 \]
+      This implies
+      \[ \expect_\Q[V_T^*]>0 \]
+      Since $V^*$ is a \textit{Martingale} under $\Q$ by \texttt{Theorem \ref{sec_multi_period_models}.\ref{prop_finance_processes_which_are_martingales}}, it follows that
+      \[ V_0^*=\expect_\Q[V_T^*]>0 \]
+      Hence $H$ cannot be an \textit{Arbitrage Opportunity}, nor can any other trading strategies be \textit{Arbitrage Opportunities} due to $H$ being chosen arbitrarily.
+      \item[$\longrightarrow$\footnote{This could be shown using a version of the \textit{Separating Hyperplane Theorem}, but it is easier to use results from the single-period model.}] Using \texttt{Proposition \ref{sec_multi_period_models}.\ref{prop_arbitrage_opportunities_single_and_multi_period_model}}, we have that for each $t<T$ and each $A\in\mathcal{P}_t$ there is a \textit{risk-neutral probability measure} $\Q(t,A)$ for the underlying single-period model.
+      \par This probability measure gives positive mass to each cell $A'\in\mathcal{P}_{t+1}$ st it sums to 1 over all such cells and it satisfies
+      \[ \expect_{\Q(t,A)}[\Delta S_n^*(t+1)]=0\text{ for }n=1,\dots,N \]
+      Notice that $\Q(t,A)$ puts probability on each branch in the information tree which emerges from the node corresponding to $(t,A)$.
+      \par We can calculate a \textit{Martingale Measure} $\Q$ for the multi-period model from these probabilities by setting $\Q(\{\omega\})$ equal to the product of the conditional probabilities along the path from the node at $t=0$ to the node at $(T,\omega)$.
+      \par Then
+      \begin{itemize}
+        \item $\sum_{\omega\in\Omega}\Q(\{\omega\})=1$.
+        \item $\Q(\{\omega\})>0$ for every $\omega\in\Omega$ because all the conditional risk neutral probabilities are strictly positive.
+        \item And, $\expect_\Q[S_n^*(t+1)|\mathcal{F}_t]=S_n^*(t)$ for all $t$ and $n$.
+      \end{itemize}
+      Thus $\Q$ is indeed a \textit{Martingale Measure}.\proved
+    \end{itemize}
+  \end{proof}
 
 \subsection{Valuation of Contingent Claims}
 
