@@ -1,0 +1,281 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in, paperwidth=8.3in, paperheight=11.7in]{geometry}
+\usepackage{amsmath,amsfonts,fancyhdr,bbm}
+\usepackage[section,nohyphen]{DomH}
+\headertitle{Financial Mathematics - Assessed Problem Sheet 2}
+
+\begin{document}
+
+\questionsfalse
+% \answersfalse
+
+\title{Financial Mathematics - Assessed Problem Sheet 2}
+\author{Dom Hutchinson}
+\date{\today}
+\maketitle
+
+\begin{question}{1. (a)}
+  Consider a model with two periods and one risky security where the interest rate is $r=0$ and the price process is given by the following table
+  \begin{center}
+    $S(t)(\omega)=$
+    \begin{tabular}{c|ccc}
+      $\omega\setminus t$&0&1&2\\\hline
+      $\omega_1$&10&16&18\\
+      $\omega_2$&10&16&12\\
+      $\omega_3$&10&8&12\\
+      $\omega_4$&10&8&6
+    \end{tabular}
+  \end{center}
+  Consider the following two options
+  \begin{enumerate}
+    \item An \textit{Asain Option} with strike price 14 and expiry time 2, so that its payoff is
+    \[ X=\left\{\frac13\left(S(0)+S(1)+S(2)\right)-14\right\}_+ \]
+    \item An \textit{Look-Back Option} with strike price 14 and expiry time 2, so that its payoff is
+    \[ X=\left\{\max_{t=0,1,2}S(t)-14\right\}_+ \]
+  \end{enumerate}
+\end{question}
+
+\begin{question}{1. (a) i.}
+  Calculate the risk-neutral probability measure $\Q$
+\end{question}
+
+\begin{answer}{1. (a) i.}
+  Consider time $t=0$ and define $p_1:=\Q(S_1=16)$, then
+  \[\begin{array}{rrcl}
+    &10&=&16p_1+8(1-p_1)\\
+    \implies&p_1&=&1/4
+  \end{array}\]
+  Thus $\Q(S_1=16)=1/4$ and $\Q(S_1=8)=1-1/4=3/4$.
+  Now, consider time $t=1$ and that event $\omega$ has occurred with $\omega\in\{\omega_1,\omega_2\}$. Define $p_2:=\Q(S_2=18|S_1=16)$, then
+  \[\begin{array}{rrcl}
+    &16&=&18p_2+12(1-p_2)\\
+    \implies&p_2&=&2/3
+  \end{array}\]
+  Thus $\Q(S_2=18|S_1=16)=2/3$ and $\Q(S_2=12|S_1=16)=1/3$.
+  Now, consider time $t=1$ and that event $\omega$ has occurred with $\omega\in\{\omega_3,\omega_4\}$. Define $p_3:=\Q(S_2=12|S_1=8)$, then
+  \[\begin{array}{rrcl}
+    &8&=&12p_3+6(1-p_3)\\
+    \implies&p_3&=&1/3
+  \end{array}\]
+  Thus $\Q(S_2=12|S_1=8)=1/3$ and $\Q(S_2=6|S_1=8)=2/3$.
+  \par We can use these conditional probabilities to work out the probability of each event $\{\omega_1,\omega_2,\omega_3,\omega_4\}$ under $\Q$.
+  \[\begin{array}{rcl}
+    \Q(\{\omega_1\})&=&\Q(S_2=18|S_1=16)\Q(S_1=16)\\
+    &=&(2/3)\times(1/4)\\
+    &=&1/6\\
+    \Q(\{\omega_2\})&=&\Q(S_2=12|S_1=16)\Q(S_1=16)\\
+    &=&(1/3)\times(1/4)\\
+    &=&1/12\\
+    \Q(\{\omega_3\})&=&\Q(S_2=12|S_1=8)\Q(S_1=8)\\
+    &=&(1/3)\times(3/4)\\
+    &=&1/4\\
+    \Q(\{\omega_4\})&=&\Q(S_2=6|S_1=8)\Q(S_1=8)\\
+    &=&(2/3)\times(3/4)\\
+    &=&1/2
+  \end{array}\]
+  To confirm that this produces a probability measure, note that
+  \[ (1/6)+(1/12)+(1/4)+(1/2)=1 \]
+\end{answer}
+
+\begin{question}{1. (a) ii.}
+  Determine $X(\omega_i),\ Y(\omega_i)$ for $i=1,2,3,4$.
+\end{question}
+
+\begin{answer}{1. (a) ii.}
+  \[\begin{array}{rcl}
+    X(\omega_1)&=&\left\{\frac13(10+16+18)-14\right\}_+\\
+    &=&\left\{\frac{44}3-14\right\}_+\\
+    &=&2/3\\
+    X(\omega_2)&=&\left\{\frac13(10+16+12)-14\right\}_+\\
+    &=&\left\{\frac{38}3-14\right\}_+\\
+    &=&0\\
+    X(\omega_3)&=&\left\{\frac13(10+8+12)-14\right\}_+\\
+    &=&\left\{\frac{30}3-14\right\}_+\\
+    &=&0\\
+    X(\omega_4)&=&\left\{\frac13(10+8+6)-14\right\}_+\\
+    &=&\left\{\frac{24}3-14\right\}_+\\
+    &=&0\\\\
+    Y(\omega_1)&=&\left\{\max(10,16,18)-14\right\}_+\\
+    &=&\left\{18-14\right\}_+\\
+    &=&4\\
+    Y(\omega_2)&=&\left\{\max(10,16,12)-14\right\}_+\\
+    &=&\left\{16-14\right\}_+\\
+    &=&2\\
+    Y(\omega_3)&=&\left\{\max(10,8,12)-14\right\}_+\\
+    &=&\left\{12-14\right\}_+\\
+    &=&0\\
+    Y(\omega_4)&=&\left\{\max(10,8,6)-14\right\}_+\\
+    &=&\left\{10-14\right\}_+\\
+    &=&0
+  \end{array}\]
+\end{answer}
+
+\begin{question}{1. (a) iii.}
+  Determine the risk-neutral prices of $X$ and $Y$ at time $t=0$.
+\end{question}
+
+\begin{answer}{1. (a) iii.}
+  The \textit{Risk-Neutral Valuation Principle} states that, for all attainable contingent claims $X$, the following holds
+  \[ V_t^*=\expect_Q[X/B_t|\mathcal{F}_t]\text{ for }t=0,\dots,T\text{ and all }\Q \]
+  Thus, at time $t=0$
+  \[ V_0=\expect_\Q[X|\mathcal{F}_0]=\expect_\Q[X] \]
+  We can use this to derive the risk-neutral prices for the two options at time $t=0$
+  \[\begin{array}{rcl}
+    V_0^X&=&\expect_\Q[X]\\
+    &=&(2/3)\cdot(1/6)+0\cdot(1/12)+0\cdot(1/4)+0\cdot(1/2)\\
+    &=&1/9\\\\
+    V_0^Y&=&\expect_\Q[Y]\\
+    &=&4\cdot(1/6)+2\cdot(1/12)+0\cdot(1/4)+0\cdot(1/2)\\
+    &=&5/6
+  \end{array}\]
+  Thus the risk-neutral price for the Asian option at time $t=0$ is $1/9$ and for the look-back option it is $5/6$
+\end{answer}
+
+\begin{question}{1. (a) iv.}
+  Find self-financing trading strategies for each of the claims $X$ and $Y$.
+\end{question}
+
+\begin{answer}{1. (a) iv.}
+  Note that since $r=0,\ B_t=1$ for $i=0,1,2$.
+  \par Consider the Asian option and let $H^X(t):=\{H_0^Y(t),H_1^Y(t)\}$ denote a portfolio which only has access to a bank account \& Asian options for each time point $t=0,1,2$.
+  \par consider the value of the Asian option at time $t=1$ and $t=2$
+  \[\begin{array}{rcl}
+    V_1^X(\omega)&=&\begin{cases}
+      \expect[X|S_1=16]&\text{if }\omega\in\{\omega_1,\omega_2\}\\
+      \expect[X|S_1=8]&\text{if }\omega\in\{\omega_3,\omega_4\}
+    \end{cases}\\
+    &=&\begin{cases}
+      (2/3)\cdot p_2+0\cdot(1-p_2)&\text{if }\omega\in\{\omega_1,\omega_2\}\\
+      0&\text{if }\omega\in\{\omega_3,\omega_4\}
+    \end{cases}\\
+    &=&\begin{cases}
+      (2/3)\cdot(2/3)&\text{if }\omega\in\{\omega_1,\omega_2\}\\
+      0&\text{if }\omega\in\{\omega_3,\omega_4\}
+    \end{cases}\\
+    &=&\begin{cases}
+      4/9&\text{if }\omega\in\{\omega_1,\omega_2\}\\
+      0&\text{if }\omega\in\{\omega_3,\omega_4\}
+    \end{cases}\\
+    V_2^X(\omega)&=&X(\omega)\ \forall\ \omega
+  \end{array}\]
+  To find a replicating portfolio we start at time $t=2$ and find that if $\omega\in\{\omega_1,\omega_2\}$
+  \[\begin{array}{rrcl}
+    &V_2^X(\omega_1)=2/3&=&H_0^X(2)(\omega_1,\omega_2)+18\cdot H_1^X(2)(\omega_1,\omega_2)\\
+    &V_2^X(\omega_2)=0&=&H_0^X(2)(\omega_1,\omega_2)+12\cdot H_1^X(2)(\omega_1,\omega_2)\\\\
+    \implies&2/3&=&6H_1^X(2)(\omega_1,\omega_2)\\
+    \implies&H_1^X(2)(\omega_1,\omega_2)&=&1/9\\\\
+    \implies&2&=&H_0^X(2)(\omega_1,\omega_2)+12\cdot(1/9)\\
+    \implies&H_0^X(2)(\omega_1,\omega_2)&=&-4/3
+  \end{array}\]
+  And if $\omega\in\{\omega_3,\omega_4\}$
+  \[\begin{array}{rrcl}
+    &V_2^X(\omega_3)=0&=&H_0^X(2)(\omega_3,\omega_4)+12\cdot H_1^X(2)(\omega_3,\omega_4)\\
+    &V_2^X(\omega_4)=0&=&H_0^X(2)(\omega_3,\omega_4)+6\cdot H_1^X(2)(\omega_3,\omega_4)\\\\
+    \implies&H_0^X(2)(\omega_3,\omega_4)&=&0\\
+    \implies&H_1^X(2)(\omega_3,\omega_4)&=&0
+  \end{array}\]
+  Let $H_0^X(1):=H_0^X(1)(\omega_1,\omega_2,\omega_3,\omega_4)$ and $H_1^X(1):=H_1(1)(\omega_1,\omega_2,\omega_3,\omega_4)$, then we have
+  \[\begin{array}{rrcll}
+    &V_1^X(\omega)=4/9&=&H_0^X(1)+16\cdot H_1^X(1)&\text{ if }\omega\in\{\omega_1,\omega_2\}\\
+    &V_1^X(\omega)=0&=&H_0^X(1)+8\cdot H_1^X(1)&\text{ if }\omega\in\{\omega_3,\omega_4\}\\\\
+    \implies&4/9&=&8H_1^X(1)\\
+    \implies&H_1^X(1)&=&1/18\\\\
+    \implies&0&=&H_0^X(1)+8\cdot(1/18)\\
+    \implies&H_0^X(1)&=&-4/9
+  \end{array}\]
+  Thus, a self-financing trading strategy with access to a bank account and the look-back option is as follows
+  \[\begin{array}{rcll}
+    H^X(1)(\omega)&=&(-4/9,1/18)&\forall\ \omega\\
+    H^X(2)(\omega)&=&(-4/3,1/9)&\text{if }\omega\in\{\omega_1,\omega_2\}\\
+    H^X(2)(\omega)&=&(0,0)&\text{if }\omega\in\{\omega_3,\omega_4\}
+  \end{array}\]
+  To confirm this trading strategy is self-financing it is required that the cost of each portfolio is equal to the value process from the previous time-step
+  \[\begin{array}{r|rclcl}
+    H^Y(1)(\omega)&-(4/9)+10\cdot(1/18)&=&1/9&=&V_0^X\\
+    H^Y(2)(\omega)&-(4/3)+16\cdot(1/9)&=&4/9&=&V_1^Y(\omega)\text{ if }\omega\in\{\omega_1,\omega_2\}\\
+    H^Y(2)(\omega)&0+8\cdot0&=&0&=&V_1^Y(\omega)\text{ if }\omega\in\{\omega_3,\omega_4\}\\
+  \end{array}\]
+  This requirement holds in all cases.
+  \vspace{5mm}
+  \par Now, consider the look-back option and let $H^Y(t):=\{H_0^Y(t),H_1^Y(t)\}$ denote a portfolio which only has access to a bank account \& look-back options for each time point $t=0,1,2$.
+  \par Consider the value of the look-back option at time $t=1$ and $t=2$
+  \[\begin{array}{rcl}
+    V_1^Y(\omega)&=&\begin{cases}
+      \expect[Y|S_1=16]&\text{if }\omega\in\{\omega_1,\omega_2\}\\
+      \expect[Y|S_1=8]&\text{if }\omega\in\{\omega_3,\omega_4\}
+    \end{cases}\\
+    &=&\begin{cases}
+      4p_2+2(1-p_2)&\text{if }\omega\in\{\omega_1,\omega_2\}\\
+      0&\text{if }\omega\in\{\omega_3,\omega_4\}
+    \end{cases}\\
+    &=&\begin{cases}
+      4\cdot(2/3)+2(1/3)&\text{if }\omega\in\{\omega_1,\omega_2\}\\
+      0&\text{if }\omega\in\{\omega_3,\omega_4\}
+    \end{cases}\\
+    &=&\begin{cases}
+      10/3&\text{if }\omega\in\{\omega_1,\omega_2\}\\
+      0&\text{if }\omega\in\{\omega_3,\omega_4\}
+    \end{cases}\\
+    V_2^Y(\omega)&=&Y(\omega)\ \forall\ \omega
+  \end{array}\]
+  To find a replicating portfolio we start at time $t=2$ and find that if $\omega\in\{\omega_1,\omega_2\}$
+  \[\begin{array}{rrcl}
+    &V_2^Y(\omega_1)=4&=&H_0^Y(2)(\omega_1,\omega_2)+18\cdot H_1^Y(2)(\omega_1,\omega_2)\\
+    &V_2^Y(\omega_2)=2&=&H_0^Y(2)(\omega_1,\omega_2)+12\cdot H_1^Y(2)(\omega_1,\omega_2)\\\\
+    \implies&2&=&6H_1^Y(2)(\omega_1,\omega_2)\\
+    \implies&H_1^Y(2)(\omega_1,\omega_2)&=&1/3\\\\
+    \implies&2&=&H_0^Y(2)(\omega_1,\omega_2)+12\cdot(1/3)\\
+    \implies&H_0^Y(2)(\omega_1,\omega_2)&=&-2/3
+  \end{array}\]
+  And if $\omega\in\{\omega_3,\omega_4\}$
+  \[\begin{array}{rrcl}
+    &V_2^Y(\omega_3)=0&=&H_0^Y(2)(\omega_3,\omega_4)+12\cdot H_1^Y(2)(\omega_3,\omega_4)\\
+    &V_2^Y(\omega_4)=0&=&H_0^Y(2)(\omega_3,\omega_4)+6\cdot H_1^Y(2)(\omega_3,\omega_4)\\\\
+    \implies&H_0^Y(2)(\omega_3,\omega_4)&=&0\\
+    \implies&H_1^Y(2)(\omega_3,\omega_4)&=&0
+  \end{array}\]
+  Let $H_0^Y(1):=H_0(1)(\omega_1,\omega_2,\omega_3,\omega_4)$ and $H_1^Y(1):=H_1(1)(\omega_1,\omega_2,\omega_3,\omega_4)$, then we have
+  \[\begin{array}{rrcll}
+    &V_1^Y(\omega)=10/3&=&H_0^Y(1)+16\cdot H_1^Y(1)&\text{ if }\omega\in\{\omega_1,\omega_2\}\\
+    &V_1^Y(\omega)=0&=&H_0^Y(1)+8\cdot H_1^Y(1)&\text{ if }\omega\in\{\omega_3,\omega_4\}\\\\
+    \implies&10/3&=&8H_1^Y(1)\\
+    \implies&H_1^Y(1)&=&5/12\\\\
+    \implies&0&=&H_0^Y(1)+8\cdot(5/12)\\
+    \implies&H_0^Y(1)&=&-40/12
+  \end{array}\]
+  Thus, a self-financing trading strategy with access to a bank account and the look-back option is as follows
+  \[\begin{array}{rcll}
+    H^Y(1)(\omega)&=&(-40/12,5/12)&\forall\ \omega\\
+    H^Y(2)(\omega)&=&(-2/3,1/3)&\text{if }\omega\in\{\omega_1,\omega_2\}\\
+    H^Y(2)(\omega)&=&(0,0)&\text{if }\omega\in\{\omega_3,\omega_4\}
+  \end{array}\]
+  To confirm this trading strategy is self-financing it is required that the cost of each portfolio is equal to the value process from the previous time-step
+  \[\begin{array}{r|rclcl}
+    H^Y(1)(\omega)&-(40/12)+10\cdot(5/12)&=&5/6&=&V_0^Y\\
+    H^Y(2)(\omega)&-(2/3)+16\cdot(1/3)&=&10/3&=&V_1^Y(\omega)\text{ if }\omega\in\{\omega_1,\omega_2\}\\
+    H^Y(2)(\omega)&0+8\cdot0&=&0&=&V_1^Y(\omega)\text{ if }\omega\in\{\omega_3,\omega_4\}\\
+  \end{array}\]
+  This requirement holds in all cases.
+\end{answer}
+
+\begin{question}{1. (b)}
+  Consider a multi-period model with $N=1$ risky securities and a finite probability space $\Omega=\{\omega_1,\dots,\omega_K\}$. For each state $\omega\in\Omega$, each time-point $t=0,\dots,T$ define $S(t)(\omega)$ to be the price of the security at time point $t$ in state $\omega$. We assume that there is a bank account with interest rate $r=0$.
+  \par Let us assume that the price process satisfies
+  \[\begin{array}{rcl}
+    S(0)&=&1\\
+    S(t)&=&\begin{cases}
+      S(t-1)\exp\{X(t-1)\}&\text{if }S(t-1)>\varepsilon\\
+      S(t-1)\exp\{X(t-1)+2\}&\text{if }S(t-1)\leq\varepsilon
+  \end{cases}\text{ for }t=1,\dots,T
+  \end{array}\]
+  where $\varepsilon\in(0,1)$ is a constant and $X:=\{X(t)\}_{t\geq0}$ is a sequence of IID random variables st each $X(t)$ takes value 1 or -1 with probability 1/2 (each).
+  \par Construct an arbitrage opportunity for this model and verify all the conditioons which define such an opportunity.
+  \par \textit{Hint - For a complete answer, you need to state appropriate assumptions on $\varepsilon$ and $T$.}
+\end{question}
+
+\begin{answer}{1. (b)}
+  TODO
+\end{answer}
+
+\end{document}

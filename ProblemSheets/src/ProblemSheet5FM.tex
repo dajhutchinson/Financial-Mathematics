@@ -1,0 +1,215 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in, paperwidth=8.3in, paperheight=11.7in]{geometry}
+\usepackage{amsmath,amsfonts,fancyhdr,bbm}
+\usepackage[section,nohyphen]{DomH}
+\headertitle{Finance Mathematics - Problem Sheet 4}
+
+\begin{document}
+
+\questionsfalse
+% \answersfalse
+
+\title{Finance Mathematics - Problem Sheet 4}
+\author{Dom Hutchinson}
+\date{\today}
+\maketitle
+
+
+\begin{question}{2.}
+  Consider the conditional probabilities of branching up and down. Using these, find all martingale measures in the follow two-period model with $\Omega=\{\omega_1,\dots,\omega_5\},\ r=0$ and one risky security given by
+  \begin{center}
+    $S(t)(\omega)=$
+    \begin{tabular}{c|ccc}
+      $\omega\setmius t$&0&1&2\\\hline
+      $\omega_1$&6&5&3\\
+      $\omega_2$&6&5&4\\
+      $\omega_3$&6&5&8\\
+      $\omega_4$&6&7&6\\
+      $\omega_5$&6&7&8
+    \end{tabular}
+  \end{center}
+\end{question}
+
+\begin{answer}{2.}
+  Consider time $t=0$ and $p_1:=\Q(S_1=5)$, then
+  \[\begin{array}{rrcl}
+    &6&=&5p_1+7(1-p_1)\\
+    &&=&7-2p_1\\
+    \implies&p_1&=&1/2
+  \end{array}\]
+  Thus $\Q(S_1=5)=1/2$ and $\Q(S_1=7)=1/2$.
+  \par Now consider time $t=1$, events $\{\omega_4,\omega_5\}$ and $p_2:=\Q(S_2=6|S_1=7)$, then
+  \[\begin{array}{rrcl}
+    &7&=&6p_2+8(1-p_2)\\
+    &&=&8-2p_2\\
+    \implies&p_2&=&1/2
+  \end{array}\]
+  Thus $\Q(S_2=6|S_1=7)=1/2$ and $\Q(S_2=8|S_1=7)=1/2$.
+  \par Now consider time $t=1$, events $\{\omega_1,\omega_2,\omega_3\}$, $p_3:=\Q(S_2=3|S_1=5)$ and ${p_4:=\Q(S_2=4|S_1=5)}$, then
+  \[\begin{array}{rrcl}
+    &6&=&3p_3+4p_4+8(p_3-p_4)\\
+    &&=&11p_3-4p_4\\
+    \implies&p_4&=&\frac14(11p_3-6)
+  \end{array}\]
+  From this we can deduce that $\Q(S_2=3|S_1=5)=x,\ \Q(S_2=4|S_1=5)=\frac14(11x-6)$ and $\Q(S_2=8|S_1=5)=1-x-\frac14(11x-6)=\frac14(10-15x)$.
+  \par It is clear that these values sum to 1 but we need to restrict the values of $x$ so that each of these probabilities is in $(0,1)$.
+  \[\begin{array}{ccc}
+    \begin{array}{rrcl}
+      &\frac14(11x-6)&\in&(0,1)\\
+      \implies&11x-6&\in&(0,4)\\
+      \implies&x&\in&\left(\frac6{11},\frac{10}{11}\right)
+    \end{array}
+    &\quad&
+    \begin{array}{rrcl}
+    &\frac14(10-15x)&\in&(0,1)\\
+    \implies&10-15x&\in&(0,4)\\
+    \implies&x&\in&\left(\frac6{15},\frac{10}{15}\right)
+    \end{array}
+  \end{array}\]
+  Thus we need to restrict $x$ st
+  \[\begin{array}{rcl}
+    x&\in&\left\{(0,1)\cap\left(\frac6{11},\frac{10}{11}\right)\cap\left(\frac25,\frac23\right)\right\}\\
+    &=&\left(\frac6{11},\frac23\right)
+  \end{array}\]
+  We can use these conditional probabilities to determine the probability of each event $\{\omega_1,\dots,\omega_5\}$ under $\Q$
+  \[\begin{array}{rcl}
+    \Q(\{\omega_1\})&=&\Q(S_2=3|S_1=5)\Q(S_1=5)\\
+    &=&\frac{x}2\\
+    \Q(\{\omega_2\})&=&\Q(S_2=4|S_1=5)\Q(S_1=5)\\
+    &=&\frac18(11x-6)\\
+    \Q(\{\omega_3\})&=&\Q(S_2=8|S_1=5)\Q(S_1=5)\\
+    &=&\frac18(10-15x)\\
+    \Q(\{\omega_4\})&=&\Q(S_2=6|S_1=7)\Q(S_1=7)\\
+    &=&1/2\\
+    \Q(\{\omega_5\})&=&\Q(S_2=8|S_1=7)\Q(S_1=7)\\
+    &=&1/2
+  \end{array}\]
+  for $x\in\left(\frac6{11},\frac23\right)$.
+\end{answer}
+
+\begin{question}{3.}
+  Consider a two-period model with $K=9$ states, $r=0$ and two risky securities
+  \begin{array}{rcl}
+    $S_1(t)(\omega)$&=&\begin{tabular}{c|ccc}
+      $\omega\setmius t$&0&1&2\\\hline
+      $\omega_1$&7&8&7\\
+      $\omega_2$&7&8&9\\
+      $\omega_3$&7&8&8\\
+      $\omega_4$&7&7&6\\
+      $\omega_5$&7&7&6\\
+      $\omega_6$&7&7&10\\
+      $\omega_7$&7&6&3\\
+      $\omega_8$&7&6&6\\
+      $\omega_9$&7&6&9
+    \end{tabular}\\
+    $S_2(t)(\omega)$&=&\begin{tabular}{c|ccc}
+      $\omega\setmius t$&0&1&2\\\hline
+      $\omega_1$&7&5&7\\
+      $\omega_2$&7&5&5\\
+      $\omega_3$&7&5&3\\
+      $\omega_4$&7&8&8\\
+      $\omega_5$&7&8&9\\
+      $\omega_6$&7&8&7\\
+      $\omega_7$&7&5&8\\
+      $\omega_8$&7&5&3\\
+      $\omega_9$&7&5&6
+    \end{tabular}
+  \end{array}
+\end{question}
+
+\begin{question}{3. (a)}
+  Checking the equations in each branch, show that the measure
+  \[ \Q=(1/9,1/9,1/9,1/6,1/12,1/12,1/12,1/6,1/12) \]
+  gives a martingale measure for this model. (That is, each stock becomes a martingale).
+\end{question}
+
+\begin{answer}{3. (a)}
+  For $\Q$ to be a martingale measure it needs to fulfil $\Q(\{\omega\})>0\ \forall\ \omega\in\Omega$ (which it does by definition) and that
+  \[ \expect[S^*_n(t+s)|\mathcal{F}_t]=S_n(t)\ \forall\ s,t,n \]
+  As the interest rate in this model is $r=0$, we have that $S^*_n(t)=S_n(t)\ \forall\ t,n$.
+  \par I now test whether this $\Q$ fulfils this criteria for all $t,s,n$. It is trivial that this holds for cases where $t=2,s=0$.
+  \[\begin{array}{r|rcl}
+    (t=0,s=1,n=1)&\expect_\Q[S_1(1)|\mathcal{F}_0]&=&\expect[S_1(1)]\\
+    &&=&\frac39\cdot8+\frac4{12}\cdot7+\frac4{12}6\\
+    &&=&7=S_1(0)\\\\
+
+    (t=0,s=2,n=1)&\expect_\Q[S_1(2)|\mathcal{F}_0]&=&\expect[S_1(2)]\\
+    &&=&\frac19(7+8+9)+\frac16(6+6)+\frac1{12}(6+10+3+9)\\
+    &&=&7=S_1(0)\\\\
+
+    (t=1,s=1,n=1)&\expect_\Q[S_1(2)|\omega]&=&\dfrac{\frac19(7+8+9)}{3\cdot\frac19}\text{ if }\omega\in\{\omega_1,\omega_2,\omega_3\}\\
+    &&=&8\\
+    &&=&S_1(1)\text{ if }\omega\in\{\omega_1,\omega_2,\omega_3\}\\\\
+
+    (t=1,s=1,n=1)&\expect_\Q[S_1(2)|\omega]&=&\dfrac{\frac16\cdot 6+\frac1{12}(6+10)}{\frac16+2\cdot\frac1{12}}\text{ if }\omega\in\{\omega_4,\omega_5,\omega_6\}\\
+    &&=&7\\
+    &&=&S_1(1)\text{ if }\omega\in\{\omega_4,\omega_5,\omega_6\}\\\\
+
+    (t=1,s=1,n=1)&\expect_\Q[S_1(2)|\omega]&=&\dfrac{\frac16\cdot 6+\frac1{12}(3+9)}{\frac16+2\cdot\frac1{12}}\text{ if }\omega\in\{\omega_7,\omega_8,\omega_9\}\\
+    &&=&6\\
+    &&=&S_1(1)\text{ if }\omega\in\{\omega_7,\omega_8,\omega_9\}\\\\
+  \end{array}\]
+  \[\begin{array}{r|rcl}
+    (t=0,s=1,n=2)&\expect_\Q[S_2(1)|\mathcal{F}_0]&=&\expect[S_2(1)]\\
+    &&=&\frac39\cdot5+\frac4{12}\cdot8+\frac4{12}5\\
+    &&=&6=S_2(0)\\\\
+
+    (t=0,s=2,n=2)&\expect_\Q[S_2(2)|\mathcal{F}_0]&=&\expect[S_2(2)]\\
+    &&=&\frac19(7+5+3)+\frac16(8+3)+\frac1{12}(9+7+8+6)\\
+    &&=&6=S_1(0)\\\\
+
+    (t=1,s=1,n=2)&\expect_\Q[S_2(2)|\omega]&=&\dfrac{\frac19(7+5+3)}{3\cdot\frac19}\text{ if }\omega\in\{\omega_1,\omega_2,\omega_3\}\\
+    &&=&5\\
+    &&=&S_2(1)\text{ if }\omega\in\{\omega_1,\omega_2,\omega_3\}\\\\
+
+    (t=1,s=1,n=2)&\expect_\Q[S_2(2)|\omega]&=&\dfrac{\frac16\cdot 8+\frac1{12}(9+7)}{\frac16+2\cdot\frac1{12}}\text{ if }\omega\in\{\omega_4,\omega_5,\omega_6\}\\
+    &&=&8\\
+    &&=&S_2(1)\text{ if }\omega\in\{\omega_4,\omega_5,\omega_6\}\\\\
+
+    (t=1,s=1,n=2)&\expect_\Q[S_2(2)|\omega]&=&\dfrac{\frac16\cdot 3+\frac1{12}(8+6)}{\frac16+2\cdot\frac1{12}}\text{ if }\omega\in\{\omega_7,\omega_8,\omega_9\}\\
+    &&=&5\\
+    &&=&S_2(1)\text{ if }\omega\in\{\omega_7,\omega_8,\omega_9\}
+  \end{array}\]
+\end{answer}
+
+\begin{question}{3. (b)}
+  Consider a European call option with exercise price $e=13$ on the time $T=2$ value of the stock index $S_1+S_2$. Thus,  $X=\{S_1(2)+S_(2)-13\}_+$. Calcualte the time $t=0$ price, and the time $t=1$ price in the 3 states $\{\omega_1,\omega_2,\omega_3\},\{\omega_4,\omega_5,\omega_6\},\{\omega_7,\omega_8,\omega_9\}$.
+\end{question}
+
+\begin{answer}{3. (b)}
+  First, consider the payout from each event
+  \begin{center}
+    \begin{tabular}{c|ccccccccc}
+      &$\omega_1$&$\omega_2$&$\omega_3$&$\omega_4$&$\omega_5$&$\omega_6$&$\omega_7$&$\omega_8$&$\omega_9$\\\hline
+      $X(\omega)&1&1&0&1&2&4&0&0&2$
+    \end{tabular}
+  \end{center}
+  The fair-price for this option at time $t=0$ is
+  \[\begin{array}{rcl}
+    V_0&=&\expect[X]\\
+    &=&\frac19(1+1+0)+\frac16(1+0)+\frac1{12}(2+4+2)\\
+    &=&\frac29+\frac16+\frac8{12}\\
+    &=&19/18
+  \end{array}\]
+  The fair-price for this option at time $t=1$ depends on which state the model is in
+  \[\begin{array}{rcl}
+    V_1(\omega)&=&\begin{cases}
+        \expect[X|S_1=8,S_2=5]&\text{if }\omega\in\{\omega_1,\omega_2,\omega_3\}\\
+        \expect[X|S_1=7,S_2=8]&\text{if }\omega\in\{\omega_4,\omega_5,\omega_6\}\\
+        \expect[X|S_1=6,S_2=5]&\text{if }\omega\in\{\omega_7,\omega_8,\omega_9\}
+    \end{cases}\\
+    &=&\begin{cases}
+        \dfrac{\frac19(1+1+0)}{\frac19\cdot3}&\text{if }\omega\in\{\omega_1,\omega_2,\omega_3\}\\
+        \dfrac{16(1)+\frac1{12}(2+4)}{\frac16+\frac{1}{12}\cdot2}&\text{if }\omega\in\{\omega_4,\omega_5,\omega_6\}\\
+        \dfrac{\frac16)0_+\frac1{12}(0+2)}{\frac16+\frac1{12}\cdot2}&\text{if }\omega\in\{\omega_7,\omega_8,\omega_9\}
+    \end{cases}\\
+    &=&\begin{cases}
+        2/3&\text{if }\omega\in\{\omega_1,\omega_2,\omega_3\}\\
+        3/2&\text{if }\omega\in\{\omega_4,\omega_5,\omega_6\}\\
+        1/2&\text{if }\omega\in\{\omega_7,\omega_8,\omega_9\}
+    \end{cases}\\
+  \end{array}\]
+\end{answer}
+
+\end{document}
