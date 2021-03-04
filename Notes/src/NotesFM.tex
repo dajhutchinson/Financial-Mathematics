@@ -420,7 +420,7 @@
 
 \subsection{Valuation of Contingent Claims}
 
-  \begin{definition}{Contingent Claim}
+  \begin{definition}{Contingent Claim}\label{def_contingent_claim_single_period}
     A \textit{Contingent Claim} in the \textit{Single-Period Model} is a random variable $X$ which represents the payoff at time $t=1$. A contingent claim $X$ is said to be ``attainable'' (or ``marketable'') if there exists a trading strategy $H$ st $V_1=X$. In this case one says that $H$ generates $X$ and $H$ is called the \textit{Replicating Portfolio}.
   \end{definition}
 
@@ -437,7 +437,7 @@
     \end{itemize}
   \end{proof}
 
-  \begin{theorem}{Risk-Neural Valuation Principle}
+  \begin{theorem}{Risk-Neural Valuation Principle}\label{the_risk_netural_valuation_principle_single_period}
     If the \textit{Single Period Model} is free of \textit{Arbitrage Opportunities}, then the time $t=0$ value of an \textit{Attainable Contingent Claim} $X$ is $\expect_\Q[X/B_1]$ where $\Q$ is any \textit{Risk-Neutral Probability Measure}\footnote{So value is independent of the choice of $\Q$}.
   \end{theorem}
 
@@ -1261,6 +1261,7 @@
 \subsection{Arbitrage in Multi-Period Model and Martingale Measures}
 
   \begin{example}{}
+    \everymath={\displaystyle}
     Consider a model with $N=1$ stocks over $T=2$ time-periods and $K=4$ possible states.
     \par For simplicity we change the notation of the price process to $S_t$ instead of $S_1(t)$. The process is given by the following table
     \begin{center}
@@ -1316,6 +1317,52 @@
     In states $\omega_3,\omega_4$ we require
     \[ V_1=(1+r)H_0(1)+3H_1(1)=\footnotemark(1+r)H_0(2)+3H_1(2) \]
     \footnotetext{Condition for $H$ to be \textit{Self-Financing}.}
+    We consider possible arbitrage opportunities without considering the existence of martingale measures for the moment. If the interest rate is $r=1/9$, then a possible trading strategy is as follows
+    \begin{itemize}
+      \item Start with an amount of £0.
+      \item If $S_1=3$ do nothing at time points $t=0,1$.
+      \item If $S_1=9$ at time point $t=1$ short sell one share of the risky asset ($H_1(2)=-1$) and put the received proceeds into the bank account ($H_0(2)=9/(1+r)$).
+      \item Then, at time-point $t=2$ the value of the portfolio is
+      \[ V_2=\begin{cases}
+        (1+r)^2H_0(2)+10H_1(2)=10-10=0&\text{if }\omega=\omega_1\\
+        (1+r)^2H_0(2)+7H_1(2)=10-7>0&\text{if }\omega=\omega_2\\
+        0&\text{if }\omega\in\{\omega_3,\omega_4\}\end{cases} \]
+      \end{cases}
+    \end{itemize}
+    If, on the other-hand, $r=0$ then there are no arbitrage opportunities.
+    \par We now consider two ways to compute an equivalent martingale measure.
+    \begin{enumerate}
+      \item
+      \par Recall that \texttt{Definition \ref{sec_multi_period_models}.\ref{def_martingale_measure}} states that
+      \[ \expect_\Q\left[\frac{S_n(t+s)}{B_{t+s}}\bigg|\mathcal{F}_t\right]=\frac{S_n(t)}{B_t}\ \forall\ t,s\geq0 \]
+      Let $q_i:=\Q(\{\omega_i\})$ for $i=1,2,3,4$. Further, we know that $q_1+q_2+q_3+q_4=1$ must hold and from the above result we have that
+      \[\begin{array}{rrcl}
+      (t=0,s=1)\implies&6(1+r)&=&9(q_1+1_2)+3(q_3+q_4)\\
+      (t=0,s=2)\implies&6(1+r)^2&=&10q_1+7q_2+7q_3+q_4\\
+      (t=1,s=1)\implies&9(1+r)&=&(10q_1+7q_2)/(q_1+q_2)\\
+      (t=1,s=1)\implies&3(1+r)&=&(7q_3+q_4)/(q_3+q_4)
+      \end{array}\]
+      This gives five equations with four unknowns which could be solved to find $\Q$.
+
+      \item We can make calculations quicker by considering conditional probabilities.
+      \par At time $t=0$ we can obtain $p_1:=\Q(S_1=9)$ by solving
+      \[ 6(1+r)=9p_1+3(1-p_1) \]
+      Which produces that $\Q(S_1=9)=\frac{1+2r}2$ and $\Q(S_1=3)=\frac{1-2r}2$.
+      \par At time $t=1$ is $\omega\in\{\omega_1,\omega_2\}$ we can write
+      \[ p_2:=\Q(S_2=10|S_1=9)\text{ and }9(1+r)=10p_2+7(1-p_2) \]
+      This produces that $\Q(S_2=10|S_1=9)=(2+9r)/3$ and $Q(S_2=7|S_1=9)=(1-9r)/3$.
+      \par At time $t=1$ if $\omega\in\{\omega_3,\omega_4\}$ we can solve
+      \[ p_3:=\Q(S_2=7|S_1=3)\text{ and }3(1+r)=7p_3+(1-p_3) \]
+      to find that $\Q(S_2=7|S_1=3)=(2+3r)/6$ and $\Q(S_2=1|S_1=3)=(4-3r)/6$.
+      \par By multiplying and conditional probabilities along the path leading to all four states in $\Omega$, we obtain
+      \[\begin{array}{rcl}
+        \Q(\{\omega_1\})&=&\frac{1+2r}2\cdot\frac{2-9r}3=\frac16(1+2r)(2+9r)\\
+        \Q(\{\omega_2\})&=&\frac{1+2r}2\cdot\frac{1-9r}3=\frac16(1+2r)(1-9r)\\
+        \Q(\{\omega_3\})&=&\frac1{12}(1-2r)(2+3r)\\
+        \Q(\{\omega_4\})&=&\frac1{12}(1-2r)(4-3r)
+      \end{array}\]
+      All these probabilities are greater than 0 if $r<1/9$, thus we can conclude that a \textit{Martingale Measure} exists \underline{iff} $r\in[0,1/9)$.
+    \end{enumerate}
   \end{example}
 
   \begin{definition}{Arbitrage Opportunity - Muliti-Period Model}
@@ -1333,7 +1380,7 @@
     \[ G_T^*\geq0\quad\expect[G_T^*]>0\quad V_0^*=0 \]
   \end{proposition}
 
-  \begin{definition}{Martingale Measure $\Q$}
+  \begin{definition}{Martingale Measure $\Q$}\label{def_martingale_measure}
     A \textit{Martingale Measure} is a probability measure $\Q$ st\footnote{This is similar to a \textit{Risk-Neutral Probability Measure}.}
     \begin{enumerate}
       \item $\Q(\{\omega\})>0\ \forall\ \omega\in\Omega$; and,
@@ -1427,6 +1474,34 @@
   \end{proof}
 
 \subsection{Valuation of Contingent Claims}
+
+  \begin{definition}{Contingent Claim\footnote{This is an extension of \texttt{Definition \ref{sec_financial_terminology_and_single_period_model}.\ref{def_contingent_claim_single_period}} to the multi-period model.}}
+    A \textit{Contingent Claim} in the multi-period model is a random variable $X$ which represents a payoff at the terminal time $t=T$.
+    \par A \textit{Contingent Claim} $X$ is said to be \textit{Attainable}\footnote{AKA \textit{Marketable}.} if there exists a \textit{Self-Financing Trading Strategy} $H$ st $V_T(\omega)=X(\omega)\ \forall\ \omega\in\Omega$. In this case one says that $H$ ``generates'' $X$ and $H$ is called the \textit{Replicating Portfolio}.
+  \end{definition}
+
+  \begin{proposition}{Risk-Neutral Valuation Principle\footnote{This is an extension of \texttt{Theorem \ref{sec_financial_terminology_and_single_period_model}.\ref{the_risk_netural_valuation_principle_single_period}} to the multi-period model.}}
+    The time $t$ value of an \textit{Attainable Contingent Claim} $X$ is equal to $V_t$ where $V_t$ is the time $t$ value of the portfolio which replicates $X$.
+    \par Moreover,
+    \[ V_t^*=\frac{V_t}{B_t}=\expect_\Q[X/B_t|\mathcal{F}_t]\text{ for }t=0,\dots,T\text{ and all }\Q \]
+  \end{proposition}
+
+  \begin{example}{}
+    Consider a European call option with exercise price $e=5$.
+    \par The corresponding contingent claim is $X=\{S_2-5\}_+$ and takes the values $\{5,2,2,0\}$ in states $\{\omega_1,\omega_2,\omega_3,\omega_4\}$ respectively.
+    \par Suppose $r=0$ then $\Q=(1/3,1/6,1/6,1/3)$.
+    \par Since the martingale measure is unique, \texttt{Proposition \ref{sec_multi_period_models}.\ref{prop_complete_model_and_martingale_measures}} will show below that the model is complete and therefore every \textit{Contingent Claim} is \textit{Marketbale} (inc. the European option).
+    \par At time $t=0$ the contingent claim's value must be
+    \[ V_0=\expect_\Q[X]=(1/3)\cdot5+(1/6)\cdot2+(1/6)\cdot2+(1/3)\cdot0=7/3 \]
+    At time $t=1$ the contingent claim's value in states $\omega_1,\omega_2$ is
+    \[ V_1(\omega_1)=V_2(\omega_2)=\expect_\Q[X|S_1=9]=(2/3)\cdot5+(1/3)\cdot2=4 \]
+    At time $t=1$ the contingent claim's value in states $\omega_3,\omega_4$ is
+    \[ V_1(\omega_3)=V_2(\omega_4)=\expect_\Q[X|S_1=3]=(1/3)\cdot2+(2/3)\cdot0=2/3 \]
+  \end{example}
+
+  \begin{proposition}{}\label{prop_complete_model_and_martingale_measures}
+
+  \end{proposition}
 
 \subsection{American Claims}
 
