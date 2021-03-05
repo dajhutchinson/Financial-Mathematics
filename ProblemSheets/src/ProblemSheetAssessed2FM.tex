@@ -159,7 +159,7 @@
     \end{cases}\\
     V_2^X(\omega)&=&X(\omega)\ \forall\ \omega
   \end{array}\]
-  To find a replicating portfolio we start at time $t=2$ and find that if $\omega\in\{\omega_1,\omega_2\}$
+  To find a self-financing portfolio we start at time $t=2$ and find that if $\omega\in\{\omega_1,\omega_2\}$
   \[\begin{array}{rrcl}
     &V_2^X(\omega_1)=2/3&=&H_0^X(2)(\omega_1,\omega_2)+18\cdot H_1^X(2)(\omega_1,\omega_2)\\
     &V_2^X(\omega_2)=0&=&H_0^X(2)(\omega_1,\omega_2)+12\cdot H_1^X(2)(\omega_1,\omega_2)\\\\
@@ -190,11 +190,14 @@
     H^X(2)(\omega)&=&(-4/3,1/9)&\text{if }\omega\in\{\omega_1,\omega_2\}\\
     H^X(2)(\omega)&=&(0,0)&\text{if }\omega\in\{\omega_3,\omega_4\}
   \end{array}\]
-  To confirm this trading strategy is self-financing it is required that the cost of each portfolio is equal to the value process from the previous time-step
-  \[\begin{array}{r|rclcl}
-    H^Y(1)(\omega)&-(4/9)+10\cdot(1/18)&=&1/9&=&V_0^X\\
-    H^Y(2)(\omega)&-(4/3)+16\cdot(1/9)&=&4/9&=&V_1^Y(\omega)\text{ if }\omega\in\{\omega_1,\omega_2\}\\
-    H^Y(2)(\omega)&0+8\cdot0&=&0&=&V_1^Y(\omega)\text{ if }\omega\in\{\omega_3,\omega_4\}\\
+  To confirm this trading strategy is self-financing I show that $H_0(t+1)B_t+H_1(t+1)S_1(t)=V_t\ \forall\ t$.
+  \[\begin{array}{r|rclcll}
+    H^Y(1)(\omega)&B_0\cdot H_0^X(1)(\omega)+S_1(0)\cdot H_1^Y(1)(\omega)&=&-(4/9)+10\cdot(1/18)\\
+    &&=&1/9=V_0^X\\
+    H^Y(2)(\omega)&B_1\cdot H_0^X(2)(\omega)+S_1(1)\cdot H_1^Y(2)(\omega)&=&-(4/3)+16\cdot(1/9)&\text{if }\omega\in\{\omega_1,\omega_2\}\\
+    &&=&4/9=V_1^Y(\omega)\\
+    H^Y(2)(\omega)&B_1\cdot H_0^X(2)(\omega)+S_1(1)\cdot H_1^Y(2)(\omega)&=&0+8\cdot0&\text{if }\omega\in\{\omega_3,\omega_4\}\\
+    &&=&0=V_1^Y(\omega)
   \end{array}\]
   This requirement holds in all cases.
   \vspace{5mm}
@@ -219,7 +222,7 @@
     \end{cases}\\
     V_2^Y(\omega)&=&Y(\omega)\ \forall\ \omega
   \end{array}\]
-  To find a replicating portfolio we start at time $t=2$ and find that if $\omega\in\{\omega_1,\omega_2\}$
+  To find a self-financing portfolio we start at time $t=2$ and find that if $\omega\in\{\omega_1,\omega_2\}$
   \[\begin{array}{rrcl}
     &V_2^Y(\omega_1)=4&=&H_0^Y(2)(\omega_1,\omega_2)+18\cdot H_1^Y(2)(\omega_1,\omega_2)\\
     &V_2^Y(\omega_2)=2&=&H_0^Y(2)(\omega_1,\omega_2)+12\cdot H_1^Y(2)(\omega_1,\omega_2)\\\\
@@ -250,11 +253,14 @@
     H^Y(2)(\omega)&=&(-2/3,1/3)&\text{if }\omega\in\{\omega_1,\omega_2\}\\
     H^Y(2)(\omega)&=&(0,0)&\text{if }\omega\in\{\omega_3,\omega_4\}
   \end{array}\]
-  To confirm this trading strategy is self-financing it is required that the cost of each portfolio is equal to the value process from the previous time-step
-  \[\begin{array}{r|rclcl}
-    H^Y(1)(\omega)&-(40/12)+10\cdot(5/12)&=&5/6&=&V_0^Y\\
-    H^Y(2)(\omega)&-(2/3)+16\cdot(1/3)&=&10/3&=&V_1^Y(\omega)\text{ if }\omega\in\{\omega_1,\omega_2\}\\
-    H^Y(2)(\omega)&0+8\cdot0&=&0&=&V_1^Y(\omega)\text{ if }\omega\in\{\omega_3,\omega_4\}\\
+  To confirm this trading strategy is self-financing I show that $H_0(t+1)B_t+H_1(t+1)S_1(t)=V_t\ \forall\ t$.
+  \[\begin{array}{r|rclcll}
+    H^Y(1)(\omega)&B_0\cdot H_0^Y(1)(\omega)+S_1(0)\cdot H_1^Y(1)(\omega)&=&-(40/12)+10\cdot(5/12)\\
+    &&=&5/6=V_0^Y\\
+    H^Y(2)(\omega)&B_1\cdot H_0^Y(2)(\omega)+S_1(1)\cdot H_1^Y(2)(\omega)&=&-(2/3)+16\cdot(1/3)&\text{ if }\omega\in\{\omega_1,\omega_2\}\\
+    &&=&10/3=V_1^Y(\omega)\\
+    H^Y(2)(\omega)&B_1\cdot H_0^Y(2)(\omega)+S_1(1)\cdot H_1^Y(2)(\omega)&=&0+8\cdot0&\text{ if }\omega\in\{\omega_3,\omega_4\}\\
+    &&=&0=V_1^Y(\omega)
   \end{array}\]
   This requirement holds in all cases.
 \end{answer}
@@ -265,17 +271,85 @@
   \[\begin{array}{rcl}
     S(0)&=&1\\
     S(t)&=&\begin{cases}
-      S(t-1)\exp\{X(t-1)\}&\text{if }S(t-1)>\varepsilon\\
-      S(t-1)\exp\{X(t-1)+2\}&\text{if }S(t-1)\leq\varepsilon
+      S(t-1)\exp\{X(t-1)\}&\text{if }S(t-1)>\epsilon\\
+      S(t-1)\exp\{X(t-1)+2\}&\text{if }S(t-1)\leq\epsilon
   \end{cases}\text{ for }t=1,\dots,T
   \end{array}\]
-  where $\varepsilon\in(0,1)$ is a constant and $X:=\{X(t)\}_{t\geq0}$ is a sequence of IID random variables st each $X(t)$ takes value 1 or -1 with probability 1/2 (each).
-  \par Construct an arbitrage opportunity for this model and verify all the conditioons which define such an opportunity.
-  \par \textit{Hint - For a complete answer, you need to state appropriate assumptions on $\varepsilon$ and $T$.}
+  where $\epsilon\in(0,1)$ is a constant and $X:=\{X(t)\}_{t\geq0}$ is a sequence of IID random variables st each $X(t)$ takes value 1 or -1 with probability 1/2 (each).
+  \par Construct an arbitrage opportunity for this model and verify all the conditions which define such an opportunity.
+  \par \textit{Hint - For a complete answer, you need to state appropriate assumptions on $\epsilon$ and $T$.}
 \end{question}
 
 \begin{answer}{1. (b)}
-  TODO
+  Assume that $\epsilon$ is known, $T$ is large and note that $B_t=1\ \forall\ t\in[1,T]$ since the interest rate is $r=0$.
+  \par Consider the following trading strategy
+  \begin{quote}
+    If, at time-point $t\in(1,T)$ it is the case that $S(t)\leq\epsilon$ then:
+    \begin{itemize}
+      \item In time-point $t$ borrow £$S(t)$ from the bank-account and buy a unit of the security for £$S(t)$.
+      \item In time-point $t+1$ sell your security for £$S(t+1)$ and place all of this revenue into the bank account (reimbursing the bank at the same time).
+    \end{itemize}
+    Otherwise, do nothing.
+  \end{quote}
+  This strategy can be expressed mathematically as
+  \[\begin{array}{rcl}
+    H(0)&=&(0,0)\\
+    H(t+1)&=&\begin{cases}
+      \big(H_0(t)-S(t),1\big)&\text{if }S(t)\leq\epsilon\\
+      \big(H_0(t)+S(t),0\big)&\text{if }S(t-1)\leq\epsilon\\
+      \big(H_0(t),0\big)&\text{otherwise}
+  \end{cases}
+  \end{array}\]
+  I will how justify that this trading strategy is an arbitrage opportunity.
+
+  \par Consider the value of this portfolio at time-point $t=0$
+  \[ V_0=H_0(0)\cdot B_0+H_1(0)\cdot S(1)=0\cdot1+0\cdot1=0 \]
+  Thus the requirement that $V_0=0$ is fulfilled.
+
+  \par Suppose that $S(t)\leq\epsilon$ but $S(t-1)>\epsilon$. This means that the price process must have decreased in value between these time steps and thus $S(t)=S(t-1)e^{-1}\implies S(t)e>\epsilon$.
+  \par Now consider $S(t+1)$, we know that $S(t+1)=S(t)\exp\{X(t)+2\}$ by the definition of the price process and since $S(t)\leq\epsilon$. Since $X(t)\in\{-1,1\}$ then $X(t)+2\geq1$, meaning $S(t+1)\geq S(t)e>\epsilon$. This shows that the price process only ever goes below threshold $\epsilon$ for a single time-period at a time.
+
+  \par Now, suppose the action is triggered at time-point $t$ and consider the price process over this and the next time-point
+
+  \[\begin{array}{rrcl}
+    &S(t)&\leq&\epsilon\\
+    \implies&S(t+1)&=&S(t)\exp\{X(t)+2\}\\
+    \implies&S(t+1)&>&S(t)\text{ since }X(t)+2\geq1
+  \end{array}\]
+
+  This shows that when we sell the security in time-point $t+1$ it is always worth more than the price we bought it for, meaning we can fully reimburse the bank-account and have a surplus left over in our bank-account. Moreover, this shows that we are guaranteed to make a profit whenever the main action of this strategy is triggered. And, since this strategy takes no other actions, it cannot lose money between time-periods.
+  \par Since we assumed that $T$ is large and since $\{X_t\}$ is a symmetric random walk it is expected that the action will occur at least once. This means the criteria that $V_T=H_0(T)\geq0$ and $\expect[V_T]>0$ are fulfilled.
+
+  \par To show that this trading strategy $H$ is self-financing I need to show that $V_t(\omega)=H_0(t+1)+H_1(t+1)S(t)$ for all $t,\omega$. There are three cases to consider
+  \begin{enumerate}
+    \item Case $S(t)\leq\epsilon\implies S(t-1)>\epsilon$ (Shown above).
+    \par No action was taken in the last time-period. Thus $V_t=H_0(t)$.
+    \[\begin{array}{rcl}
+      &&H_0(t+1)+H_1(t+1)S(t)\\
+      &=&\big(H_0(t)-S(t)\big)+S(t)\\
+      &=&H_0(t)\\
+      &=&V_t
+    \end{array}\]
+
+    \item Case $S(t-1)\leq\epsilon\implies S(t)>\epsilon$ (Shown above).
+    \par This means an option was bought in the last-time period for $S(t-1)$ and that option is now worth $S(t)$, thus $V_t=H_0(t)-S(t-1)+S(t)$.
+    \[\begin{array}{rcl}
+      &&H_0(t+1)+H_1(t+1)S(t)\\
+      &=&\big(H_0(t)+S(t)\big)+0\\
+      &=&H_0(t)+S(t)\\
+      &=&(H_0(t-1)-S(t-1))+S(t)\text{ as }S(t-1)\leq\epsilon\\
+      &=&V_t
+    \end{array}\]
+
+    \item Otherwise (ie $S(t),S(t-1)>\epsilon$)
+    \par No actions are taken so $V_t=H_0(t)$.
+    \[\begin{array}{rcl}
+      &&H_0(t+1)+H_1(t+1)S(t)\\
+      &=&H_0(t)+0\\
+      &=&V_t
+    \end{array}\]
+  \end{enumerate}
+  This shows that $H$ is self-financing, and thus fulfils all criteria to be an arbitrage opportunity.
 \end{answer}
 
 \end{document}
