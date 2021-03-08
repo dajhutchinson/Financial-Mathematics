@@ -1571,6 +1571,115 @@
 
 \subsection{American Claims}
 
+  \begin{definition}{American Claim $Y_\tau$}
+    Let $\{Y_t\}_{t\in T}$ be a stochastic process describing the payoff of a financial derivative if exercised at time $t$ and let $\tau$ be the stopping time representing the exercise date in an \textit{Exercise Strategy}.
+    \par Then $Y_\tau$ is called the \textit{American Claim} wrt to $Y_t$ and $\tau$.\footnote{Stopping times needs to be $\mathcal{F}_t$ measurable so we will know at time $t$ whether we will exercise the \textit{American Claim}.}
+  \end{definition}
+
+  \begin{definition}{Attainable American Claim}
+    The \textit{American Claim} $Y_\tau$ is said to be \textit{Attainable}\footnote{AKA ``Marketable''} if there exists a \textit{Self-Financing Trading Strategy} $H$ st the corresponding portfolio value $V$ satisfies $V_\tau=Y_\tau$.
+    \par An \textit{American Pay-off Process} $\{Y_t\}$ is said to be attainable if for every \textit{Stopping Time} $\tau$ the \textit{American Claim} $Y_\tau$ is \textit{Attainable}.
+  \end{definition}
+
+  \begin{proposition}{Complete Markets \& Attainable American Claims}\label{prop_complete_markets_and_attainable_american_claims}
+    If a financial market is \textit{Complete} then \underline{every} \textit{American Claim} is \textit{Attainable}.
+  \end{proposition}
+
+  \begin{proof}{\texttt{Proposition \ref{sec_multi_period_models}.\ref{prop_complete_markets_and_attainable_american_claims}}}
+    Let $\{Y_t\}_{t\in T}$ be a payoff-process and $\tau$ be an exercise strategy.
+    \par  We have to find a self-financing trading strategy $H$ st $V_\tau=Y_\tau$.
+    \par Consider the \textit{European Claim} $X=Y_\tau(B_T/B_\tau)$ which corresponds to someone exercising the \textit{American Claim} $Y$ at time-point $t=\tau$ and then earning interest from a bank-account until time-point $T$. Since the model is complete, there must be a replicating trading strategy $H$ st $V_T=X=Y_\tau(B_T/B_\tau)$.
+    \par This portfolio which starts at time $\tau$ with the amount of $Y_\tau$ all of which is put into and kept in the bank account until time $T$, has the same value at time $T$ as $H$.
+    \par We conclude that $V_\tau=Y_\tau$.\proved
+  \end{proof}
+
+  \begin{definition}{Snell Envelope}
+    Let $\{X_t\}_{t\in T}$ be a stochastic process adapted to some filtration $\mathcal{F}_t$.
+    \par Then the process $\{Z_t\}_{t\in T}$, defined below, is called the \textit{Snell Envelope} of $X$.
+    \[ Z_t=\begin{cases}
+      X_T&\text{if }t=T\\
+      \max\{X_t,\expect[Z_{t+1}|\mathcal{F}_t]\}&\text{if }t<T
+    \end{cases} \]
+  \end{definition}
+
+  \begin{example}{Snell Envelope}
+    Consider rolling a six-sided die three times. After the $i^{th}$ roll, you can either keep the score $X_i$ on the die, or roll again. Whoever gets the highest score wins. What should your strategy be?
+    \par First, note that we have to keep the third score if we roll the die three times. Moreover, after the second roll we take
+    \[ Z_2=\max\{X_2,\expect[Z_3|\mathcal{F}_2]\}\footnotemark=\max\{X_2,\expect[X_3]\}=\max\{X_2,7/2\} \]
+    \footnotetext{In this game $\mathcal{F}_t$ is not helpful as each roll is independent.}
+    This means we should stick with the second roll if it is greater than or equal to 4, otherwise re-roll. Thus
+    \[ \expect[Z_2]=\expect[\max\{X_2,7/2\}]=\frac16\cdot\left(\frac72+\frac72+\frac72+4+5+6\right)=\frac{17}4 \]
+    After the first roll, we take
+    \[ Z_1=\max\{X_1,\expect[Z_2|\mathcal{F}_1]=\max\{X_1,\expect[Z_2]\}=\max\left\{X_1,\frac{17}4\right\} \]
+    This means we should stick with the first roll if it is greater than or equal to 5, otherwise re-roll.
+  \end{example}
+
+  \begin{theorem}{Snell Envelope is the Smallest Super-Martingale}\label{the_snell_envelope_super_martingale}
+    The \textit{Snell Envelope} $\{Z_t\}$ of $X$ is the smallest \textit{Super-Martingale} which dominates $X$.
+    \par (i.e. $Z_t\geq X_t\ \forall\ t$).
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_multi_period_models}.\ref{the_snell_envelope_super_martingale}}}
+    First, $Z_t\geq\expect[Z_{t+1}|\mathcal{F}_t]$ and $Z_t\geq X_t$, so $\{Z_t\}$ is a super-martingale and dominates $X$.
+    \par Next, let $\{U_t\}_{t\in T}$ be any other supermartinale which dominates $X$. Since, by definition, $Z_T=X_T$ and $U$ dominates $X$ we must have $U_T\geq Z_T$. Assume inductively that $U_t\geq Z_t$. Then
+    \[\begin{array}{rcl}
+      U_{t-1}&\geq&\expect[U_t|\mathcal{F}_{t-1}]\text{ since }U_t\text{ is a supermartingale}\\
+      &\geq&\expect[Z_t|\mathcal{F}_{t-1}]
+    \end{array}\]
+    and $U$ dominates $X$
+    \[ U_{t-1}\geq X_{t-1} \]
+    Combining
+    \[ U_{t-1}\geq\max\{X_{t-1}\expect[Z_t|\mathcal{F}_{t-1}] \]
+    By repeating this argument we get $U_t\geq Z_t\ \forall\ t$.\proved
+  \end{proof}
+
+  \begin{proposition}{Snell Envelope as Discounted Value Process}\label{prop_snell_envelope_as_discounted_value_process}
+    Consider a financial market with a \textit{Martingale Measure} $\Q$ and an attainable \textit{American Payoff Process} $\{Y_t\}$.
+    \par Then the \textit{Snell Envelope} $\{Z_t\}$ of the discounted payoff process $\{Y_t/B_t\}$ is the discounted value process for $Y$.
+  \end{proposition}
+
+  \begin{proof}{\texttt{Proposition \ref{sec_multi_period_models}.\ref{prop_snell_envelope_as_discounted_value_process}}}
+    % Prop 3.22
+  \end{proof}
+
+  \begin{theorem}{Optimal Stopping Theorem}\label{the_optimal_stopping_theorem}
+    \textit{This is \underline{NOT} the ``Optional Stopping Theorem'' (\texttt{Theorem \ref{sec_stochastic_processes_in_discrete_time}.\ref{the_optional_sampling_theorem}})}.
+    \par Let $\{X_t\}_{t\in T}$ be a stochastic process adapted to some \textit{Filtration} $\mathcal{F}_t$ and $Z_t$ be the \textit{Snell Envelope} of $\{X_t\}_{t\in T}$.
+    \par For any $t=0,\dots,T$ we define a stopping time by $\tau(t)=\min_{s\geq t}\{Z_s=X_s\}$, then the optimal stopping rule is
+    \begin{equation}\label{eq_optimal_stopping_rule}
+      Z_t=\expect[X_{\tau(t)}|\mathcal{F}_t]=\max_t\left\{\expect[X_{\tau}|\mathcal{F}_t]:\text{ all stopping times }t\leq\tau\leq T\right\}\text{ for all }t=0,\dots,T
+    \end{equation}
+    In particular
+    \[ Z_0=\expect[X_{\tau(0)}]=\max_t\left\{\expect[X_{\tau)}|\mathcal{F}_t]:\text{ all stopping times }\tau\leq T\right\} \]
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_multi_period_models}.\ref{the_optimal_stopping_theorem}}}
+    \textit{This proof is a backwards induction through time}.
+    \par \underline{Base Case}
+    \par Note first that  \texttt{Eq. \ref{eq_optimal_stopping_rule}} is clearly true for $t=T$ because, by definition of the \textit{Snell Envelope}, $Z_T=X_T$ and therefore the stopping time $\tau(T)$ stops at $T$.
+    \par \underline{Inducitve Step}
+    \par Now assume that \texttt{Eq. \ref{eq_optimal_stopping_rule}} is satisfied for some $t$, we now need to show it holds for $t-1$. Let $\tau$ be an arbitrary stopping time between $t-1$ and $T$.
+    \par Define another stopping time $\tau'=\max\{\tau,t\}$\footnote{This is similar to $\tau$ but can never take the value $t-1$.}. Then, since $\tau\geq t\implies\ \tau'=\tau$
+    \[\begin{array}{rcl}
+      \expect[X_\tau|\mathcal{F}_{t-1}]&=&\expect[\indexed\{\tau=t-1\}X_{t-1}+\indexed\{\tau>t-1\}X_\tau|\mathcal{F}_{t-1}]\\
+      &=&\expect[\indexed\{\tau=t-1\}X_{t-1}+\indexed\{\tau>t-1\}X_{\tau'}|\mathcal{F}_{t-1}]\\
+      &=&\indexed\{\tau=t-1\}X_{t-1}+\indexed\{\tau>t-1\}\expect[X_{\tau'}|\mathcal{F}_{t-1}]\\
+      &=&\indexed\{\tau=t-1\}X_{t-1}+\indexed\{\tau>t-1\}\expect[\expect[X_{\tau'}|\mathcal{F}_t]|\mathcal{F}_{t-1}]\text{ by Tower Law}
+    \end{array}\]
+    Since $\tau'$ is a stopping time st $\tau'\in[t,T]$, we find that $\expect[X_{\tau'}|\mathcal{F}_t]\leq Z_t$ because we have assumed \texttt{Eq. \ref{eq_optimal_stopping_rule}} holds for $t$.
+    \par Using the definition of $Z_{t-1}$ we see that
+    \[\begin{array}{rcl}
+      \expect[X_\tau|\mathcal{F}_{t-1}]&\leq&\indexed\{\tau=t-1\}X_{t-1}+\indexed\{\tau>t-1\}\expect[Z_t|\mathcal{F}_{t-1}]\\
+      &\leq&Z_{t-1}\text{by def. Snell Envelope}
+    \end{array}\]
+    In the special case where $\tau=\tau(t-1)$ we find that $\tau=(t-1)$ stops in $t-1$ \underline{iff} $Z_{t-1}=X_{t-1}$, otherwise $Z_{t-1}>X_{t-1}$\footnote{As $\{Z_t\}$ dominates $\{X_t\}$.} and $\tau(t-1)=\tau(t)$. Hence
+    \[\begin{array}{rcl}
+      \expect[X_{\tau(t-1)}|\mathcal{F}_{t-1}]&=&\indexed\{Z_{t-1}=X_{t-1}\}X_{t-1}+\indexed\{Z_{t-1}>X_{t-1}\}\expect[\expect[X_{\tau(t)}|\mathcal{F}_t]|\mathcal{F}_{t-1}]\\
+      &=&\indexed\{Z_{t-1}=X_{t-1}\}X_{t-1}+\indexed\{Z_{t-1}>X_{t-1}\}\expect[Z_t|\mathcal{F}_{t-1}]\\
+      &=&Z_{t-1}\text{ by def. Snell Envelope}
+    \end{array}\]
+  \end{proof}
+
 \subsection{The Cox-Ross Rubinstein Model}
 
 \subsection{The Cox-Ross Rubinstein Model and the Black-Scholes Formula}
