@@ -1680,6 +1680,108 @@
     \end{array}\]
   \end{proof}
 
+  \begin{example}{Snell Envelope - \#1}\label{ex_snell_evelope_1}
+    Consider a market where there is a bank account with interest-rate $r=0$ and a single security with the following price process
+    \begin{center}
+      $S_t(\omega)=$\begin{tabular}{c|ccc}
+        $\omega\setminus t$&0&1&2\\\hline
+        $\omega_1$&6&9&10\\
+        $\omega_2$&6&9&7\\
+        $\omega_3$&6&3&7\\
+        $\omega_4$&6&3&1
+      \end{tabular}
+    \end{center}
+    For this model, $\Q(\omega):=(1/3,1/6,1/6,1/3)$ is a risk-neutral probability measure.
+    \par Consider an American call option with the exercise price of £5. Then its payoff process is
+    \begin{center}
+      $Y_t(\omega)=$\begin{tabular}{c|ccc}
+        $\omega\setminus t$&0&1&2\\\hline
+        $\omega_1$&1&4&5\\
+        $\omega_2$&1&4&2\\
+        $\omega_3$&1&0&2\\
+        $\omega_4$&1&0&0
+      \end{tabular}
+    \end{center}
+    In states $\omega_3,\omega_4$ the price
+    \[\begin{array}{rcl}
+      Z_1&=&\max\{Y_1,\expect_\Q[Z_2|\mathcal{F}_1]\}\\
+      &=&\max\{0,2\cdot(1/3)+0\cdot(2/3)\}\\
+      &=&2/3
+    \end{array}\]
+    This is equal to the European Option above $V_1(\omega_3,\omega_4)$.
+    \par In states $\omega_1,\omega_2$ the price
+    \[\begin{array}{rcl}
+      Z_1&=&\max\{Y_1,\expect_\Q[Z_2|\mathcal{F}_1]\}\\
+      &=&\max\{4,5\cdot(2/3)+2\cdot(1/3)\}\\
+      &=&4
+    \end{array}\]
+    This is equal to the European Option above $V_1(\omega_1,\omega_2)$.
+    \par so $Z_0=\max\{1,(2/3)\cdot(1/2)+4\cdot(1/2)\}=7/3$. The time $t=0$ price of the European call option of
+  \end{example}
+
+  \begin{example}{Snell Envelope - \#2}
+    Consider the same scenario as \texttt{Example \ref{sec_multi_period_models}.\ref{ex_snell_evelope_1}} except that the payoff process of the American call option is
+    \begin{center}
+      $Y_t(\omega)=$\begin{tabular}{c|ccc}
+        $\omega\setminus t$&0&1&2\\\hline
+        $\omega_1$&1&5&5\\
+        $\omega_2$&1&5&2\\
+        $\omega_3$&1&0&2\\
+        $\omega_4$&1&0&0
+      \end{tabular}
+    \end{center}
+    At time-point $t=2$ it still holds that $Z_2=Y_2$. Moreover, $\expect_\Q[Z_2|\mathcal{F}_1]=\expect_\Q[Y_2|\mathcal{F}_1]$ which is the same as \texttt{Example \ref{sec_multi_period_models}.\ref{ex_snell_evelope_1}}.
+    \par So
+    \[\begin{array}{rcl}
+      \expect_Q[Z_2|\mathcal{F}_1]&=&\begin{cases}
+        (2/3)\cdot5+(1/3)\cdot2&\text{if in }\omega_1,\omega_2\\
+        (1/3)\cdot2+(2/3)\cdot0&\text{if in }\omega_3,\omega_4
+      \end{cases}\\
+      &=&\begin{cases}
+        4&\text{if in }\omega_1,\omega_2\\
+        2/3&\text{if in }\omega_3,\omega_4
+      \end{cases}
+    \end{array}\]
+    Hence
+    \[\begin{array}{rcl}
+      Z_1&=&\max\{Y_1\expect_\Q[Z_2|\mathcal{F}_1]\\
+      &=&\begin{cases}
+        \max\{4,5\}=5&\text{if in }\omega_1,\omega_2\\
+        \max\{0,2/3\}=5&\text{if in }\omega_3,\omega_4
+      \end{cases}
+    \end{array}\]
+    For time $t=0$ we have
+    \[\begin{array}{rcl}
+      \expect_\Q[Z_1|\mathcal{F}_0]&=&\expect_\Q[Z_1]\\
+      &=&(1/2)\cdot5+(1/2)\cdot(2/3)\\
+      &=&17/6
+    \end{array}\]
+    in which case $Z_0=\max\{Y_0,\expect_\Q[Z_1]\}=17/6$.
+    \par The optimal exercise strategies are
+    \[ \tau(0)(\omega)=\tau(1)(\omega)=\begin{cases}
+      1&\text{if in }\omega_1,\omega_2\\
+      2&\text{if in }\omega_3,\omega_4
+    \end{cases} \]
+    and, of course, $\tau(2)(\omega)=2\ \forall\ \omega\in\Omega$.
+    \par Finally, we compute a replicating trading strategy for $\tau(0)$.
+    \par In states $\omega_3,\omega_4$ the stopping time $\tau(0)$ stops in time 2 so the portfolio in the second period must satisfy
+    \[\begin{array}{rcl}
+      H_0(2)+7\cdot H_1(2)&=&Y_2(\omega_3)=2\\
+      H_0(2)+1\cdot H_1(2)&=&Y_2(\omega_4)=0
+    \end{array}\]
+    Let $H_i(2):=H_i(2)(\omega_3,\omega_4)$.
+    \par Then the solution is that $H_0(2)=-1/3$ and $H_1(2)=1/3$ in states $\omega_3,\omega_4$.
+    \par The value of this portfolio at time $t=1$ is $-(1/3)+3\cdot(1/3)=2/3$.
+    \par The values of $H_0(2)$ and $H_1(2)$ in states $\omega_1,\omega_2$ do not matter.
+    \par In the first period, the portfolio must satisfy
+    \[\begin{array}{rcl}
+      H_0(1)+9H_1(1)&=&Z_1(\omega_1)=Z_1(\omega_2)=5\\
+      H_0(1)+3H_1(1)&=&Z_1(\omega_3)=Z_1(\omega_4)=2/3
+    \end{array}\]
+    which has solutions $H_0(1)=-3/2$ and $H_1(1)=13/18$.
+    \par The American option is attainable with time $t=0$ value of $1\cdot(-3/2)+6\cdot(13/18)=17/6$ which confirms previous calculations\footnote{Showing this is a replicating portfolio.}.
+  \end{example}
+
 \subsection{The Cox-Ross Rubinstein Model}
 
 \subsection{The Cox-Ross Rubinstein Model and the Black-Scholes Formula}
