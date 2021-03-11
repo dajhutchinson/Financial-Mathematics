@@ -1640,6 +1640,55 @@
 
   \begin{proof}{\texttt{Proposition \ref{sec_multi_period_models}.\ref{prop_snell_envelope_as_discounted_value_process}}}
     % Prop 3.22
+    \textit{This proof uses the Optimal Stopping Theorem (\texttt{Theorem \ref{sec_multi_period_models}.\ref{the_optimal_stopping_theorem}})}.
+    \par Let $p$ denote the time $t$ price of the American claim wrt the payoff process $(Y_t/B_t)$.
+    \par Suppose, first, that $p<Z_t$ then:
+    \begin{itemize}
+      \item We buy the option for $p$.
+      \item If $\tau(t)=t$\footnote{This is unlikely as the arbitrage opportunity is obvious.} then $Z_t=Y_t/B_t$ and so we can exercise the option immediately for $(Y_t/B_t)>p$ to make a riskless profit.
+      \item If $\tau(t)>t$ we undertake the negative of the trading strategy that replicates $Y_{\tau(t)}/B_{\tau(t)}$, as we want to short sell. The price of the replicating strategy is $\expect_Q[Y_{\tau(t)}/B_{\tau(t)}|\mathcal{F}_t]$ by the \textit{Risk-Netural Valuation Principle} (\texttt{Theorem \ref{sec_multi_period_models}.\ref{the_risk_neutral_valuation_principle_multi_period}}), but by the \textit{Optimal Stopping Theorem} (\texttt{Theorem \ref{sec_multi_period_models}.\ref{the_optimal_stopping_theorem}}) this is equal to $Z_t$ and so we can invest the different $Z_t-p$ in the bank account.
+      \item Later at time $\tau(t)$ we exercise the option and liquidate the replicating portfolio at the same time. The amount we collect from the option seller is equal to our liability on the portfolio\footnote{Meaning the cash flow at this time-period is net 0}. Meanwhile, we have $(Z_t-p)\cdot(B_{\tau(t)}/B_t)>0$ in the bank account.
+    \end{itemize}
+    This shows that we make a riskless profit in any case.
+
+    \par Now consider the case where $p>Z_t$ then
+    \begin{itemize}
+      \item We sell the option for $p$.
+    \end{itemize}
+    Consider in detail the case where $\tau(t)>t$. Then
+    \begin{itemize}
+      \item We undertake the trading strategy that replicates $Y_{\tau(t)}/B_{\tau(t)}$. Again we find by using \textit{Risk-Netural Valuation Principle} (\texttt{Theorem \ref{sec_multi_period_models}.\ref{the_risk_neutral_valuation_principle_multi_period}}) and the \textit{Optimal Stopping Theorem} (\texttt{Theorem \ref{sec_multi_period_models}.\ref{the_optimal_stopping_theorem}}) that the price of building up the portfolio is
+      \[ Z_t=\expect_\Q[Y_{\tau(t)/B_{\tau(t)}}|\mathcal{F}_t] \]
+      \item Therefore there is a profit of $p-Z_t$ which we put in the bank account.
+    \end{itemize}
+    How we proceed will depend on when the buyer exercises the option.
+    \begin{enumerate}
+      \item If the buyer exercises the option at time-point $s\leq\tau(t)$ then
+      \begin{itemize}
+        \item We pay the buyer the payoff $Y_s/B_s$.
+        \item We liquidate our portfolio and using risk-neutral valuation the value of our portfolio at time-point $s$ is
+        \[ \expect_\Q[Y_{\tau(t)}/B_{\tau(t)}|\mathcal{F}_s] \]
+        Since $s\in[t,\tau(t)]$ we see from the definition of $\tau(t)$ that $\tau(t)=\tau(s)$.
+        \par Using this and the \textit{Optimal Stopping Theorem} (\texttt{Theorem \ref{sec_multi_period_models}.\ref{the_optimal_stopping_theorem}}) that the value of our portfolio at time $s$ is
+        \[ \expect_\Q[Y_{\tau(t)}/B_{\tau(t)}|\mathcal{F}_s]=\expect_\Q[Y_{\tau(s)}/B_{\tau(s)}|\mathcal{F}_s]=Z_s\geq (Y_s/B_s) \]
+        \item Therefore all transaction at time-point $s$ will only add to our portfolio and our total profit is strictly positive.
+      \end{itemize}
+      \item If the buyer does not exercise by time $s=\tau(t)$ where $\tau(t)<T$ then:
+      \begin{itemize}
+        \item We repeat the process, undertaking the trading strategy that replicates $Y_{\tau(s+1)}/B_{\tau(s+1)}$.
+        \item The value of the portfolio to be built up is equal to
+        \[ \expect_\Q[Y_{\tau(s+1)}/B_{\tau(s+1)}|\mathcal{F}_s]\leq\expect_\Q[Y_{\tau(s)}/B_{\tau(s)}|\mathcal{F}_s]=Z_s \]
+        Therefore the change of the portfolio will only pay us some money which we put in the bank account.
+        \item As before, if the option buyer exercises at some time $u\leq\tau(s+1)$ then the value of the portfolio will be enough to cover the payoff $Y_u$.
+      \end{itemize}
+      \item If the buyer has not exercised by time $\tau(s+1)$ then we repeat this process again, and so forth. There will always be enough money in the portfolio to cover the payoff. Our overall profit will be at least $p-Z_t>0$/
+    \end{enumerate}
+    Finally, we consider the case where $\tau(t)$. Then the optimal strategy would be to exercise the option immediately.
+    \begin{itemize}
+      \item If the buyer indeed exercises at time $t$, then we pay them $(Y_t/B_t)=Z_t<p$ and make a riskless-profit.
+      \item If note, then we proceed as in the previous case where the buyer does not exercise by the optimal stopping time and undertake the trading strategy which replicates $(Y_{\tau(t+1)}/B_{\tau(t+1)})$ and so forth making again profit of at least $p-Z_t$.
+    \end{itemize}
+    \proved
   \end{proof}
 
   \begin{theorem}{Optimal Stopping Theorem}\label{the_optimal_stopping_theorem}
