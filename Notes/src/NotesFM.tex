@@ -1831,9 +1831,89 @@
     \par The American option is attainable with time $t=0$ value of $1\cdot(-3/2)+6\cdot(13/18)=17/6$ which confirms previous calculations\footnote{Showing this is a replicating portfolio.}.
   \end{example}
 
-\subsection{The Cox-Ross Rubinstein Model}
+\subsection{The Cox-Ross-Rubinstein Model}
 
-\subsection{The Cox-Ross Rubinstein Model and the Black-Scholes Formula}
+  \begin{definition}{Bernoulli Process}
+    Let $\{X_t:t=1,2,\dots\},\ \{N_t:t=1,2,\dots\}$ be a \textit{Stochastic Process}.
+    \par $\{X_t\}_t$ is a \textit{Bernoulli Process} with parameter $p$ if the random variable $X_1,X_2,\dots$ are independent and
+    \[ \prob(X_t=1)=1-\prob(X_t=0)=p\ \forall\ t \]
+    \par $\{N_t\}_t$ is a \textit{Random Walk Process} when $N_t:=X_1+\dots+X_t$ and $\{X_t\}_t$ is a \textit{Bernoulli Process}.
+  \end{definition}
+
+  \begin{definition}{Cox-Ross-Rubinstein Model\footnote{AKA ``Binomial Model''}}
+    The \textit{Cox-Ross Rubinstein Model}\footnote{This simplifies a special case of the general multi-period model where prices move up and down by a fixed ratio and moves occur with fixed probability, wrt $t$.} consists of a bank account with constant interest rate $r>0$ and \underline{one} risky asset with price process $S_t$ defined by
+    \[ S_t=S_0u^{N_t}d^{t-N_t}\text{ for }t=1,\dots,T \]
+    Here $N_t=X_1+\dots+X_t$ is the \textit{Random Walk Process} associated with a \textit{Bernoulli Process} $X_t$ associated with a \textit{Bernoulli Process} $X_t$ with parameter $p\in(0,1)$; $u$ is the ratio of the price after it has increases\footnote{$u=S_{t+1}/S_t$ when $S_{t+1}>S_t$. $u$ is constant for all $t$.}; $d$ is the ratio of the price after it has decreased; and $S_0$ is the start price.
+    \par Note $u,d,S_0$ are all positive real values and in well-defined models $0<d<1<u$.
+  \end{definition}
+
+  \begin{remark}{Events in Cox-Ross-Rubinstein Model}
+    In each time-period, two events are possible under the \textit{Cox-Ross-Rubinstein Model}
+    \begin{enumerate}
+      \item Price increases by a factor of $u$. This occurs with probabilty $p$.
+      \item Price decreases by a factor of $d$. This occurs with probabilty $1-p$.
+    \end{enumerate}
+  \end{remark}
+
+  \begin{remark}{Logarithms and Cox-Ross-Rubinstein Model}
+    Due to the multiplicative factors in the price process of a \textit{Cox-Ross-Rubinstein Model} we often think in terms of the logarithm of the price.
+    \par Moreover, the logarithm of the price process $S_t$ behaves like an asymmetric random walk with drift.
+  \end{remark}
+
+  \begin{theorem}{Arbitrage in Cox-Ross-Rubinstein Model}\label{the_arbitrage_in_cox_ross_rubinstein_model}
+    The \textit{Cox-Ross-Rubinstein Model} has no arbitrage opportunities \underline{iff} $d<1+r<u$.
+    \par In this case the model is complete and the unique \textit{Martingale Measure} $\Q$ is defined by
+    \[ \Q(\{\omega\})=q^n(1-q)^{T-n} \]
+    where $\omega\in\Omega$ is a state which corresponds to $n$ upwards steps and $(T-n)$ downwards steps; and
+    \[ q=\frac{1+r-d}{u-d} \]
+    In particular, adding all contributions from states with exactly $n$ upwards steps and $(T-n)$ downwards steps we get
+    \[ \Q\left(S_t=S_0u^nd^{T-n}\right)={t \choose n}q^n(1-q)^{t-n}\text{ for }n=0,\dots,t \]
+    Moreover, if $X$ is a \textit{Contingent Claim} of the form $X=g(S_T)$ for some real-valued function $g$, then the time $t=0$ value of $X$ is given by
+    \[ V_0=(1+r)^{-T}\sum_{n=0}^T{T\choose n}q^n(1-q)^{T-n}g(S_0u^nd^{T-n}) \]
+    More generally, the value of contingent claim $X$ at time-point $t$ is
+    \[ \Pi(t)=\frac1{(1+r)^{T-t}}\sum_{n=0}^{T-t}{T-t\choose n}q^n(1-q)^{T-t-n}g(S_tU^nd^{T-t-n}) \]
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_multi_period_models}.\ref{the_arbitrage_in_cox_ross_rubinstein_model}}}
+    The \textit{No-Arbitrage Theorem} (\texttt{Theorem \ref{sec_multi_period_models}.\ref{the_extension_of_no_arbitrage_principle}}) shows the \textit{Cox-Ross-Rubinstein Model} is free of arbitrage \underline{iff} there is a \textit{Martingale Measure} $\Q$ with
+    \[ S_t=\frac1{1+r}\expect_\Q[S_{t+1}|\mathcal{F}_t]\ \forall\ t<T \]
+    Let $q:=\Q(X_{t+1}=1)=\Q(S_{t+1}/S_t=u)$ which means that $\Q(S_{t+1}/S_t=d)=1-q$.
+    \par $S_t$ is known at time-point $t$, so we can put it inside the conditional expectation wrt $\mathcal{F}_t$ in the expression for $S_t$ above. This means we can divide by $S_t$ and get
+    \[ 1=\frac1{1+r}\expect_\Q\left[S_{t+1}/S_t|\mathcal{F}_t\right]=\frac1{1+r}\big(uq+d(1-q)\big) \]
+    By rearranging, we see the \textit{No-Arbitrage Principle} is satisfied \underline{iff} $qu+(1-q)d=1+r$. Thus
+    \[ q=\frac{1+r-d}{u-d} \]
+    By its definition, $\Q$ must be positive everywhere meaning $q\in(0,1)$. Equivalently $d<1+r<u$ must be satisfied.
+    \par We can now state the form of the \textit{Martingale Measure} $\Q$ by multiplying the conditional probabilities along the paths that lead to each state $\omega_i$. This is made easier since the \textit{Cox-Ross-Rubinstein Model} assumes that the probability of each movement is constant at all time-period.
+    \par By the uniqueness of $q$ we can determine that the \textit{Cox-Ross-Rubinstein Model} is complete.
+    \par The expression for $\Q\left(S_t=S_0u^nd^{T-n}\right)$ is straightforward.
+    \par The time $t=0$ value of the contingent claim $X$ is calculated as the expectation wrt $\Q$.
+    \par We think of $\Pi(t)$ as a time-shifted version of the formula for the time $t=0$ price\footnote{Effectively assume that the model starts at time $t$ and runs for $T-t$ steps.}, replacing $T$ by $(T-t)$ and $S_0$ by $S_t$.\proved
+  \end{proof}
+
+  \begin{example}{Cox-Ross-Rubinstein Model}
+    Consider a \textit{Cox-Ross-Rubinstein Model} with $T=3$ periods, initial price $S_0=8$, interest rate $r=0.1$ and parameters $u-2,d=1/2$\footnote{Intuitively this means the price doubles or halves each time-period.}
+    \par No arbitrage opportunities exist since $d=0.5<1.1=1+r<2=u$.
+    \par We can calculate $q=(1+r-d)/(u-d)=(1.1-0.5)/(1.5)=0.4$.
+    \par After 3 periods, the possible values of $S_T$ are $1,4,16,64$.
+    \par In each case, the value of a \textit{European Call} with exercise price 4 is $60,12,0,0$.
+    \par The time $t=0$ price of this European call option is therefore
+    \[\begin{array}{rcl}
+      \Pi_K(0)&=&\frac1{(1+r)^T}\sum_{n=0}^T{T\choose n}q^n(1-q)^{T-n}(S_0u^nd^{T-n}-k)\\
+      &=&\frac1{1.1^3}\sum_{n=2}^3{3\choose n}q^n(1-q)^{3-n}(S_0u^nd^{3-n}-4)\quad\footnotemark\\
+      &=&\frac1{1.1^3}\left(60\cdot1\cdot q^3(1-q)^0+12\cdot3\cdot q^2(1-q)\right)\\
+      &=&5.4816
+    \end{array}\]
+    \footnotetext{The sum starts at $n=2$ as the payoff is zero if $n<2$.}
+  \end{example}
+
+  \begin{proposition}{Value of European Call Option in Cox-Ross-Rubinstein Model}
+    Consider a \textit{Cox-Ross-Rubinstein Model} with $T$ periods, starting price $S_0$, interest rate $r$ and parameters $d,u$.
+    \par Then the time $t$ price of a \textit{European Call Option} with exercise price $K$ is
+    \[ \Pi_K(t)=\frac1{(1+r)^{T-t}}\sum_{n=0}^{T-t}{{(T-t)}\choose n}q^n(1-q)^{T-t-n}\left\{S_0u^nd^{T-t-n}-K\right\}_+ \]
+    where $q=\frac{1+r-d}{u-d}$ as usual.
+  \end{proposition}
+
+\subsection{The Cox-Ross-Rubinstein Model and the Black-Scholes Formula}
 
 \section{Stochastic Processes in Continuous Time} \label{sec_stochastic_processes_in_continuous_time}
 
