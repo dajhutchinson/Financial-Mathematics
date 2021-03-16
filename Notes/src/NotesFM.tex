@@ -1915,6 +1915,33 @@
 
 \subsection{The Cox-Ross-Rubinstein Model and the Black-Scholes Formula}
 
+  \begin{remark}{Motivation}
+    Consider a market where we observe two assets in a continuous time-interval $[0,U]$:
+    \begin{itemize}
+      \item A riskless bond;
+      \item And, a stock.
+    \end{itemize}
+    We can try to approximate them using the \textit{Cox-Ross-Rubinstein Model} with $T$ periods, where trading is only possible at the following $T+1$ time-points
+    \[ 0,\frac{1\cdot U}T,\frac{2\cdot U}T,\dots,\frac{(T-1)\cdot U}T,U \]
+    Since we assume continuous compounding componding we define the interest rate of the \textit{Cox-Ross-Rubinstein Model} as $r_T=e^{\frac{rU}T}-1$, at time point $\frac{jU}T$, in the discrete model the bank account process has value
+    \[ (1+r_T)^j=e^{jrU}T \]
+    In the special case where $u_T=e^{\sigma\sqrt{U/T}}=1/d_T$ we obtain the \textit{Black-Scholes Formula} as the limit of the prices of a \textit{European Call Option} in our \textit{Cox-Ross-Rubinstein Models} if $T\to\infty$.
+  \end{remark}
+
+  \begin{theorem}{Black-Scholes Formula}
+    Consider a \textit{European Call Option} with exercise price $K$ and matures at time $U$.
+    \par Let $\Pi_K^{(t)}(0)$ denote its fair-price in a \textit{Cox-Ross-Rubinstein Model} with $T+1$ time-points $\left\{0,\frac{U}T,\dots,U\right\}$, constant interest rate $r_T=e^{-\frac{rU}T}-1$ and $u_T=e^{\igma\sqrt{U/T}}=\frac1{d_T}$. Then
+    \[ \lim_{T\to\infty}\Pi_K^{(T)}(0)=\Pi_K^{BS}(0) \]
+    where
+    \[\begin{array}{rrcl}
+      &\Pi_K^{BS}(0)&=&S_0\Phi\big(d_1(S_0,U)\big)-Ke^{-rU}\big(d_2(S_0,U)\big)\\
+      \text{with}\\
+      &d_1(s,u)&=&\dfrac{\ln(s/K)+\left(r+(\sigma^2/2)\right)U}{\sigma\sqrt{U}}\\
+      &d_2(s,u)&=&\dfrac{\ln(s/K)+\left(r-(\sigma^2/2)\right)U}{\sigma\sqrt{U}}
+    \end{array}\]
+    $\Phi$ is the CDF of the standard Normal distribution.
+  \end{theorem}
+
 \section{Stochastic Processes in Continuous Time} \label{sec_stochastic_processes_in_continuous_time}
 
 \subsection{The Brownian Motion}
