@@ -1,0 +1,236 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in, paperwidth=8.3in, paperheight=11.7in]{geometry}
+\usepackage{amsmath,amsfonts,fancyhdr,bbm}
+\usepackage[section,nohyphen]{DomH}
+\headertitle{Finance Mathematics - Problem Sheet 6}
+
+\begin{document}
+
+\questionsfalse
+% \answersfalse
+
+\title{Finance Mathematics - Problem Sheet 6}
+\author{Dom Hutchinson}
+\date{\today}
+\maketitle
+
+\begin{question}{1.}
+  Consider the two-period model as discussed in lectures, with no interest rate ($r=0$) and one risky security describe by the table below
+  \begin{center}
+    $S_t(\omega)$=
+    \begin{tabular}{c|ccc}
+      $\omega\setminus t$&0&1&2\\
+      $\omega_1$&5&8&9\\
+      $\omega_2$&5&8&6\\
+      $\omega_3$&5&4&3
+    \end{tabular}
+  \end{center}
+  Using the techniques of the example in \texttt{Section 3.4} of the notes, find the time $t=0$ price of an American put that has exercise price $e=6$.
+  \par Is it optimal to exercise early and, if so, when?
+  \par Find a replicating trading strategy.
+\end{question}
+
+\begin{answer}{1.}
+  First I find a risk-neutral probability measure $\Q$ for this security.
+  \par Let $p_1:=\Q(S_1=8)$. Then
+  \[\begin{array}{rrcl}
+    &5&=&8p_1+4(1-p_1)\\
+    &&=&4+4p_1\\
+    \implies&p_1&=&1/4
+  \end{array}\]
+  Thus $\Q(S_1=8)=1/4$ and $\Q(S_1=4)=1-p_1=3/4$.
+  \par Let $p_2:=\Q(S_2=9|S_1=8)$. Then
+  \[\begin{array}{rrcl}
+    &8&=&9p_2+6(1-p_2)\\
+    &&=&6+3p_2\\
+    \implies&p_2&=&2/3
+  \end{array}\]
+  Thus $\Q(S_2=9|S_1=8)=2/3$ and $\Q(S_2=6|S_1=8)=1-p_2=1/3$.
+  \par Let $p_3:=\Q(S_2=6|S_1=4)$. Then
+  \[\begin{array}{rrcl}
+    &4&=&6p_2+3(1-p_3)\\
+    &&=&3+3p_3\\
+    \implies&p_3&=&1/3
+  \end{array}\]
+  Thus $\Q(S_2=6|S_1=4)=1/3$ and $\Q(S_2=3|S_1=4)=1-p_3=2/3$.
+  \par Using these conditional probabilities we can deduce the risk-neutral probability measure $\Q$
+  \[\begin{array}{rcl}
+    \Q(\omega_1)&=&\Q(S_2=9|S_1=8)\Q(S_1=8)=(2/3)\cdot(1/4)=1/6\\
+    \Q(\omega_2)&=&\Q(S_2=7|S_1=8)\Q(S_1=8)=(1/3)\cdot(1/4)=1/12\\
+    \Q(\omega_3)&=&\Q(S_2=6|S_1=4)\Q(S_1=8)=(1/3)\cdot(3/4)=1/4\\
+    \Q(\omega_4)&=&\Q(S_2=6|S_1=3)\Q(S_1=8)=(2/3)\cdot(3/4)=1/2\\
+    \implies\Q&=&(1/6,1/12,1/4,1/2)
+  \end{array}\]
+  Since I am considering an American put option, the payout is $Y_t(\omega)=\{e-S_t(\omega)\}^+$. These values are summarised in the following table
+  \begin{center}
+    $Y_t(\omega)$=\begin{tabular}{c|ccc}
+        $t\setminus\omega$&0&1&2\\\hline
+        $\omega_1$&1&0&0\\
+        $\omega_2$&1&0&0\\
+        $\omega_3$&1&2&0\\
+        $\omega_4$&1&2&3
+    \end{tabular}
+  \end{center}
+  Now I calculate a Snell Envelope $\{Z_t\}$ for this payout process $\{Y_t\}$.
+  \par In states $\omega_1,\omega_2$ and time $t=1$ we have
+  \[\begin{array}{rcl}
+    Z_1&=&\max\left\{Y_1,\expect_\Q[Z_2|\mathcal{F}_1]\right\}\\
+    &=&\max\left\{0,0\cdot(2/3)+0\cdot(1/3)\right\}\\
+    &=&\max\left\{0,0\right\}\\
+    &=&0
+  \end{array}\]
+  \par In states $\omega_3,\omega_4$ and time $t=1$ we have
+  \[\begin{array}{rcl}
+    Z_1&=&\max\left\{Y_1,\expect_\Q[Z_2|\mathcal{F}_1]\right\}\\
+    &=&\max\left\{2,0\cdot(1/3)+3\cdot(2/3)\right\}\\
+    &=&\max\left\{2,2\right\}\\
+    &=&2
+  \end{array}\]
+  Thus, at time $t=0$ we have
+  \[\begin{array}{rcl}
+    Z_0&=&\max\left\{Y_0,\expect_\Q[Z_1|\mathcal{F}_0]\right\}\\
+    &=&\max\left\{1,0\cdot(1/4)+2\cdot(3/4)\right\}\\
+    &=&\max\left\{1,3/2\right\}\\
+    &=&3/2
+  \end{array}\]
+  The time $t=0$ fair price for this American put option is 3/2.
+  \vspace{.3cm}
+  \par By the optimal stopping theorem, the optimal exercise strategies $\tau(t)(\omega)=\min\{s\geq t:Z_s(\omega)=Y_s(\omega)$. For this problem these are
+  \[\begin{array}{rcl}
+    \tau(0)(\omega)&=&\begin{cases}
+      1&\text{if }\omega\in\{\omega_1,\omega_2\}\\
+      2&\text{if }\omega\in\{\omega_1,\omega_2\}
+    \end{cases}\\
+    \tau(1)(\omega)&=&\begin{cases}
+      1&\text{if }\omega\in\{\omega_1,\omega_2\}\\
+      2&\text{if }\omega\in\{\omega_1,\omega_2\}
+    \end{cases}\\
+    \tau(2)(\omega)&=&2\ \forall\ \omega\in\Omega
+  \end{array}\]
+  This means it is optimal to exercise early whenever it becomes apparent you are in states $\omega_1,\omega_2$ (ie if $S_1=8$).
+  \par I now find a replicating portfolio for $\tau(0)$. In the second time-period the following equations must be satisfied if $\omega\in\{\omega_3,\omega_4\}$
+  \[\begin{array}{rrcl}
+    &H_0(2)+3H_1(2)&=&Y_2(\omega_3)=0\\
+    \&&H_0(2)+6H_1(2)&=&Y_2(\omega_4)=3\\
+    \\
+    \implies&3H_1(2)&=&3\\
+    \implies&H_1(2)&=&1\\
+    \implies&H_0(2)+3\cdot1&=&0\\
+    \implies&H_0(2)&=&-3
+  \end{array}\]
+  Thus $H(2)(\omega)=(-3,1)$ if $\omega\in\{\omega_3,\omega_4\}$. We do not consider the states $\omega_1,\omega_2$ in the second time-period as the option would already have been exercised when using the optimal stopping strategy.
+  \par In the first time-period the following equations must be satisfied
+  \[\begin{array}{rrcl}
+    &H_0(1)+8H_1(1)&=&Z_1(\omega_1)=Z_2(\omega_2)=0\\
+    \&&H_0(1)+4H_1(1)&=&Z_1(\omega_3)=Z_2(\omega_4)=2\\
+    \\
+    \implies&4H_1(1)&=&-2\\
+    \implies&H_1(1)&=&-1/2\\
+    \implies&H_0(1)+8\cdot(-1/2)&=&0\\
+    \implies&H_0(1)&=&4
+  \end{array}\]
+  Thus $H(1)(\omega)=(4,-1/2)$. This has value $4+5\cdot(-1/2)=3/2$ at time $t=0$ which is the same as the fair price deduced above for the American put option.
+\end{answer}
+
+\begin{question}{2.}
+  There are 50 outcomes on a wheel of fortune numbered from 1 to 50. After spinning the wheel you can choose between having the amount of money as indicated by the wheel, or spinning again. The total number of trails is limited to $T=4$.
+  \par Calculate the Snell Envelope, and hence for each spin of the wheel specify the minimum amount of money you would have to win to stop the game (By using the optimal stopping strategy).
+\end{question}
+
+\begin{answer}{2.}
+  Let $\{X_t\}_{t}$ be the scores achieved each spin.
+  \par Note that each spin is independent so $\expect[X_t|\mathcal{F}_s]=\expect[X_t]=51/2\ \forall\ t,s$.
+  \par Now, consider constructing a \textit{Snell Envelope} $\{Z_t\}_t$ for this game.
+  \[\begin{array}{rcl}
+    Z_3&=&\max\left\{X_3,\expect[Z_4|\mathcal{F}_3]\right\}=\max\left\{X_3,\expect[X_4|\mathcal{F}_3]\right\}=\max\left\{X_3,\expect[Z_4]\right\}\\
+    &=&\max\left\{X_3,51/2\right\}
+  \end{array}\]
+  This means, if your third spin is 26, or greater, then you should take the money. Otherwise, proceed to the next spin.
+  \par Consider the expected value of $Z_3$
+  \[\begin{array}{rcl}
+    \expect[Z_3]&=&\expect[\max\{X_3,51/2\}]\\
+    &=&\frac1{50}\left(25\cdot\frac{51}2+\sum_{i=26}^{50}i\right)\\
+    &=&\frac1{50}\left(25\cdot\frac{51}2+25\cdot\frac12(50+26)\right)\\
+    &=&127/4
+  \end{array}\]
+  Now we can deduce $Z_2$
+  \[\begin{array}{rcl}
+    Z_2&=&\max\left\{X_2,\expect[Z_3|\mathcal{F}_2]\right\}=\max\left\{X_2,\expect[Z_3]\right\}\\
+    &=&\max\left\{X_3,127/4\right\}
+  \end{array}\]
+  This means, if your second spin is 32, or greater, then you should take the money. Otherwise, proceed to the next spin.
+  \par Consider the expected value of $Z_2$
+  \[\begin{array}{rcl}
+    \expect[Z_2]&=&\expect[\max\{X_2,127/4\}]\\
+    &=&\frac1{50}\left(31\cdot\frac{127}4+\sum_{i=32}^{50}i\right)\\
+    &=&\frac1{50}\left(31\cdot\frac{127}4+19\cdot\frac12(50+32)\right)\\
+    &=&7053/200
+  \end{array}\]
+  Now we can deduce $Z_1$
+  \[\begin{array}{rcl}
+    Z_1&=&\max\left\{X_1,\expect[Z_2|\mathcal{F}_1]\right\}=\max\left\{X_1,\expect[Z_2]\right\}\\
+    &=&\max\left\{X_3,7053/200\right\}
+  \end{array}\]
+  This means, if your first spin is 36, or greater, then you should take the money. Otherwise, proceed to the next spin.
+\end{answer}
+
+\begin{question}{3.}
+  The buyer of a ``Chooser Option'' acquires the right to choose at a fixed time-point $t$ between a call and a put option with strike price $e$ expiring at time $T>t$, so the payoff is
+  \[ \{S_T-e\}^+\cdot\indexed\{C_t\geq P_t\}+\{e-S_T\}^+\cdot\indexed\{C_t<P_t\} \]
+  where $C_t,P_t$ are the time $t$ prices of a call option and put option, respectively, both with exercise price $e$ and expiring at time $T$.
+\end{question}
+
+\begin{question}{3. a)}
+  Show that the time $T$ payoff is equal to
+  \[ \{S_T-e\}^++(e-S_T)\cdot\indexed\{C_t<P_t\} \]
+\end{question}
+
+\begin{answer}{3. a)}
+  Consider the following three cases
+  \begin{enumerate}
+    \item \textit{Case 1} - $C_t\geq P_t$.
+    \par The time $T$ payoff is
+    \[ \{S_T-e\}^+=\{S_T-e\}^++(e-S_T)\indexed\{C_t<P_t\} \]
+    the equality is due to $\indexed\{C_t<P_t\}=0$.
+    \item \textit{Case 2} - $C_t<P_t$ and $e\geq S_T$.
+    \par The time $T$ payoff is
+    \[\begin{array}{rcl}
+      e-S_T&=&(e-S_T)\indexed\{C_t<P_t\}\\
+      &=&\{S_T-e\}^++(e-S_T)\indexed\{C_t<P_t\}\text{ since }S_T-e\leq0
+    \end{array}\]
+    \item \textit{Case 3} - $C_t<P_t$ and $e<S_T$.
+    \par The time $T$ payoff is
+    \[\begin{array}{rcl}
+      0&=&(S_T-e)+(e-S_T)\\
+      &=&\{S_T-e\}^++(e-S_T)\indexed\{C_t<P_t\}
+    \end{array}\]
+  \end{enumerate}
+  The result holds in call cases.
+\end{answer}
+
+\begin{question}{3. b)}
+  Assume that there is a constant interest rate $r$. Show that the time 0 price of a chooser option equals the price of a call option maturing at time $T$ with strike price $e$ plus the price of a put option maturing at time $t$ with a strike price $e(1+r)^{t-T}$.
+  \par \textit{HINT} - Use \texttt{3. a)}  and the fact that the discounted price process $S_T^*$ is a martingale wrt some measure $\Q$, then us the put-call parity.
+\end{question}
+
+\begin{answer}{3. b)}
+  \textit{I struggled with this question and have not managed to produce a proof. To be honest, I don't think much of what I have down below would help reach a proof.}
+  \par Note that the discounted price process $S_T^*$ is a Martingale. Thus
+  \[\begin{array}{rrcl}
+    &\expect\left[S_T^*|\mathcal{F}_0\right]&=&S_0^*\text{ by def. Martingale}\\
+    \implies&\expect\left[S_T^*|\mathcal{F}_0\right]&=&S_0\\
+    \implies&\expect\left[S_T(1+r)^{-T}\right]&=&\\
+    \implies&(1+r)^{-T}\expect[S_T]&=&\\
+    \implies&\expect[S_T]&=&S_0(1+r)^T
+  \end{array}\]
+  The payoff for the chooser option at time-period $t=T$ is
+  \[ Y_T=\left\{S_T-e\right\}_++(e-S_T)\indexed\{C_t<P_t\} \]
+  Thus
+  \[\begin{array}{rcl}
+    \expect[Y_T]&=&\left\{\expect[S_T]-e\right\}_++(e-\expect[S_T])\prob(C_t<P_t)\\
+    &=&\left\{S_0(1+r)^T-e\right\}_++(e-S_0(1+r)^T)\prob(C_t<P_t)
+  \end{array}\]
+\end{answer}
+
+\end{document}
