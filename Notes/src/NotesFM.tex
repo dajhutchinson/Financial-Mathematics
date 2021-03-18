@@ -1906,7 +1906,7 @@
     \footnotetext{The sum starts at $n=2$ as the payoff is zero if $n<2$.}
   \end{example}
 
-  \begin{proposition}{Value of European Call Option in Cox-Ross-Rubinstein Model}
+  \begin{proposition}{Value of European Call Option in Cox-Ross-Rubinstein Model}\label{prop_european_call_crr_model}
     Consider a \textit{Cox-Ross-Rubinstein Model} with $T$ periods, starting price $S_0$, interest rate $r$ and parameters $d,u$.
     \par Then the time $t$ price of a \textit{European Call Option} with exercise price $K$ is
     \[ \Pi_K(t)=\frac1{(1+r)^{T-t}}\sum_{n=0}^{T-t}{{(T-t)}\choose n}q^n(1-q)^{T-t-n}\left\{S_0u^nd^{T-t-n}-K\right\}_+ \]
@@ -1928,9 +1928,15 @@
     In the special case where $u_T=e^{\sigma\sqrt{U/T}}=1/d_T$ we obtain the \textit{Black-Scholes Formula} as the limit of the prices of a \textit{European Call Option} in our \textit{Cox-Ross-Rubinstein Models} if $T\to\infty$.
   \end{remark}
 
-  \begin{theorem}{Black-Scholes Formula}
+  \begin{theorem}{Binomial Distribution and Standard Normal}\label{the_binomial_distribution_and_standard_normal}
+    Let $Y_n\sim\text{Binomial}(n,\pi_n)$. Then
+    \[ \tilde{Y}_n:=\frac{Y_n-n\pi_n}{\sqrt{n\pi_n(1-\pi_n)}} \]
+    converges in distribution to the standard normal distribution as $n\to\infty$.
+  \end{theorem}
+
+  \begin{theorem}{Black-Scholes Formula}\label{the_black_scholes_formula}
     Consider a \textit{European Call Option} with exercise price $K$ and matures at time $U$.
-    \par Let $\Pi_K^{(t)}(0)$ denote its fair-price in a \textit{Cox-Ross-Rubinstein Model} with $T+1$ time-points $\left\{0,\frac{U}T,\dots,U\right\}$, constant interest rate $r_T=e^{-\frac{rU}T}-1$ and $u_T=e^{\igma\sqrt{U/T}}=\frac1{d_T}$. Then
+    \par Let $\Pi_K^{(t)}(0)$ denote its fair-price in a \textit{Cox-Ross-Rubinstein Model} with $T+1$ time-points $\left\{0,\frac{U}T,\dots,U\right\}$, constant interest rate $r_T=e^{-\frac{rU}T}-1$ and $u_T=e^{\sigma\sqrt{U/T}}=\frac1{d_T}$. Then
     \[ \lim_{T\to\infty}\Pi_K^{(T)}(0)=\Pi_K^{BS}(0) \]
     where
     \[\begin{array}{rrcl}
@@ -1941,6 +1947,85 @@
     \end{array}\]
     $\Phi$ is the CDF of the standard Normal distribution.
   \end{theorem}
+
+  \begin{proof}{\texttt{Theorem  \ref{sec_multi_period_models}.\ref{the_black_scholes_formula}}}
+    \everymath={\displaystyle}
+    Let $\alpha_T:=\min\left\{n:S_0u_T^nd_T^{T-n}>l\right\}$. This allows us to consider only terms in \texttt{Proposition \ref{sec_multi_period_models}.\ref{prop_european_call_crr_model}} which are positive.
+    \par We rewrite the time $t=0$ price $\Pi_K^{(T)}(0)$ in the $T^{th}$ \textit{Cox--Ross-Rubinstein Model} as
+    \[\begin{array}{rcll}
+      \Pi_K^{(T)}(0)&=&(1+r_T)^{-T}\sum_{n=\alpha_T}^T{T \choose n}q_T^n(1-q_T)^{T-n}(S_0u_T^nd_T^{T-n}-K)\\
+      &=&S_0\left(\sum_{n=\alpha_T}^T{T\choose n}\left(\frac{q_Tu_T}{1+r_T}\right)^n\left(\frac{(1-q_T)d_T}{1+r_T}\right)^{T-n}\right)\\
+      &-&(1+r_T)^{-T}K\left(\sum_{n=\alpha_T}^T{T\choose n}q_T^n(1-q_T)^{T-n}\right)&\quad[1]
+    \end{array}\]
+    We can identify terms involved in the second sum as the density of a $\text{Bin}(T,q_T)$ distribution.
+    \par For notational ease we define
+    \[ \hat{q}_T=\frac{q_Tu_T}{1+r_T} \]
+    This $\hat{q}_T$ is a probability\footnote{ie $\hat{q}_T\in(0,1)$} because
+    \[\begin{array}{rcl}
+      0<\hat{q}_T\\
+      &=&\frac{q_Tu_T}{1+r_T}\\
+      &=&\frac{\left(\frac{1+r_T-d_T}{u_T-d_T}\right)\cdot u_T}{q+r_T}\\
+      &=&\frac{u_T-\frac{d_Tu_T}{1+r_T}}{u_T-d_T}\\
+      &<&\frac{u_T-\frac{d_Tu_T}{u_T}}{u_T-d_T}\text{ since }u_T>1+r_T\\
+      &=&1
+    \end{array}\]
+    Moreover, we see from the definition of $q_T$ that
+    \[\begin{array}{rcl}
+      1-\hat{q}_T&=&\frac{1+r_T-q_Tu_T}{1+r_T}\\
+      &=&\frac{1+r_T-(1+r_T-d_T)-q_Td_T}{1+r_T}\\
+      &=&\frac{(1-q_T)d_T}{1+r_T}
+    \end{array}\]
+    Thus we identify the first sum in $[1]$ as the density of $Bin(T,\hat{q}_T)$ distribution.
+    \par Now, let $Y_T\sim\text{Bin}(T,q_T)$ and $\hat{Y}_T\sim\text{Bin}(T,\hat{q}_T)$. We can rewrite $[1]$ as
+    \[ \Pi_K^{(T)}(0)=S_0\prob\left(\hat{Y}>d_T-1\right)-K(1+r_T)^{-T}\prob(Y_T>d_T-1) \]
+    Thus we need to show that
+    \begin{enumerate}
+      \item $\lim_{T\to\infty}\prob\left(\hat{Y}_T>\alpha_T-1\right)=\Phi\left(d_1(S_0,U)\right)$.\proof{This result is not proved in detail}
+      \item $\lim_{T\to\infty}\prob\left(Y_T>\alpha_T-1\right)=\Phi\left(d_2(S_0,U)\right)$.
+    \end{enumerate}
+    Consider ii) first
+    \[ \prob(Y_T>\alpha_T-1)=\prob\left(\frac{Y_T-Tq_t}{\sqrt{Tq_T(1-q_T)}}>\frac{d_T-1-Tq_T}{\sqrt{Tq_T(1-q_T)}}\right) \]
+    We want to use \texttt{Theorem \ref{sec_multi_period_models}.\ref{the_binomial_distribution_and_standard_normal}} and therefore determine the convergence of the term $\frac{\alpha_T-1-Tq_T}{\sqrt{Tq_T(1-q_T)}}$.
+    \par Note that we defined
+    \[ u_T:=\exp\{\sigma\sqrt{U/T}\}=1/d_T\quad\text{and}\quad r_T=\exp\{rU/T\}-1 \]
+    \par Using a \textit{Taylor Decomposition} we see that
+    \[\begin{array}{rcl}
+      q_T&=&\frac{1+r_T-d_T}{u_T-d_T}\\
+      &=&\frac{\exp\{rU/T\}-e^{-\sqrt{U/T}}}{e^{\sigma\sqrt{U/T}}-e^{-\sigma\sqrt{U/T}}}\\
+      &=&\frac{\{1+(rU/T)+o(1/T)\}  +\{-1\sigma\sqrt{U/T}-\frac12\sigma^2(U/T)-o(1/T)\}}{\{1+(\sigma\sqrt{U/T})+\frac12\sigma^2(U/T)+o(1/T)\}+\{-1+\sigma\sqrt{U/T}-\frac12\sigma^2(U/T)-o(1/T)\}}\\
+      &=&\frac{(rU/T)+\sigma\sqrt{U/T}-\frac12\sigma^2(U/T)+o(1/T)}{2\sigma\sqrt{U/T}+o(1/T)}\\
+      &=&\frac12\left\{\frac{r(U/T)}{\sigma\sqrt{U/T}}+\frac{\sigma\sqrt{U/T}}{\sigma\sqrt{U/T}}-\frac{(1/2)\sigma^2(U/T)}{\sigma\sqrt{U/T}}\right\}+o(1/\sqrt{T})\\
+      &=&\frac12\left(\left(\frac{r}\sigma-\frac\sigma2\right)\sqrt{U/T}+1\right)+o(1/\sqrt{T})
+    \end{array}\]
+    Thus we obtain the limiting relations
+    \[ \lim_{T\to\infty}q_T=\frac12\text{ and }\lim_{T\to\infty}(1-2q_T)\sqrt{UT}=-U\left(\frac{r}{\sigma}-\frac\sigma2\right) \]
+    Finally, we see from the definition of $\alpha_T$ that for some $|\gamma_T|<1$
+    \[\begin{array}{rcl}
+      \alpha_T&=&\frac{\ln(K/S_0d_T^T)}{\ln(u_T/d_T)}+\gamma_T\\
+      &=&\frac{\ln(k/S_0)-T\ln(d_T)}{\ln(u_T^2)}+\gamma_T\\
+      &=&\frac{\ln(K/S_0)+T\sigma\sqrt{U/T}}{2\sigma\sqrt{U/T}}+\gamma_T
+    \end{array}\]
+    Hence
+    \[\begin{array}{rl}
+      &\lim_{T\to\infty}\frac{\alpha_T-1-Tq_T}{\sqrt{Tq_T(1-q_T)}}\\
+      =&\lim_{T\to\infty}\frac{\left(\frac{\ln(K/S_0)+T\sigma\sqrt{U/T}}{2\sigma\sqrt{U/T}}+\gamma_T\right)-1-Tq_T}{\sqrt{Tq_T(1-q_T)}}\\
+      =&\lim_{T\to\infty}\frac{\ln(K/S_0)+\sigma\sqrt{U_T}(1-2q_T)}{2\sigma\sqrt{Uq_T(1-q_T)}}\footnotemark\\
+      =&\frac{\ln(K/S_0)-(r-\sigma^2/2)U}{\sigma\sqrt{U}}\\
+      =&-d_2(S_0,U)
+    \end{array}\]
+    \footnotetext{$\gamma_T$ disappears due to taking the limit.}
+    By \texttt{Theorem \ref{sec_multi_period_models}.\ref{the_binomial_distribution_and_standard_normal}} we conclude that
+    \[ \lim_{T\to\infty}\prob(Y_T>\alpha_T-1)=1-\Phi(-d_2(S_0,U))=\Phi(d_2(S_0,u)) \]
+    This proves result ii).
+    \par To prove result i) a very similar argument is used.
+    \par Using the limiting relations
+    \[ \lim_{T\to\infty}\hat{q}_T=\frac12\text{ and }\lim_{T\to\infty}(1-2\hat{q}_T)\sqrt{UT}=-U\left(\frac{r}\sigma+\frac\sigma2\right) \]
+    we can conlude that
+    \[ \lim_{T\to\infty}\frac{\alpha_T-1-T\hat{q}_T}{\sqrt{T\hat{q}_T(1-\hat{q}_T)}}=\frac{\ln(k/S_0)0(r+\sigma^2/2)U}{\sigma\sqrt{U}=-d_1(S_0,U)} \]
+    Hence
+    \[ \lim_{T\to\infty}\prob(\hat{Y}_T>\alpha_T-1)=1-\Phi(-d_1(S_0,U))=\Phi(d_1(S_0,U)) \]
+    \proved
+  \end{proof}
 
 \section{Stochastic Processes in Continuous Time} \label{sec_stochastic_processes_in_continuous_time}
 
