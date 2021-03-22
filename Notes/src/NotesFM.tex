@@ -2031,6 +2031,151 @@
 
 \subsection{The Brownian Motion}
 
+  \begin{definition}{Stochastic Process}
+    A \textit{Stochastic Process} $X:=\{X_t\}_{t\geq0}$ is a family of random variables $X_t:\Omega\to\reals$.
+    \par For a given $\omega\in\Omega$ and time-point $t$, the value $X(t,\omega)$ is called the \textit{Trajectory} of the process $X$. We say $X$ is \textit{Adapted} to a \textit{Filtration} $\{\mathcal{F}_t\}_{t\geq0}$, if $X_t$ is $\mathcal{F}_t$-measurable for all $t$.
+  \end{definition}
+
+  \begin{definition}{Martingale}
+    A \textit{Stochastic Process} $X:=\{X_t\}_{t\geq0}$ is a \textit{Martingale} wrt \textit{Filtration} $\mathcal{F}:=\{\mathcal{F}_t\}_{t\geq0}$ if
+    \begin{enumerate}
+      \item $X$ is adapted to the filtration $\mathcal{F}$.
+      \item $\expect[|X_t|]<\infty\ \forall\ t\geq0$.
+      \item $\expect[X_t|\mathcal{F}_s]=X_s\ \forall\ s\in[0,t]$.
+    \end{enumerate}
+    The definitions for \textit{Super-} and \textit{Sub-Martingales} are similar.
+  \end{definition}
+
+  \begin{figure}[H]
+    \centering\includegraphics[width=.7\textwidth]{BrownianMotionExample.PNG}
+    \caption{An example of Brownian Motion.}
+    \label{fig_brownian_motion_example}
+  \end{figure}
+
+  \begin{remark}{Relevance Brownian Motion}
+    \textit{Brownian Motion} can be used to construct a good model for prices (See \texttt{Figure \ref{fig_brownian_motion_example}}). Brownian motion is not smooth but generally shows a particular trend/drift.
+  \end{remark}
+
+  \begin{definition}{$S_t^{(n)}$}\label{def_S_t_n}
+    Let $\{S_j\}_{j\in\nats}$ be a \textit{Random Walk} defined by $S_0=0$ and $S_n=S_{n-1}+X_n$ where $X_1,X_2,\dots$ are IID random variables with mean 0 and variance 1.
+    \par Define a process $\{S_t^{(n)}\}_{t\in[0,1]}$ on $[0,1]$ by setting $S_t^{(n)}=S_j/\sqrt{n}$ for every $t=j/n$ and linearly interpolate in between.
+  \end{definition}
+
+  \begin{proposition}{Properties of $S_t^{(n)}$}
+    Here are some properties of $\{S_t^{(n)}\}_{t\in[0,1]}$
+    \begin{enumerate}
+      \item $S_0^{(n)}=S_0/\sqrt{n}=0$.
+      \item Taking $t=j/n$ and $u=k/n$ gives
+      \[ S_{t+u}^{(n)}-S_t^{(n)}=(S_{j+k}-S_j)/\sqrt{n}=(X_{j+1}+\dots+X_{j+k})/\sqrt{n} \]
+      As the $X$s are independent, this shows that the change in value of a given period is independent of both the start and end points.
+      \item Taking $t=j/n$ and $u=k/n$, for large $n$. Consider this expression for the change in value over a time period
+      \[ S_{t+u}^{(n)}-S_t^{(n)}=\frac{X_{j+1}+\dots+X_{j+k}}{\sqrt{n}}=\frac{\sqrt{k}}{\sqrt{n}}\left(\sum_{i=j+1}^{j+k}\frac{X_i}{\sqrt{k}}\right) \]
+      By the \textit{Central Limit Theorem} this tends to $\text{Normal}\left(0,k/n\right)=\text{Normal}\left(0,u\right)$.
+      \item $S_t^{(n)}(\omega)$ is continuous as a function of $t$, for all $n$ and all $\omega\in\Omega$.
+      \item As $n\to\infty$, $S_t^{(n)}$ tends to a process $W_t$ known as \textit{Brownian Motion}.
+    \end{enumerate}
+  \end{proposition}
+
+  \begin{theorem}{Theorem of Donsher\footnote{AKA \textit{Functional Central Limit Theorem}}}
+    \textit{NON-EXAMINABLE}
+    \par For every bounded and continuous function $h:C(0,1)\to\reals$
+    \[ \expect\left[h(\{S_t^{(n)}\}_{t\in[0,1]})\right]\longrightarrow\expect\left[h(\{W_t\}_{t\in[0,1]})\right] \]
+  \end{theorem}
+
+  \begin{definition}{Brownian Motion\footnote{AKA \textit{Wiener Process}}}\label{def_brownian_motion}
+    Let $\mathcal{F}_t$ be a \textit{Filtration}.
+    \par An \textit{Adapted Stochastic Process} $W:=\{W_t\}_{t\geq0}$ is a standard one-dimensional \textit{Brownian Motion} if
+    \begin{enumerate}
+      \item $W_0=0$ (Almost surely)
+      \item $W$ has independent increments. (i.e. $W_{t+u}-W_t$ is independent of $\mathcal{F}_t$ for all $u,t\geq0$.)
+      \item $W$ has stationary Gaussian increments. (i.e. $W_{t+u}-W_t$ is normally distributed with mean 0 and variance $u$.)
+      \item $W$ has continuous paths. ($W_t(\omega)$ is a continuous function of $t$ for all $\omega\in\Omega$.)
+    \end{enumerate}
+  \end{definition}
+
+  \begin{theorem}{Wiener}
+    The existence of \textit{Brownian Motion} was proved by \textit{Wiener} in 1923. That's the theorem.
+  \end{theorem}
+
+  \begin{proposition}{Properties of Standard Brownian Motion}\label{pro_properties_of_standard_brownian_motion}
+    Let $W_t$ be \textit{Standard Brownian Motion}. Then
+    \begin{enumerate}
+      \item $\expect[X_t]=0,\ \var(W_t)=t\ \forall\ t$.
+      \item $\forall\ s,t\ \cov(W_s,W_t)=\min\{s,t\}$.
+      \item $-W_t$ is \textit{Standard Brownian Motion}.
+      \item For fixed $t$, $X_s:=W_{s+t}-W_t$ is \textit{Standard Brownian Motion}. (i.e. You can move the start point).
+      \item For any $\alpha$, $y_s:=W_{\alpha s}/\sqrt\alpha$ is \textit{Standard Brownian Motion}. (i.e. If you zoom in to see a day, rather than a week, the same properties hold).
+    \end{enumerate}
+  \end{proposition}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_stochastic_processes_in_continuous_time}.\ref{pro_properties_of_standard_brownian_motion}} i)-v)}
+    \begin{enumerate}
+      \item Follows from properties i) \& iii) of \texttt{Definition \ref{sec_stochastic_processes_in_continuous_time}.\ref{def_brownian_motion}}.
+      \item By the previous result we can conclude that
+      \[\begin{array}{rcl}
+        \cov(W_s,W_t)&=&\expect[W_s\cdot W_t]\\
+        &=&\expect[W_s\cdot(W_t-W_s)]+\expect[W_s^2]\\
+        &=&\expect[W_s\cdot(W_t-W_s)]+\underbrace{\var(W_s)}_{=s}\\
+        &=&\underbrace{\expect[W_s]}_{=0}\expect[W_t-W_s]+s\\
+        &=&s
+      \end{array}\]
+      \item $\expect[-W_t]=-\expect[W_t]=0$ and increments occur in the $t$-direction, not the $X$-direction, so the distribution of $W_{t+u}-W_t$ is unaffected.
+      \item In the case $t=0$ we find that $X_0=W_t-W_t=0$. The other properties in \texttt{Defintion \ref{sec_stochastic_processes_in_continuous_time}.\ref{def_brownian_motion}} are shift-invariant and therefore follow as well.
+      \item The main part to check here is propert iii) of \texttt{Defintion \ref{sec_stochastic_processes_in_continuous_time}.\ref{def_brownian_motion}}. Indeed
+      \[\begin{array}{rcl}
+        Y_{t+s}-Y_t&=&\underbrace{(W_{\alpha(t+s)}-W_{\alpha t})}_{\sim\text{Nor}(0,\alpha s)}/\sqrt{\alpha}\\
+        &\sim&\text{Normal}(0,s)
+      \end{array}\]
+    \end{enumerate}
+    \proved
+  \end{proof}
+
+  \begin{proposition}{More properties of Brownian Motion}\label{pro_more_properties_of_brownian_motion}
+    Let $\{W_t\}_{t\geq0}$ be \textit{Standard Brownian Motion} wrt \textit{Filtration} $\{\mathcal{F}_t\}$. Then
+    \begin{enumerate}
+      \item $\{W_t\}_{t\geq0}$ is a \textit{Martingale}.
+      \item $\{W_t^2-t\}_{t\geq0}$ is a \textit{Martingale}.
+      \item $\forall\ \lambda\in\reals$, the process $\{Z_t\}_{t\geq0}$ defined as
+      \[ Z_t=\exp\left\{\lambda W_t-\frac12\lambda^2t\right\} \]
+      is a \textit{Martingale}.
+      \par More generally, the \textit{Geometric Brownian Motion} with volatility $\sigma>0$ and drift $a\in\reals$ can be defined as
+      \[ \tilde{Z}_t=\exp\left\{\sigma W_t+at\right\} \]
+      and is a \textit{Martingale} \underline{iff} $a=-\sigma^2/2$.
+    \end{enumerate}
+  \end{proposition}
+
+  \begin{proof}{\texttt{Proposition \ref{sec_stochastic_processes_in_continuous_time}.\ref{pro_more_properties_of_brownian_motion}}}
+    \begin{enumerate}
+      \item We can write $W_t=(W_t-W_s)+W_s$. As $(W_t-W_s)$ is independent of filtration $\mathcal{F}_s$ and has zero mean, we can conclude that
+      \[ \expect[W_t|\mathcal{F}_s]=\expect[W_t-W_s|\mathcal{F}_s]+\expect[W_s|\mathcal{F}_s]=\underbrace{\expect[W_t-W_s]}_{=0}+W_s=W_s \]
+      \item Similarly, we can write
+      \[ W_t^2=(W_t-W_s)^2+2W_s(W_t-W_s)+W_s^2 \]
+      Then
+      \[\begin{array}{rcl}
+        \expect[W_t^2-t|\mathcal{F}_s]&=&\left\{\expect[(W_t-W_s)^2|\mathcal{F}_s]+2W_s\expect[W_t-W_s|\mathcal{F}_s]+W_s^2\right\}-t\\
+        &=&\var(W_t-W_s)+0+W_s^2-t\\
+        &=&t-s+W_s^2-t\\
+        &=&W_s^2-s
+      \end{array}\]
+      \item We find that
+      \[\begin{array}{rcl}
+        \expect[\tilde{Z}_t|\mathcal{F}_s]&=&\expect[\exp\{\sigma W_t+at\}|\mathcal{F}_s]\\
+        &=&\exp\{at\}\expect[\exp\{\sigma(W_t-W_s+W_s)\}|\mathcal{F}_s]\\
+        &=&\exp\{\sigma W_s+at\}\cdot\expect[\exp\{\sigma\overbrace{(W_t-W_s)}^{:=N}\}|\mathcal{F}_s]\\
+        &=&\exp\{\sigma W_s+at\}\expect[\exp\{\sigma N\}|\mathcal{F}_s]\\
+        &=&\exp\{\sigma W_s+at\}\expect[\exp\{\sigma N\}]
+      \end{array}\]
+      where $N\sim\text{Normal}(0,t-s)$. The MGF of $N$ is $\expect[e^{\sigma N}]=e^{(t-s)\sigma^2/2}$, therefore
+      \[\begin{array}{rcl}
+        \expect[\tilde{Z}_t|\mathcal{F}_s]&=&\exp\{\sigma W_s+at\}\expect[\exp\{\sigma N\}]\\
+        &=&\tilde{Z}_se^{a(t-s)}e^{(t-s)\sigma^2/2}\\
+        &=&\tilde{Z}_s\exp\left\{(t-s)\left(a+\frac{\sigma^2}2\right)\right\}
+      \end{array}\]
+      We conclude that $\tilde{Z}_t$ is a \textit{Martingale} \underline{iff} $a=-\sigma^2$\footnote{As we require $\expect[\tilde{Z}_t|\mathcal{F}_s]=\tilde{Z}_s$ which only occurs \underline{iff} $a+\frac{\sigma^2}2=0$.}.
+    \end{enumerate}
+    \proved
+  \end{proof}
+
 \subsection{Stochastic Integration}
 
 \subsection{It\^o's Lemma}
