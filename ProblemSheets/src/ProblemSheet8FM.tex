@@ -1,0 +1,61 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in, paperwidth=8.3in, paperheight=11.7in]{geometry}
+\usepackage{amsmath,amsfonts,fancyhdr,bbm,tikz}
+\usetikzlibrary{trees}
+\usepackage[section,nohyphen]{DomH}
+\headertitle{Financial Mathematics - Problem Sheet 8}
+
+\begin{document}
+
+\questionsfalse
+% \answersfalse
+
+\title{Financial Mathematics - Problem Sheet 8}
+\author{Dom Hutchinson}
+\date{\today}
+\maketitle
+
+\begin{question}{2.}
+  Assume that $\{W_t\}$ is a standard Brownian Motion. The process $\{U_t\}_{t\in[0,1]}$ whose terms are defined by $U_t=W_t-tW_1$ is called a ``Brownian Bridge'' since $U_0=U_1=0$.
+\end{question}
+
+\begin{question}{2. a)}
+  Show that the covariance between $U_s$ and $U_t$ is given by
+  \[ \cov(U_s,U_t)=s(1-t)\text{ for }0\leq s\leq t\leq1 \]
+\end{question}
+
+\begin{answer}{2. a)}
+  TODO
+\end{answer}
+
+\begin{question}{2. b)}
+  Show that the process $\{Y_t\}$ whose terms are defined by $Y_t=(1+t)\cdot U_{t/(1+t)}$ is a Brownian Motion on $[0,\infty)$.
+\end{question}
+
+\begin{answer}{2. b)}
+  TODO
+\end{answer}
+
+\begin{question}{3.}
+  Use a computer to approximate and plot sample samples of a standard Brownian Motion. Consider a random walk $\{S_j\}_{j\in\nats}$ defined by $S_0=0,\ S_n=S_{n-1}+X_n$ where $X_1,X_2,\dots\iid N(0,1)$.
+  \par Remember that the process $\{S_t^n\}_{t\in[0,1]}$ is derived by setting $S_t^n=S_j/\sqrt{n}$ for every $t=j/n$ and linear interpolation in between, approximates the Brownian Motion on $[0,1]$ if $n$ is large.
+\end{question}
+
+\begin{question}{3. a)}
+  Use $n=1000$ and make a plot of two realisations of your approximation to Brownian Motion.
+\end{question}
+
+\begin{answer}{3. a)}
+  TODO
+\end{answer}
+
+\begin{question}{3. b)}
+  Finally add a drift term to the Brownian Motion $W_t+\mu t$. Again, use $n=1000$ and make a plot of a realisation of this process for $\mu=-3$ and $\mu=30$.
+\end{question}
+
+\begin{answer}{3. b)}
+  TODO
+\end{answer}
+
+\end{document}
