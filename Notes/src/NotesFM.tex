@@ -2512,11 +2512,34 @@
   \end{proof}
 
   \begin{example}{Geometric Brownian Motion}
-    
+    Consider the following stochastic differential equation
+    \[ X_0=x_0\quad dX_t=aX_tdt+bX_tdW_t \]
+    Let $f(t,x)=\ln x$. Then
+    \[ f_t=0\quad f_x=1/x\quad f_{xx}=-1/x^2 \]
+    By \texttt{Theorem \ref{sec_stochastic_processes_in_continuous_time}.\ref{the_ito_v3}} with $b_t=aX_t,\ \sigma_t=bX_t$ we have
+    \[\begin{array}{rcl}
+      df(t,X_t)&=&\left(a-\frac12b^2\right)dt+bdW_t\\
+      f(t,X_t)&=&\ln X_t\\
+      &=&\ln X_0+\int_0^t\left(a-\frac12b^2\right)du+b\int_0^tdW_u
+    \end{array}\]
+    Consequently
+    \[ X_t=x_0\exp\left\{\left(a-\frac12b^2\right)t+bW_t\right\} \]
   \end{example}
 
   \begin{example}{Ornstein-Uhlenbeck Process}
-
+    Consider the stochastic differential equation
+    \[ X_0=x_0\quad dX_t=(b-aX_t)dt+cdW_t \]
+    Let $f(t,x)=e^{at}x$. Then
+    \[ f_t=af\quad f_x=e^{at}\quad f_{xx}=0 \]
+    By \texttt{Theorem \ref{sec_stochastic_processes_in_continuous_time}.\ref{the_ito_v3}} with $b_t=b-aX_t$ and $\sigma_t=c$ we find that
+    \[\begin{array}{rcl}
+      df(t,X_t)&=&\left(ae^{at}X_t(b-aX_t)e^{at}\right)dt+ce^{at}dW_t\\
+      &=&be^{at}dt+ce^{at}dW_t\\
+      f(t,X_t)-f(0,X_0)&=&e^{at}X_t-x_0\\
+      &=&\int_0^tbe^{au}du+\int_0^tce^{au}dW_u
+    \end{array}\]
+    Consequently
+    \[ X_t=x_0e^{-at}+\frac{b}a\left(1-e^{-at}\right)+c\int_0^te^{-a(t-u)}dW_u \]
   \end{example}
 
 \section{Financial Market Models in Continuous Time} \label{sec_financial_market_models_in_continuous_time}
