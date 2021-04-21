@@ -8,7 +8,7 @@
 
 \begin{document}
 
-% \questionsfalse
+\questionsfalse
 % \answersfalse
 
 \title{Financial Mathematics - Assessed Problem Sheet 3}
@@ -162,24 +162,9 @@
   \begin{center}
     \begin{tikzpicture}[->, level/.style={sibling distance = 4cm/(#1), level distance = 4cm}, scale=0.6,transform shape,grow=right]
       \node {$\{80-120\}_+=0$}
-        child {node {$R=2$}
-          child {
-            node {$R=2$}
-            child {node {$R=2$}}
-            child {node {$R=2$}}
-          }
-          child {
-            node {$R=2$}
-            child {node {$R=2$}}
-            child {node {$R=2$}}
-          }
-        }
+        child {node {$R=2$}}
         child {node {$\{120-120\}_+=0$}
-          child {
-            node {$R=2$}
-            child {node {$R=2$}}
-            child {node {$R=2$}}
-          }
+          child {node {$R=2$}}
           child {
             node {$\{180-120\}_+=60$}
             child {node {$\{90-120\}_+=0$}}
@@ -192,71 +177,56 @@
   At time-point $t=3$
   \[ Z_3(\omega)=Y_3(\omega)\ \forall\ \omega \]
   At time-point $t=2$ and state $\omega_{uu}$ (ie Two up steps have occurred)
-  \[ \expect[Z_3|\mathcal{F}_2]=150q+0\cdot(1-q)=90 \]
+  \[ \expect[Z_3|\mathcal{F}_2]=\frac{1}{1.1}\left(150q+0\cdot(1-q)\right)=81.8182 \]
   At time-point $t=2$ and state $\omega_{ud}$ (ie One up step and one down step have occurred)
-  \[ \expect[Z_3|\mathcal{F}_2]=2q+2\cdot(1-q)=2 \]
+  \[ \expect[Z_3|\mathcal{F}_2]=\frac1{1.1}\left(2q+2\cdot(1-q)\right)=1.8182 \]
   At time-point $t=2$ and state $\omega_{dd}$ (ie Two down steps have occurred)
-  \[ \expect[Z_3|\mathcal{F}_2]=2q+2\cdot(1-q)=2 \]
+  \[ \expect[Z_3|\mathcal{F}_2]=\frac1{1.1}\left(2q+2\cdot(1-q)\right)=1.8182 \]
   Thus
   \[\begin{array}{rcl}
     Z_2(\omega)&=&\max(\expect[Z_3|\mathcal{F}_2],Y_2(\omega))\\
     &=&\begin{cases}
-      \max(60,90)&\text{if }\omega=\omega_{uu}\\
-      \max(2,2)&\text{otherwise}\\
+      \max(60,81.8182)&\text{if }\omega=\omega_{uu}\\
+      \max(2,1.8182)&\text{otherwise}\\
     \end{cases}\\
     &=&\begin{cases}
-      90&\text{if }\omega=\omega_{uu}\\
+      81.8182&\text{if }\omega=\omega_{uu}\\
       2&\text{otherwise}\\
     \end{cases}
   \end{array}\]
   At time-point $t=1$ and state $\omega_{u}$ (ie One up steps has occurred)
-  \[ \expect[Z_2|\mathcal{F}_1]=90q+2\cdot(1-q)=54.8 \]
+  \[ \expect[Z_2|\mathcal{F}_1]=\frac1{1.1}\left(81.8182\cdot q+2\cdot(1-q)\right=45.3554 \]
   At time-point $t=1$ and state $\omega_{d}$ (ie One down step has occurred)
-  \[ \expect[Z_2|\mathcal{F}_1]=2q+2\cdot(1-q)=2 \]
+  \[ \expect[Z_2|\mathcal{F}_1]=\frac1{1.1}\left(2q+2\cdot(1-q)\right)=1.8182 \]
   Thus
   \[\begin{array}{rcl}
     Z_1(\omega)&=&\max(\expect[Z_2|\mathcal{F}_1],Y_1(\omega))\\
     &=&\begin{cases}
-      \max(54.8,0)&\text{if }\omega=\omega_u\\
-      \max(2,2)&\text{if }\omega=\omega_d
+      \max(45.3554,0)&\text{if }\omega=\omega_u\\
+      \max(2,1.8182)&\text{if }\omega=\omega_d
     \end{cases}\\
     &=&\begin{cases}
-      54.8&\text{if }\omega=\omega_u\\
+      45.3554&\text{if }\omega=\omega_u\\
       2&\text{if }\omega=\omega_d
     \end{cases}
   \end{array}\]
   At time-point $t=0$
   \[\begin{array}{rcl}
     \expect[Z_1|\mathcal{F}_0]&=&\expect[Z_1]\\
-    &=&(54.8)q+2(1-q)\\
-    &=&33.68
+    &=&\frac1{1.1}\left(45.3554\cdot q+2(1-q)\right)\\
+    &=&25.4666
   \end{array}\]
   Thus
-  \[ Z_0=\max(\expect[Z_1|\mathcal{F}_0],Y_0(\omega))=\max(33.68,0)=33.68 \]
+  \[ Z_0=\max(\expect[Z_1|\mathcal{F}_0],Y_0(\omega))=\max(25.4666,0)=25.4666 \]
   I summarise the value of this call option at each time-point and event in the tree below
   \begin{center}
     \begin{tikzpicture}[->, level/.style={sibling distance = 4cm/(#1), level distance = 4cm}, scale=0.6,transform shape,grow=right]
-      \node {$Z_0=33.68$}
-        child {node {$Z_1(\omega_d)=2$}
+      \node {$Z_0=25.4665$}
+        child {node {$Z_1(\omega_d)=2$}}
+        child {node {$Z_1(\omega_u)=45.3554$}
+          child {node {$Z_2(\omega_{ud})=2$}}
           child {
-            node {$Z_2(\omega_{dd})=2$}
-            child {node {$Z_3(\omega_{ddd})=2$}}
-            child {node {$Z_3(\omega_{ddu})=2$}}
-          }
-          child {
-            node {$Z_2(\omega_{du})=2$}
-            child {node {$Z_3(\omega_{ddu})=2$}}
-            child {node {$Z_3(\omega_{duu})=2$}}
-          }
-        }
-        child {node {$Z_1(\omega_u)=54.8$}
-          child {
-            node {$Z_2(\omega_{ud})=2$}
-            child {node {$Z_3(\omega_{udd})=2$}}
-            child {node {$Z_3(\omega_{udu})=2$}}
-          }
-          child {
-            node {$Z_2(\omega_{uu})=90$}
+            node {$Z_2(\omega_{uu})=81.8182$}
             child {node {$Z_3(\omega_{uud})=0$}}
             child {node {$Z_3(\omega_{uuu})=150$}}
           }
@@ -291,21 +261,20 @@
   Thus $H(3)(\omega)=(-75,5/6)$ if $\omega\in\{\omega_{uuu},\omega_uud\}$. We do not consider any other states as the option would have already been exercised by time-point $t=3$.
   \par In the second-time period the following equations must be satisfied
   \[\begin{array}{rrcl}
-    &H_0(2)+180H_1(2)&=&Z_2(\omega_{uu})=90\\
+    &H_0(2)+180H_1(2)&=&Z_2(\omega_{uu})=81.8182\\
     &H_0(2)+60H_1(2)&=&Z_2(\omega_{ud})=2\\
-    \implies&H_1(2)&=&\frac{88}{120}=\frac{11}{15}\\
-    \implies&H_1(2)&=&2-60\cdot\frac{11}{15}=-42
+    \implies&H_1(2)&=&\frac{79.8182}{120}=0.6652\\
+    \implies&H_0(2)&=&2-60\cdot0.6651=-37.906
   \end{array}\]
-  Thus $H(2)(\omega)=(-43,11/15)$ if $\omega\in\{\omega_{uu},\omega_ud\}$. We do not consider any other states as the option would have already been exercised by time-point $t=2$.
+  Thus $H(2)(\omega)=(-37.906,0.6652)$ if $\omega\in\{\omega_{uu},\omega_ud\}$. We do not consider any other states as the option would have already been exercised by time-point $t=2$.
   \par In the first-time period the following equations must be satisfied
   \[\begin{array}{rrcl}
-    &H_0(1)+120H_1(1)&=&Z_1(\omega_{u})=54.8\\
+    &H_0(1)+120H_1(1)&=&Z_1(\omega_{u})=45.3554\\
     &H_0(1)+40H_1(1)&=&Z_1(\omega_{d})=2\\
-    \implies&H_1(1)&=&\frac{52.8}{80}=\frac{33}{50}\\
-    \implies&H_1(1)&=&2-40\cdot\frac{33}{50}=-\frac{122}5
+    \implies&H_1(1)&=&\frac{45.3554}{80}=0.5669\\
+    \implies&H_0(1)&=&2-40\cdot0.5669=-20.676
   \end{array}\]
-  Thus $H(1)(\omega)=(-122/5,33/50)$ for all $\omega$.
-  %TODO Check this, the value of the H(1) portfolio does not equal Z_0
+  Thus $H(1)(\omega)=(-20.676,0.5669)$ for all $\omega$.
 \end{answer}
 
 \begin{question}{1. a) iv.}
@@ -323,7 +292,7 @@
     &=&\frac1{1.1^3}\cdot\frac{3^3}{5^3}\cdot150\\
     &=&24.34259\dots
   \end{array}\]
-  %TODO compare
+  This is less valuable than the down-and-out call.
 \end{answer}
 
 \begin{question}{1. b) i.}
@@ -380,7 +349,7 @@
 
     \item \textit{$X_t$ has stationary Gaussian increments.}
     \par Consider the increment $(X_{t+u}-X_t)$ for $t,u\geq0$
-    \[ (X_{t+u}-X_t)&=&\gamma(W_{t+u}^{(1)}-W_t^{(1)})+\sqrt{1-\gamma^2}(W_{t+u}^{(1)}-W_t^{(1)}) \]
+    \[ (X_{t+u}-X_t)=\gamma(W_{t+u}^{(1)}-W_t^{(1)})+\sqrt{1-\gamma^2}(W_{t+u}^{(1)}-W_t^{(1)}) \]
     As the increments of $W_t^{(1)},W_t^{(2)}$ have gaussian distributions, the increments of $X_t$ have gaussian distributions to. Now consider the mean and variance of these increments
     \[\begin{array}{rcl}
       \expect[X_{t+u}-X_t]&=&\gamma\expect[W_{t+u}^{(1)}-W_t^{(1)}]+\sqrt{1-\gamma^2}\expect[W_{t+u}^{(2)}-W_t^{(2)}]\\
