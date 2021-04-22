@@ -2546,9 +2546,130 @@
 
 \subsection{The Financial Market Model in Continuous Time}
 
+  \begin{definition}{Continuous Time Financial Market Model}
+    The financial market model in continuous time has the following elements
+    \begin{itemize}
+      \item A trading interval $[0,T]$ where trading is possible at each time-point $t\in[0,T]$.
+      \item A probability space $(\Omega,\mathcal{F},\prob)$.
+      \item A filtration $\mathcal{F}=\{\mathcal{F}_t:t\in[0,T]\}$.
+      \item A bank account process $B=\{B_t:t\in[0,T]\}$ where $B$ is a stochastic process with $B_0=1$ and with $\prob(B_t>0)=1$ for all $t\in[0,T]$. Here again $B_t$ should be thought of as the time $t$ value of a savings account if 1 unit of currency is deposited at time $t=0$.
+      \item A price process $S=\{S(t):t\in[0,T]\}$ where $S(t)=(S_1(t),\dots,S_N(t))$ and $S_n$ is a non-negative stochastic process for each $n=1,\dots,N$. Here $S_n(t)$ should be thought of as the time $t$ price of the $n^{th}$ risky security.
+    \end{itemize}
+  \end{definition}
+
 \subsection{Trading Strategies}
 
+  \begin{definition}{Trading Strategy}
+    A \textit{Trading Strategy} $H=(H_0,\dots,H_N)$ is a vector of predictable\footnote{We do not have a precise definition, a predictable process $H_n(t)$ can be determined on the basis of information available before time $t$. If an adapted process is left-continuous then it is predictable.} stochastic process $H_n=\{H_n(t):t\in[0,T]\}$.
+    \par $H_n(t)$ is the number of asset $n$ held in the portfolio at time $t$ for $n\geq1$.
+  \end{definition}
+
+  \begin{definition}{Value Process}
+    The \textit{Value Process} $V=\{V_t\}_{t\in[0,T]}$ is a stochastic process defined by
+    \[ V_t=H_0(t)B_t+\sum_{n=1}^NH_n(t)S_n(t) \]
+    which is the value of the portfolio $H$ at time $t$.
+  \end{definition}
+
+  \begin{definition}{Gains Process}
+    The gains process of a trading strategy $H$ is given by
+    \[ G_t=\int_0^tH_0(u)dB_u+\sum_{n=1}^N\int_0^tH_n(u)dS_n(u) \]
+  \end{definition}
+
+  \begin{definition}{Discounted Processes}
+    Discounted processes are the standard processes normalised wrt inflation (ie the bank process).
+    \par The discounted price process $S_n^*(t)=\left\{S_n^*(t):n=0,\dots,N,t\in[0,T]\right\}$ is defined by
+    \[ S_n^*(t)=S_n(t)/B_t\quad\text{for }n=1,\dots,N,\ t\in[0,T] \]
+    \par The discounted value process $V^*(t)=\left\{V_t^*:t\in[0,T]\right\}$ is defined by
+    \[ V_t^*=\frac{V_t}{B_t}=H_0(t)+\sum_{n=1}^NH_n(t)S_n^*(t) \]
+    \par The discounted gains process $G^*=\{G_t^*:t\in[0,T]\}$ is defined by
+    \[ G_t^*=\sum_{n=1}^N\int_0^tH_n(u)dS_n^*(u) \]
+  \end{definition}
+
+  \begin{definition}{Self-Financing Trading Strategy}
+    The trading strategy $H$ is self-financing if its value process satisfies
+    \[ V_t=V_0+G_t\text{ for all }t\in[0,T] \]
+  \end{definition}
+
+
+  \begin{theorem}{Self-Financing Trading Strategy}\label{the_self_financing_continuous_time}
+    Let $H$ be a trading strategy.
+    \par $H$ is self-financing \underline{iff}\footnote{The proof is left out as it requires an application of the multiplication rule of $dV_t^*$.}
+    \[ V_t^*=V_0^*+G_t^*\text{ for all }t\in[0,T] \]
+  \end{theorem}
+
 \subsection{Arbitrage in the Continuous Time Model}
+
+  \begin{definition}{Arbitrage Opportunities - Continuous Time Model}
+    An \textit{Arbitrage Opportunity} in the continuous time model is some trading strategy $H$ st
+    \begin{enumerate}
+      \item $V_0=0$.
+      \item $V_T\geq0$.
+      \item $\expect[V_T]>0$ and
+      \item $H$ is self-financing.
+    \end{enumerate}
+  \end{definition}
+
+  \begin{remark}{Discounted Gains process in Multi-Period vs continuous Model}
+    In the multi-period model the discounted gains process is always a martingale. This is not the case for the continuous model. Instead we restrict ourselves to the subclass of \textit{Admissible Trading Strategies} defined below
+  \end{remark}
+
+  \begin{definition}{Equivalent Martingale Measure}
+    An \textit{Equivalent Martingale Measure} is a probability measure $\Q$ st
+    \begin{enumerate}
+      \item $\Q$ is equivalent to $\prob$.
+      \[ \prob(A)=0\text{ \underline{iff} }\Q(A)=0 \]
+      \item The discounted price process $S_n^*$ is a martingale under $\Q$ for all $n=1,\dots,N$.
+    \end{enumerate}
+  \end{definition}
+
+  \begin{definition}{Admissible Trading Strategy}
+    A self-financing trading strategy $H$ is called \textit{Admissible} wrt to an \textit{Equivalent Martingale Measure} $\Q$ if the discounted gains process $G^*(t)$ is a martingale under $\Q$.
+  \end{definition}
+
+  \begin{theorem}{Conditions for discount value process to be a Martingale}\label{the_5_11}
+    For each \textit{Admissible Trading Strategy} and for each equivalent martingale measure $\Q$, the discounted value process $V^*(t)$ is a Martingale wrt $\Q$.
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_financial_market_models_in_continuous_time}.\ref{the_5_11}} }
+    Follows immediately from \texttt{Theorem \ref{sec_financial_market_models_in_continuous_time}.\ref{the_self_financing_continuous_time}} .
+  \end{proof}
+
+  \begin{theorem}{No-Admissible Arbitrage Theorem}\label{the_5_12}
+    Assume there exists an equivalent Martingale Measure $\Q$. Then the market model contains no \textit{Admissible Arbitrage Opportunities}
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_financial_market_models_in_continuous_time}.\ref{the_5_12}}}
+    Assume that $H$ is an admissible arbitrage opportunity. Then
+    \[ V_0^*=0,\ V_T^*\geq0\text{ and }\expect\left[V_T^*\right]>0 \]
+    Since $\Q$ is equivalent to $\prob$, we also have $\expect_\Q[V_T^*]>0$.
+    \par On the other hand $V_T^*$ is a martingale measure, using \texttt{Theorem \ref{sec_financial_market_models_in_continuous_time}.\ref{the_5_11}}.
+    \par That is
+    \[ \expect_\Q[V_t^*|\mathcal{F}_u]=V_u^*\text{ for all }u\leq t\leq T \]
+    This implies
+    \[ \expect_\Q[V_T^*]=V_0^*=0 \]
+    This is a contradiction. Thus there cannot be an admissible arbitrage opportunity.\proved
+  \end{proof}
+
+  \begin{definition}{Attainable Contingent Claim}
+    A contingent claim $X$ is called \textit{Attainable} if there exists at least one admissible trading strategy such that $V_T=X$. We call such a trading strategy $H$ a \textit{Replicating Strategy} for $X$.
+    \par The financial market model is said to be \textit{Complete} if \underline{all} contingent claims are attainable.
+  \end{definition}
+
+  \begin{theorem}{Risk-Neutral Valuation Principle - Continuous Time}\label{the_risk_netural_valuation_principle_continuous_time}
+    The time $t$ value of an attainable contingent claim $X$ is equal to $V_t$, where $V_t$ is the time $t$ value of any portfolio which replicates $X$. Moreover,
+    \[ V_t^*=\frac{V_t}{B_t}=\expect_\Q\left[\frac{X}{B_T}\bigg|\mathcal{F}_t\right]\text{ for }t\in[0,T] \]
+    for all equivalent martingale measures $\Q$.
+    \par In particular, the time $0$ value is
+    \[ \pi_0=V_0=\expect_\Q\left[\frac{X}{B_T}\right] \]
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_financial_market_models_in_continuous_time}.\ref{the_risk_netural_valuation_principle_continuous_time}}}
+    Let $H$ be an arbitrary replicating portfolio for $X$ and $P_t$ be the time $t$ price of claim $X$.
+    \par If $P_t$ does not match the value of the strategy $H$ at time $t$, then there exists arbitrage opportunities as described in the proof of the Risk-neutral valuation principle.
+    \par Moreover, by \texttt{Theorem \ref{sec_financial_market_models_in_continuous_time}.\ref{the_5_11}} the discounted value process $V_t^*$ is a martingale under $\Q$ and thus
+    \[ V_t^*=\expect_\Q[V_T^*|\mathcal{F}_t]=\expect_\Q\left[V_T/B_T|\mathcal{F}_t\right]=\expect_\Q\left[X/B_T|\mathcal{F}_t\right] \]
+    Note that the last expression is independent of the particular replicating strategy.\proved
+  \end{proof}
 
 \subsection{The Black-Scholes Model}
 
