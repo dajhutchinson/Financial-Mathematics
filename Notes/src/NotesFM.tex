@@ -2756,7 +2756,9 @@
 
   \begin{proposition}{Equivalent Martingale Measure for Black-Scholes Model}\label{prop_equivalent_martingale_measure_for_bs_model}
     An equivalent martingale measure $\Q$ is defined by setting
-    \[ \Q(A) \]
+    \[ \Q(A)=\expect[L_T\indexed\{A\}] \]
+    where
+    \[ L_T=\exp\left\{\frac{r-\mu}\sigma\W_T-\frac{(r-\mu)^2}{2\sigma^2}T\right\} \]
   \end{proposition}
 
   \begin{proof}{\texttt{Theorem \ref{sec_financial_market_models_in_continuous_time}.\ref{prop_equivalent_martingale_measure_for_bs_model}}}
@@ -2765,11 +2767,24 @@
     where $X_t$ is a Brownian motion with volatility $\sigma$ and drift $\left(\mu-r-\frac{\sigma^2}2\right)$.
     \par Writing
     \[\everymath={\displaystyle}\begin{array}{rcl}
-      L_T&=&\exp\left\{\right\}
+      L_T&=&\exp\left\{\frac{r-\mu}{\sigma^2}\left(X_T-T(\mu-r-\frac{\sigma^2}2)\right)-\frac{(r-\mu)^2}{2\sigma^2}T\right\}\\
+      &=&\exp\left\{\frac{r-\mu}{\sigma^2}X_T-\frac{(r-\mu)(\mu-r-\frac{\sigma^2}2)T}{\sigma^2}-\frac{(r-\mu)^2}{2\sigma^2}T\right\}\\
+      &=&\exp\left\{\frac{r-\mu}{\sigma^2}X_T-\frac{-2(r-\mu)^2-(r-\mu)\sigma^2}{2\sigma^2}T-\frac{(r-\mu)^2}{2\sigma^2}T\right\}\\
+      &=&\exp\left\{\frac{r-\mu}{\sigma^2}X_T-\frac{-(r-\mu)^2-(r-\mu)\sigma^2}{2\sigma^2}T\right\}
     \end{array}\]
-    and applying \textit{Girsanov's Theorem} (\texttt{Theorem \ref{sec_financial_market_models_in_continuous_time}.\ref{the_girsanov_theorem}}) with $a=-\sigma$ and $b=\mu-r-\frac{\sigma^2}2$, we see that $X_T$ is, under $\Q$, a Brownian motion with volatility ... and drift ...
-    \par Using \texttt{Theorem }
+    and applying \textit{Girsanov's Theorem} (\texttt{Theorem \ref{sec_financial_market_models_in_continuous_time}.\ref{the_girsanov_theorem}}) with $a=-\sigma^2/2$ and $b=\mu-r-\frac{\sigma^2}2$, we see that $X_T$ is, under $\Q$, a Brownian motion with volatility $\sigma$ and drift $-\sigma^2/2$
+    \par Using \texttt{Proposition \ref{sec_stochastic_processes_in_continuous_time}.\ref{pro_more_properties_of_brownian_motion}} we see that $S_t^*$ is a martingale under $\Q$. \proved
   \end{proof}
+
+  \begin{remark}{}
+    Under $\prob$, the stock price process is given by
+    \[ S_t=S_0\exp\left\{\sigma W_t+(\mu-\frac{\sigma^2}2)t\right\} \]
+    Under $\Q$, the stock price process is given by
+    \[ S_t=S_0\exp\left\{\sigma\bar{W}_t+(r-\frac{\sigma^2}2)t\right\} \]
+    where
+    \[ \bar{W}_t=W_t-\frac{r-\mu}\sigma t \]
+    Note that $\bat{W}$ is a standard Brownian motion wrt $\Q$. This show that computations using the risk-neutral measure can be made by replacing the trend $\mu$ with the constant interest rate $r$.\footnote{This seems reasonable as we should expect the trend $\mu$ to be factored into the price process through a constant interest rate, somehow.}
+  \end{remark}
 
 \subsection{Pricing in the Black-Scholes Model}
 
