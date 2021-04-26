@@ -2441,7 +2441,7 @@
     \par Hence $f$ satisfies the differential equation $df=fdW$ in the It\^0 sense and is therefore called the It\^o exponential.
   \end{example}
 
-  \begin{example}{Geometric Brownian Motion}
+  \begin{example}{Geometric Brownian Motion}\label{exp_geometric_brownian_motion}
     Consider the function
     \[ f(t,x)=\exp\left\{\sigma x+(\mu-\frac{\sigma^2}2)t\right\} \]
     Then
@@ -2673,7 +2673,103 @@
 
 \subsection{The Black-Scholes Model}
 
+  \begin{definition}{Black-Scholes Model}
+    The \textit{Black-Scholes Model} is a financial market model in continuous-time with two assets:
+    \begin{itemize}
+      \item A riskless bond with a constant interest rate $r$ and corresponding bank account process
+      \[ B_t=e^{rt} \]
+      \item A risky asset with price process $S_t$ modelled as
+      \[ S_t=S_0e^{\sigma W_t+t\cdot\left(\mu-\frac{\sigma^2}2\right)} \]
+      where $W_t$ is Brownian motion, $\mu$ is drift and $\sigma$ is volatiltiy.
+    \end{itemize}
+    Brownian motion has the characteristic randomness of share prices and Geometric Brownian motion ensures prices do not become negative.
+  \end{definition}
+
+  \begin{proposition}{Differential Equations of Black-Scholes Model}\label{prop_diff_equations_of_black_scholes_model}
+    In the \textit{Black-Scholes Model}, the bond price satisfies the differential equation $dB_t=rB_tdt$ while the stock price satisfies the stochastic differential equation
+    \[ dS_t=\mu S_tdt+\sigma S_tdW_t \]
+  \end{proposition}
+
+  \begin{proof}{\ref{sec_financial_market_models_in_continuous_time}.\ref{prop_diff_equations_of_black_scholes_model}}
+    We have already proved this in \texttt{Example \ref{sec_stochastic_processes_in_continuous_time}.\ref{exp_geometric_brownian_motion}}.
+    \par The function $f(t,W_t)=S_0\cdot\exp\left\{t\cdot\left(\mu-\frac{\sigma^2}2\right)+\sigma W_t\right\}$ has the following partial derivatives
+    \[ f_t(t,W_t)=(\mu-\frac{\sigma^2}2)S_t\quad f_X(t,W_t)=\sigma S_t\quad f_{XX}(t,W_t)=\sigma^2S_t \]
+    We can now apply It\^0's Lemma to obtain
+    \[\begin{array}{rcl}
+      dS_t&=&(f_t(t,W_t)+f_{XX}(t,W_t)/2)dt+f_X(t,W_t)dW_t\\
+      &=&\left((\mu-\sigma^2/2)+\sigma^2/2\right)S_td_t+\sigma S_tdW_t\\
+      &=&\mu S_td_t+\sigma S_tdW_t
+    \end{array}\]
+  \end{proof}
+
 \subsection{Equivalent Martingale Measures in the Black-Scholes Model}
+
+  \begin{theorem}{Girsanov's Theorem for Black-Scholes Model\footnote{This is a special case of Girsanov's theorem}}\label{the_girsanov_theorem}
+    Let $\{X_t\}_{t\geq0}$ be a Brownian motion with drift $b$ and volatility $\sigma$ (ie $X_t=\sigma W_t+bt$). Let $a\in\reals$ and $T>0$, and define the \textit{Girsanov Density} $L_T$ as
+    \[ L_T=\exp\left\{\frac{a-b}{\sigma^2}X_T-\frac{a^2-b^2}{2\sigma^2}T\right\} \]
+    Then by setting
+    \[ \Q(A)=\expect[L_T\indexed\{A\}]\text{ for all }A\in\mathcal{F}_T \]
+    we can define a probabiltiy measure $\Q$ st
+    \begin{itemize}
+      \item $\Q$ is equivalent to $\prob$; and,
+      \item $\{X_t\}_{t\geq0}$ is a Brownian motion with volatility $\sigma$ and drift $a$ under $\Q$.
+    \end{itemize}
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_financial_market_models_in_continuous_time}.\ref{the_girsanov_theorem}}}
+    \textit{This is just a sketch proof}.
+    \par Write $X_T=\sigma W_T+bT$ and obtain
+    \[\begin{array}{rcl}
+      \Q(A)&=&\expect\left[\indexed\{A\}\cdot\exp\left\{\frac{a-b}\sigma W_T+\frac{a-b}{\sigma^2}bT-\frac{a^2-b^2}{2\sigma^2}T\right\}\right]\\
+      &=&\expect\left[\indexed\{A\}\cdot\exp\left\{\frac{a-b}\sigma W_T+\frac{T}{2\sigma^2}(a-b)\left(2b-(a+b)\right)\right\}\right]\\
+      &=&\expect\left[\indexed\{A\}\cdot\exp\left\{\frac{a-b}\sigma W_T+\frac{T}{2\sigma^2}(a-b)\left(-(a-b)\right)\right\}\right]\\
+      &=&\expect\left[\indexed\{A\}\cdot\exp\left\{\theta W_T+T\theta^2/2\right\}\right]
+    \end{array}\]
+    where $\theta:=(a-b)/\sigma$.
+    \par Since $W_T$ is distribution $\mathcal{N}(0,T)$ we obtain in particular for $A=\Omega$ that
+    \[\everymath={\displaystyle}\begin{array}{rcl}
+      \Q(\Omega)&=&\int_{-\infty}^\infty\exp\left\{\theta z-T\theta^2/2\right\}\frac1{\sqrt{2\pi T}}\exp\left\{-\frac{z^2}{2T}\right\}dz\\
+      &=&\int_{-\infty}^\infty\frac1{\sqrt{2\pi T}}\exp\left\{-\frac{z^2-2T\theta z+T^2\theta^2}{2T}\right\}dz\\
+      &=&\int_{-\infty}^\infty\frac1{\sqrt{2\pi T}}\exp\left\{-\frac{(z-T\theta)^2}{2T}\right\}dz\\
+      &=&\int_{-\infty}^\infty g(z)dz
+    \end{array}\]
+    We identify the intergrand $g(z)$ as the density of a $\mathcal{N}(T\theta,T)$ distribution.
+    \par Therefore
+    \[ \Q(\Omega)=\int_{-\infty}^\infty g(z)dz=1 \]
+    Hence $\Q$ is a probability measure.
+    \par Since $L_T>0$, $\Q$ is equivalent to $\prob$.
+    \par Similarly we obtain for every $s\in\reals$ that
+    \[\everymath={\displaystyle}\begin{array}{rcl}
+      \Q(X_T\leq s)&=&\Q\left(W_T\leq \frac{s-bT}\sigma\right)\\
+      &=&\int_{-\infty}^{\frac{s-bT}\sigma}g(z)dz\\
+      &=&\int_{-\infty}^sg\left(\frac{u-bT}\sigma\right)du
+    \end{array}\]
+    using the transformation $z=\frac{u-bT}\sigma$.
+    We can rewrite the integrand as
+    \[\everymath={\displaystyle}\begin{array}{rcl}
+      \frac1\sigma g\left(\frac{u-bT}\sigma\right)&=&\frac1{\sigma{2\pi T\sigma^2}}\exp\left\{-\frac{\left(\frac{u-bT}\sigma-T\theta\right)^2}{2T}\right\}\\
+      &=&\frac1{\sigma{2\pi T\sigma^2}}\exp\left\{-\frac{(u-T(b+\theta^2\sigma))^2}{2T\sigma^2}\right\}\\
+    \end{array}\]
+    Note that $\theta:=(a-b)/\sigma\implies b+\theta\sigma=a$. Therefore $X_T$ is, under $\Q$, normally distributed with mean $aT$ and variance $T\sigma^2$.
+    \par It remains to show that for $t<T$ the distribution of $X_t$ is again a normal distribution with mean $at$ and variance $t\sigma^2$ and that the increments of $X_t$ are independent.\footnote{Not covered in notes, may be out of scope of course.}\proved
+  \end{proof}
+
+  \begin{proposition}{Equivalent Martingale Measure for Black-Scholes Model}\label{prop_equivalent_martingale_measure_for_bs_model}
+    An equivalent martingale measure $\Q$ is defined by setting
+    \[ \Q(A) \]
+  \end{proposition}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_financial_market_models_in_continuous_time}.\ref{prop_equivalent_martingale_measure_for_bs_model}}}
+    The discounted price process in the \textit{Black-Scholes model} is given by
+    \[ S_t^*=e^{-rt}S_t=S_0e^{\sigma W_t+\left(\mu-r-\frac{\sigma^2}2\right)}=S_0e^{X_t} \]
+    where $X_t$ is a Brownian motion with volatility $\sigma$ and drift $\left(\mu-r-\frac{\sigma^2}2\right)$.
+    \par Writing
+    \[\everymath={\displaystyle}\begin{array}{rcl}
+      L_T&=&\exp\left\{\right\}
+    \end{array}\]
+    and applying \textit{Girsanov's Theorem} (\texttt{Theorem \ref{sec_financial_market_models_in_continuous_time}.\ref{the_girsanov_theorem}}) with $a=-\sigma$ and $b=\mu-r-\frac{\sigma^2}2$, we see that $X_T$ is, under $\Q$, a Brownian motion with volatility ... and drift ...
+    \par Using \texttt{Theorem }
+  \end{proof}
 
 \subsection{Pricing in the Black-Scholes Model}
 
