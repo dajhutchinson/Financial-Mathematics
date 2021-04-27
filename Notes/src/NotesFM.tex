@@ -2758,7 +2758,7 @@
     An equivalent martingale measure $\Q$ is defined by setting
     \[ \Q(A)=\expect[L_T\indexed\{A\}] \]
     where
-    \[ L_T=\exp\left\{\frac{r-\mu}\sigma\W_T-\frac{(r-\mu)^2}{2\sigma^2}T\right\} \]
+    \[ L_T=\exp\left\{\frac{r-\mu}\sigma W_T-\frac{(r-\mu)^2}{2\sigma^2}T\right\} \]
   \end{proposition}
 
   \begin{proof}{\texttt{Theorem \ref{sec_financial_market_models_in_continuous_time}.\ref{prop_equivalent_martingale_measure_for_bs_model}}}
@@ -2783,10 +2783,78 @@
     \[ S_t=S_0\exp\left\{\sigma\bar{W}_t+(r-\frac{\sigma^2}2)t\right\} \]
     where
     \[ \bar{W}_t=W_t-\frac{r-\mu}\sigma t \]
-    Note that $\bat{W}$ is a standard Brownian motion wrt $\Q$. This show that computations using the risk-neutral measure can be made by replacing the trend $\mu$ with the constant interest rate $r$.\footnote{This seems reasonable as we should expect the trend $\mu$ to be factored into the price process through a constant interest rate, somehow.}
+    Note that $\hat{W}$ is a standard Brownian motion wrt $\Q$. This show that computations using the risk-neutral measure can be made by replacing the trend $\mu$ with the constant interest rate $r$.\footnote{This seems reasonable as we should expect the trend $\mu$ to be factored into the price process through a constant interest rate, somehow.}
   \end{remark}
 
 \subsection{Pricing in the Black-Scholes Model}
+
+  \begin{proposition}{Price of Black-Scholes Model}\label{prop_price_of_black_scholes_continuous}
+    Consider the Black-Scholes model and let $X$ be a contingent claim. Then the price of $X$ at time $t$ is given by
+    \[ P_t=e^{-r(T-t)}\expect_\Q[X|\mathcal{F}_t] \]
+    where $\expect_\Q$ is given via the Girsanov density (\textit{Theorem \ref{sec_financial_market_models_in_continuous_time}.\ref{the_risk_netural_valuation_principle_continuous_time}})
+  \end{proposition}
+
+  \begin{example}{}
+    For $S_t$ satisfying the Black-Scholes model we calculate the time $t$ price of a European option with payoff $S_T^3$ at time $T$.
+    \par Since $S_t=S_0\exp\left\{t\left(r-\frac{\sigma^2}2\right)+\sigma\bar{W}_t\right\}$ under $\Q$, the time $t$ value is given by using \texttt{Proposition \ref{sec_financial_market_models_in_continuous_time}.\ref{prop_price_of_black_scholes_continuous}}
+    \[\everymath={\displaystyle}\begin{array}{rcl}
+      e^{-r(T-t)}\expect_\Q[S_T^3|\mathcal{F}_t]&=&e^{-r(T-t)}S_t^3\expect_\Q[S_T^3/S_t^3|\mathcal{F}_t]\\
+      &=&e^{-r(T-t)}S_t^3\expect_\Q\left[\exp\left\{3\sigma(\bar{W}_T-\bar{W}_t)+3\left(r-\frac{\sigma^2}2\right)(T-t)\right\}\right]\\
+      &=&e^{-r(T-t)+3(T-t)\left(r-\frac{\sigma^2}2\right)}S_t^3\expect_\Q\left[\exp\left\{3\sigma(\bar{W}_T-\bar{W}_t)\right\}|\mathcal{F}_t\right]\\
+      &=&S_t^3e^{(T-t)\left(2r-\frac{3\sigma^2}2\right)}e^{9\sigma^2(T-t)/2}\\
+      &=&S_t^3e^{(2r+3\sigma^2)(T-t)}
+    \end{array}\]
+    where we used that $(\bar{W}_T-\bar{W}_t)$ has a $\mathcal{N}(0,T-t)$ distribution and therefore its moment generating function is
+    \[ \expect_\Q\left[e^{\theta(\bar{W}_T-\bar{W}_t)}|\mathcal{F}_t\right]=e^{\theta^2(T-t)/2} \]
+  \end{example}
+
+  \begin{theorem}{Technical Lemma for BS Formula}\label{the_technical_lemma_for_BS}
+    For $Z\sim\mathcal{N}(a,\gamma^2)$ and any $b,c>0$
+    \[ \expect[\{be^Z-c\}_+]=be^{a+\frac{\gamma^2}2}\Phi\left(\frac1\gamma\left(\ln(b/c)+a+\gamma^2\right)\right)-c\Phi\left(\frac1\gamma\left(\ln(b/c)+a\right)\right) \]
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_financial_market_models_in_continuous_time}.\ref{the_technical_lemma_for_BS}}}
+    Recall that for a random variable $X$ with a standard normal distribution
+    \[ \prob(X>x)=1-\Phi(x)=\Phi(-x)\ \forall\ x\in\reals \]
+    Therefore we can calculate $\expect\left[\{be^Z-c\}_+\right]$ as follows
+    \[\everymath={\displaystyle}\begin{array}{rcl}
+      \expect\left[\{be^Z-c\}_+\right]&=&\int_{-\infty}^\infty\{be^x-c\}_+\frac1{\sqrt{2\pi\gamma^2}}e^{-\frac{(x-a)^2}{2\gamma^2}}dx\\
+      &=&\int_{\ln(c/b)}^\infty(be^x-c)\frac1{\sqrt{2\pi\gamma^2}}e^{-\frac{(x-a)^2}{2\gamma^2}}dx\\
+      &=&b\int_{\ln(c/b)}^\infty\frac1{\sqrt{2\pi\gamma^2}}e^{-\frac{2x\gamma^2+(x-a)^2}{2\gamma^2}}dx-c\underbrace{\int_{\ln(c/b)}^\infty\frac1{\sqrt{2\pi\gamma^2}}e^{-\frac{(x-a)^2}{2\gamma^2}}dx}_{=\prob(Z>\ln(c/b))}\\
+      &=&be^{\frac{2a\gamma^2+\gamma^4}{2\gamma^2}}\underbrace{\int_{\ln(c/b)}^\infty\frac1{\sqrt{2\pi\gamma^2}}e^{-\frac{(x-a-\gamma^2)^2}{2\gamma^2}}dx}_{=\prob(Z+\gamma^2>\ln(c/b))}-c\prob(Z>\ln(c/b))\\
+      &=&be^{a+\frac{\gamma^2}2}\prob(Z+\gamma^2>\ln(c/b))-c\prob(Z>\ln(c/b))\\
+      &=&be^{a+\frac{\gamma^2}2}\prob\left(\frac{Z-a}\gamma>\frac1\gamma\left(\ln(c/b)-\gamma^2-a\right)\right)-c\prob\left(\frac{Z-a}\gamma>\frac1\gamma\left(\ln(c/b)-a\right)\right)\\
+      &=&be^{a+\frac{\gamma^2}2}\Phi\left(\frac1\gamma\left(\ln(c/b)-\gamma^2-a\right)\right)-c\Phi\left(\frac1\gamma\left(\ln(c/b)-a\right)\right)\\
+    \end{array}\]
+    \proved
+  \end{proof}
+
+  \begin{proposition}{Black-Scholes Formula - Continuous Time}\label{prop_bs_formula_continuous}
+    \textit{This is the same as the Black-Scholes Formula in \texttt{Theorem \ref{sec_multi_period_models}.\ref{the_black_scholes_formula}}.}
+    \par Consider a European call option with exercise price $K$ maturing at time $T$ which corresponds to the claim $X=\{S_T-K\}_+$. Then the Black-Scholes price process of that European class is given by
+    \[ \Pi_t=S_t\Phi(d_1(S_t,T_t))-Ke^{-r(T-t)}\Phi(d_2(S_t,T-t)) \]
+    The functions $d_1(u,v)$ and $d_2(u,v)$ are given by
+    \[\everymath={\displaystyle}\begin{array}{rcl}
+      d_1(u,v)&=&\frac{\ln(u/K)+\left(r+\frac{\sigma^2}2\right)v}{\sigma\sqrt{v}}\\
+      d_2(u,v)&=&\frac{\ln(u/K)+\left(r-\frac{\sigma^2}2\right)v}{\sigma\sqrt{v}}
+    \end{array}\]
+  \end{proposition}
+
+  \begin{proof}{\texttt{Proposition \ref{sec_financial_market_models_in_continuous_time}.\ref{prop_bs_formula_continuous}}.}
+    Let $\bar{W}_t$ be a standard Brownian motion under $\Q$. The price $\Pi_t$ is given by
+    \[\everymath={\displaystyle}\begin{array}{rcl}
+      \Pi_t&=&e^{-r(T-t)}\expect_\Q\left[\{S_T-K\}_+|\mathcal{F}_t\right]\\
+      &=&e^{-r(T-t)}\expect_\Q\left[\left\{S_t e^{\sigma(\bar{W}_T-\bar{W}_t)+\left(r-\frac{\sigma^2}2\right)(T-t)}-K\right\}_+\bigg|\mathcal{F}_t\right]\\
+      &=&e^{-r(T-t)}\expect_\Q\left[|\{S_te^Z-K\}_+\mathcal{F}_t\right]
+    \end{array}\]
+    where $Z\sim\mathcal{N}(a,\gamma^2)$ under $\Q$ with mean $a=\left(r-\frac{\sigma^2}2\right)(T-t)$ and standard deviation $\gamma=\sigma\sqrt{T-t}$ and is independent of $\mathcal{F}_t$.
+    \par We obtain the Black-Scholes formula by applying \texttt{Theorem \ref{sec_financial_market_models_in_continuous_time}.\ref{the_technical_lemma_for_BS}} with $b=S_t,c=K$
+    \[\everymath={\displaystyle}\begin{array}{rcl}
+      \Pi_t&=&e^{-r(T-t)}S_te^{a+\frac12(\sigma^2(T-t))}\Phi\left(\frac1{\sigma\sqrt{T-t}}\left(\ln(S_t/K)+a+\sigma^2(T-t)\right)\right)\\
+      &-&e^{-r(T-t)}K\Phi\left(\frac1{\sigma\sqrt{T-t}}(\ln(S_t/K)+a)\right)
+    \end{array}\]
+    \proved
+  \end{proof}
 
 \subsection{Replicating Strategies and the Black-Scholes-Merton Equation}
 
