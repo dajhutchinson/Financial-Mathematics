@@ -1,0 +1,80 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in, paperwidth=8.3in, paperheight=11.7in]{geometry}
+\usepackage{amsmath,amsfonts,fancyhdr,bbm,tikz}
+\usetikzlibrary{trees}
+\usepackage[section,nohyphen]{DomH}
+\headertitle{Financial Mathematics - Assessed Problem Sheet 3}
+
+\begin{document}
+
+\questionsfalse
+% \answersfalse
+
+\title{Financial Mathematics - Assessed Problem Sheet 4}
+\author{Dom Hutchinson}
+\date{\today}
+\maketitle
+
+\begin{answer}{1. (a) i.}
+  Let $f(t,x)=x^3-t^2$ and note that
+  \[\begin{array}{rcl}
+    f_t&=&-2t\\
+    f_x&=&3x^2\\
+    f_{xx}&=&6x
+  \end{array}\]
+  Define $X_t=f(t,W_t)$. Thus, by It\^o's Lemma
+  \[\begin{array}{rcl}
+    dX_t&=&df(t,W_t)\\
+    &=&\left(-2t+\frac126W_t\right)dt+3W_t^2dW_t\\
+    &=&\left(3W_t-2t\right)dt+3W_t^2dW_t
+  \end{array}\]
+\end{answer}
+
+\begin{answer}{1. (a) ii.}
+  Let $f(x)=\exp\{3x\}$ and note that
+  \[\begin{array}{rcl}
+    f'&=&3f(x)\\
+    f''&=&9f(x)\\
+  \end{array}\]
+  Define $X_t=f(W_t)$. Thus, by It\^o's Lemma
+  \[\begin{array}{rcl}
+    dX_t&=&df(W_t)\\
+    &=&3f(W_t)dW_t+\frac12\left(9f(W_t)\right)dt\\
+    &=&3X_tdW_t+\frac92X_tdt
+  \end{array}\]
+\end{answer}
+
+\begin{answer}{1. (a) iii.}
+  Let $f(t,x)=\exp\{\sigma x+a t\}$ and note that
+  \[\begin{array}{rcl}
+    f_t&=&af(t,x)\\
+    f_x&=&\sigma f(t,x)\\
+    f_{xx}&=&\sigma^2 f(t,x)
+  \end{array}\]
+  Define $X_t=f(t,W_t)$. Thus, by It\^o's Lemma
+  \[\begin{array}{rcl}
+    dX_t&=&df(t,W_t)\\
+    &=&\left(af(t,W_t)+\frac12\sigma^2f(t,W_t)\right)dt+\sigma f(t,W_t)dW_t\\
+    &=&\left(a+\frac12\sigma^2\right)X_tdt+\sigma X_tdW_t
+  \end{array}\]
+  Since $W_t$ is a martingale, then $X_t$ is a martingale if $\left(a+\frac12\sigma^2\right)X_t=0$. This means, either of the two must hold at time $t$
+  \begin{enumerate}
+    \item $X_t=0$.
+    \item $a+\frac12\sigma^2=0$.
+  \end{enumerate}
+\end{answer}
+
+\begin{answer}{1. (b)}
+  Let $W_t$ be standard brownian motion and define $X_t=aW_t+b$ for some $a,b\in\reals$.
+  \par Note that by the linearity of expectation the following holds for all $s,t\geq0$
+  \[\begin{array}{rcl}
+    \expect[X_t|\mathcal{F}_s]&=&\expect[aW_t+b|\mathcal{F}_s]\\
+    &=&a\expect[W_t|\mathcal{F}_s]+b\\
+    &=&aW_s+b\\
+    &=&X_s
+  \end{array}\]
+  This shows that all linear functions of standard brownian motion are martingales.
+\end{answer}
+
+\end{document}
