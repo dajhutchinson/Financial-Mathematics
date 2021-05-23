@@ -1,7 +1,7 @@
 \documentclass[11pt,a4paper]{article}
 
 \usepackage[margin=1in, paperwidth=8.3in, paperheight=11.7in]{geometry}
-\usepackage{amsmath,amsfonts,fancyhdr,bbm,graphicx,tikz,float}
+\usepackage{amsmath,amsfonts,fancyhdr,bbm,graphicx,tikz,float,perpage}
 \usetikzlibrary{automata,positioning}
 \graphicspath{ {img/} }
 \usepackage[section,nohyphen]{DomH}
@@ -2856,7 +2856,169 @@
     \proved
   \end{proof}
 
+  \begin{remark}{Assumptions of Black-Scholes Framework}
+    In the \textit{Black-Scholes Framework} the following assumptions are made
+    \begin{enumerate}
+      \item No arbitrage opportunities exist. This is a standard assumption as when an arbitrage opportunity exists then it will disappear quickly due to arbitrageurs.
+      \item No transactions costs. (This assumption can be relaxed easily).
+      \item Unlimited short-selling is available, at not cost.
+      \item Constant risk-free interest rate. (This assumption can be relaxed easily).
+      \item The underlying price follows a geometric Brownian motion. In reality, prices can jump which does not fit with geometric Brownian motion. Some extensions of the Black-Scholes model account have jump components.
+      \item Constant volatility. In reality, volatility is not known nor constant.
+    \end{enumerate}
+  \end{remark}
+
+  \begin{remark}{Estimating Volatility}
+    Estimating the volatility $\sigma$ is hard. There are two approaches:
+    \begin{enumerate}
+      \item \textit{Statistical Approach}. Estimate volatility $\sigma$ by looking at historical prices $S$ and deduce the historical volatility. This is naturally a poor approach as there is no reason for the volatility over the past to be a good estimator of future volatility. Also, how far back do you want to consider.
+      \item \textit{Market-Based Approach}. Extract information of volatility from traded instruments. Volatility obtained in this way is the market view of the volatility, called ``Implied Volatility''. The Black-Scholes formula is numerically inverted to find the implied volatility of a quoted price.
+    \end{enumerate}
+    Moreover, the Black-Scholes model assumes volatility to be constant but in practice there is a ``Volatility Smile''\footnote{Volatility depends on strike price.}.
+  \end{remark}
+
+  \begin{example}{Black-Scholes Model - Implied Volatility}\label{ex_bs_implied_volatility}
+    Consider the Black-Scholes model with interest rate $r=0.16$. Suppose a European call option on the stock with exercise price 40 and a maturity date of six months is trading at a value of 4.25 when the current stock price is 38. Compute the implied volatility $\sigma$ of the call option.
+    \par Using the Black-Scholes formula, and R, for values of $\sigma=(0.3,0.35,0.4)$ the price of the call option is $(3.73,4.25,4.77)$.
+    \par Hence, the implied volatility is $\sim0.35$.
+  \end{example}
+
+  \begin{example}{Black-Scholes Model - Put Option Valuation}
+    Assuming the implied volatility from \textit{Examples \ref{sec_financial_market_models_in_continuous_time}.\ref{ex_bs_implied_volatility}} ($\sigma=0.35$) is the true value for the volatility. Find the time-zero value of a European put option on the same stock, with maturity date of one year and exercise price 50.
+    \par Plugging in the Black-Scholes formula the price of the European call is 3.59. Using Put-Call Partity, we get the price of the corresponding put.
+    \[\begin{array}{rrcl}
+      &S_t+P_t-C_t&=&Ke^{-r(T-t)}\\
+      \implies&38+P_t-3.59&=&50e^{-0.16\cdot1}\\
+      \implies&P_t&=&8.20
+    \end{array}\]
+  \end{example}
+
 \subsection{Replicating Strategies and the Black-Scholes-Merton Equation}
+
+  \begin{remark}{Motivation}
+    The risk-neutral pricing principle allows us to compute the no-arbitrage price of the option. However, it is somewhat unsatisfactory because it does not provide an explicitly expression for the replicating portfolio.
+  \end{remark}
+
+  \begin{theorem}{Black-Scholes-Mertons Equation}\label{eqn_black_scholes_mertons}
+    Let $X=g(S_T)$ be an attainable claim in the Black-Scholes model with drift $\mu$ and volatility $\sigma$.
+    \par Assume that the price $\Pi_t$ at time $t$ satisfies $\Pi_t=f(t,S_t)$ for some function $f$ with two continuous derivatives in $x$ and one in $t$.
+    \par Then $f(t,x)$ satisfies the \textit{Black-Scholes-Mertons Equation}
+    \[ f_t+rS_tf_x+\frac12\sigma^2S_t^2f_{xx}-rf=0,\quad f(T,S_T)=g(S_T) \]
+    Further, the replicating strategy is given by
+    \[\begin{array}{rcl}
+      H_0(t)&=&\frac1{B_t}\left(f(t,S_t)-f_x(t,S_t)S_t\right)\\
+      &=&\frac{1}{rB_t}\left(f_t(t,S_t)+\frac12f_{xx}(t,S_t)S_t^2\sigma^2\right)\\
+      H_1(t)&=&f_x(t,S_t)
+    \end{array}\]
+  \end{theorem}
+
+  \begin{proof}{Theorem \ref{sec_financial_market_models_in_continuous_time}.\ref{eqn_black_scholes_mertons}}
+    The price process $S_t$ of the stock under $\Q$ is
+    \[ S_t=S_0\exp\left\{\sigma\bar{W}_t+t\cdot\left(r-\frac{\sigma^2}2\right)\right\} \]
+    An application of It\^o's lemma shows that it has dynamics
+    \begin{equation}\label{eqn_proof_bsm_dS}
+      dS_t=S_t(rdt+\sigma d\bar{W}_t)
+    \end{equation}
+    Similarly, the discounted price process $S_t^*=S_0\exp\left\{\sigma\bar{W}_t-t(\sigma^2/2)\right\}$ has dynamics
+    \begin{equation}\label{eqn_proof_bsm_dSt_star}
+      dS_t^*=S_t^*\sigma d\bar{W}_t
+    \end{equation}
+    Let now $h(t,S_t)=f(t,S_t)/B_t=\exp^{-rt}f(t,S_t)$ be the discounted fair price of the claim $X$ at time $t$.
+    \par Since, (\ref{eqn_proof_bsm_dS}) means that $S_t$ is an It\^0 process with $b_t=rS_t$ and $\sigma_t=\sigma S_t$ using It\^o's lemma we find that
+    \begin{equation}\label{eqn_proof_bsm_dh}
+      dh=\left(h_t+rS_th_x+\frac12\sigma^2S_t^2h_{xx}\right)dt+\sigma S_th_xd\bar{W}_t
+    \end{equation}
+    We know from the risk-neutral valuation principle that
+    \begin{equation}\label{eqn_proof_bsm_ht}
+      h_t(t,S_t)=\expect_\Q\left[X/B_T\bigg|\mathcal{F}_t\right]
+    \end{equation}
+    and in particular that $h$ is a martingale with respect to $\Q$.
+    \par Therefore, there is no drift meaning that the $dt$ term in (\ref{eqn_proof_bsm_dh}) is zero
+    \[ h_t(t,S_t)+rS_th_x(t,S_t)+\frac12\sigma^2S_t^2h_{xx}(t,S_t)=0 \]
+    Moreover, the dynamics of (\ref{eqn_proof_bsm_dh}) reduce to
+    \begin{equation}\label{eqn_proof_bsm_dh_2}
+      dh(t,S_t)=\sigma S_th_x(t,S_t)d\bar{W}_t
+    \end{equation}
+    \textit{Black-Scholes-Merton Equation}
+    \par The ratio between $h$ and $f$ is a function of $t$, not $x$, and therefore $h_x=f_x/B_t$ and $g_{xx}=f_{xx}/B_t$.
+    \par We also know that $h_t=(f_t/B_t)-(rf/B_t)$. Therefore, (\ref{eqn_proof_bsm_ht}) can be rewritten as
+    \[\begin{array}{rcl}
+      0&=&h_t+rS_th_x+\frac12\sigma^2S_t^2h_{xx}\\
+      &=&\frac1{B_t}\left(f_t-rf+rS_tf_x+\frac12\sigma^2S_t^2f_{xx}\right)
+    \end{array}\]
+    Multiplying by $B_t$ we see that $f$ satisfies the \textit{Black-Scholes-Merten Equation}.\proved
+    \par \textit{Replicating Portfolio}.
+    \par For all $t$ the value of the replicating portfolio $\left(H_0(t),H_1(t)\right)$ equals the price process $f(t,S_t)$ of the claim $X$ and the replicating strategy must be self-financing.
+    \par Therefore, (\ref{eqn_proof_bsm_dSt_star}) implies
+    \[\begin{array}{rcl}
+      dh(t,S_t)&=&H_1(t)dS_t^*\\
+      &=&H_1(t)S_t^*\sigma d\bar{W}_t\\
+      &=&H_1(t)\frac{S_t}{B_t}\sigma d\bar{W}_t
+    \end{array}\]
+    Equating this result to (\ref{eqn_proof_bsm_dh_2}) we get
+    \[\begin{array}{rrcl}
+      &H_1(t)S_t^*\sigma&=&\sigma S_th_x(t,S_t)\\
+      \implies&H_1(t)\left(\frac{S_t}{B_t}\right)&=&S_th_x(t,S_t)\\
+      \implies&H_1(t)&=&B_th_x(t,S_t)\\
+      &=&f_x(t,S_t)
+    \end{array}\]
+    Finally, the replicating portfolio has to satisfy
+    \[\begin{array}{rcl}
+      f(t,S_t)&=&H_0(t)B_t+H_1(t)S_t\\
+      &=&H_0(t)B_t+f_x(t,S_t)S_t
+    \end{array}\]
+    From this we obtain that
+    \[ H_0(t)=\frac{f(t,S_t)-f_x(t,S_t)S_t}{B_t} \]
+  \end{proof}
+
+  \begin{remark}{Black-Scholes-Merton Equation and Contingency Claims}
+    The \textit{Black-Scholes-Merton Equation} is an alternative way of calculating the price of a contingent claim.
+    \par The boundary condition has to be chosen according to the contingent claim we want to analyse. In particular, for $f(T,S_T)=\{S_T-k\}^+$ we obtain yet another way of deriving the Black-Scholes formula (See \textit{Example \ref{sec_financial_market_models_in_continuous_time}.\ref{ex_bsm_equation_and_contingency_claims}}).
+  \end{remark}
+
+  \begin{example}{BSM Equation and Contingency Claims}\label{ex_bsm_equation_and_contingency_claims}
+    For $f(t,S_t)=\Pi_t$ recall from \textit{Proposition \ref{sec_stochastic_processes_in_continuous_time}.\ref{prop_bs_formula_continuous}}.
+    \[ \Pi_t=S_t\Phi\left(d_1(S_t,T-t)\right)-Ke^{-r(T-t)}\Phi\left(d_2(S_t,T-t)\right) \]
+    First, observe that
+    \[\begin{array}{rcl}
+      \frac{\partial d_1}{\partial S}(S_t,T-t)&=&\frac{K}{K\sigma S_t\sqrt{T-t}}\\
+      &=&\frac1{\sigma S_t\sqrt{T-t}}\\
+      &=&\frac{\partial d_2}{\partial S}(S_t,T_t)
+    \end{array}\]
+    and\footnote{$\phi(x)=\frac1{\sqrt{2\pi}}\exp\left\{-\frac12x^2\right\}$}
+    \[\begin{array}{rcl}
+      \phi(d_2)/\phi(d_1)&=&\exp\left\{-\frac12(d_2^2-d_1^2)\right\}\\
+      &=&\exp\left\{-\frac12\frac{−2\cdot(\ln(S_t/K) + r(T − t))\cdot(\sigma^2(T − t))}{\sigma^2(T-t)}\right\}\\
+      &=&\exp\left\{\ln(S_t/K)+r(T-t)\right\}\\
+      &=&(S_t/K)\exp\left\{r(T-t)\right\}
+    \end{array}\]
+    We use this to derive
+    \[\begin{array}{rcl}
+      f_x&=&\Phi(d_1)+S_t\phi(d_1)\frac{\partial d_1}{\partial S}-Ke^{-r(T-t)}\phi(d_2)\frac{\partial d_2}{\partial S}\\
+      &=&\Phi(d_1)+S_t\phi(d_1)\left(\frac{\partial d_1}{\partial S}-\frac{\partial d_2}{\partial S}\right)\\
+      &=&\Phi(d_1)\\
+      f_{xx}&=&\phi(d_1)\frac{\partial d_1}{\partial S}\\
+      &=&\frac{\phi(d_1)}{S_t\sigma\sqrt{T-t}}
+    \end{array}\]
+    Furthermore
+    \[\begin{array}{rcl}
+      \frac{\partial d_1}{\partial t}(S_t,T_t)-\frac{\partial d_2}{\partial t}(S_t,T-t)&=&\frac{\partial (d_10d_2)}{\partial t}(S_t,T-t)\\
+      &=&\frac{\partial }{\partial t}\sigma\sqrt{T-t}\\
+      &=&\frac{-\sigma}{2\sqrt{T-t}}
+    \end{array}\]
+    We can now calculate $f_t$ as
+    \[\begin{array}{rcl}
+      f_t&=&S_t\phi(d_1)\frac{\partial d_1}{\partial t}-Ke^{-r(T-t)}\phi(d_2)\frac{\partial d_2}{\partial t}-Kre^{-r(T-t)}\Phi(d_2)\\
+      &=&S_t\phi(d_1)\left(\frac{\partial d_1}{\partial t}-\frac{\partial d_2}{\partial t}\right)-Kre^{-r(T-t)}\Phi(d_2)\\
+      &=&-S_t\phi(d_1)\frac{\sigma}{2\sqrt{T-t}}-Kre^{-r(T-t)}\Phi(d_2)
+    \end{array}\]
+    and substitute into the BSM equation to obtain
+    \[\begin{array}{rcl}
+      f_t+rS_tf_x+\frac12\sigma^2S_t^2f_{xx}-rf&=&\left(-S_t\phi(d_1)\frac{\sigma}{2\sqrt{T-t}}-Kre^{-r(T-t)}\Phi(d_2)\right)+rS_t\Phi(d_1)+\frac12\sigma^2S_t^2\left(\frac{\phi(d_1)}{S_t\sigma\sqrt{T-t}}\right)-rf\\
+      &=&r\left(S_t\Phi(d_1)-Ke^{-r(T-t)}\Phi(d_2)-f\right)\\
+      &=&0
+    \end{array}\]
+  \end{example}
 
 \reference
 \section{Notation}
