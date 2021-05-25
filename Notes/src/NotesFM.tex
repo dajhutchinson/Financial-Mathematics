@@ -1256,6 +1256,7 @@
       \end{array}\]
       Thus $H$ is \textit{Self-Financing}.
     \end{itemize}
+    \proved
   \end{proof}
 
 \subsection{Arbitrage in Multi-Period Model and Martingale Measures}
@@ -1403,7 +1404,7 @@
     are \textit{Martingales} under $\Q$.
   \end{proposition}
 
-  \begin{proof}{\texttt{Theorem \ref{sec_multi_period_models}.\ref{prop_finance_processes_which_are_martingales}}}
+  \begin{proof}{\texttt{Proposition \ref{sec_multi_period_models}.\ref{prop_finance_processes_which_are_martingales}}}
     \everymath={\displaystyle}
     We have to show that $\expect_\Q\left[V_{t+1}^*|\mathcal{F}_t\right]=V_t^*\ \forall\ t>0$.
     \par This is equivalent to showing that $\expect_\Q[G_{t+1}^*|\mathcal{F}_t]=G_t^*$ using \texttt{Proposition \ref{sec_multi_period_models}.\ref{the_self_financing_and_value_process}}.
@@ -1420,7 +1421,7 @@
   \end{proof}
 
   \begin{proposition}{Arbitrage Opportunities between Single-Period and Multi-Period Models}\label{prop_arbitrage_opportunities_single_and_multi_period_model}
-    If the multi-period model does \underline{not} have any arbitrage opportunities, then all of the underlying single period model \underline{have} arbitrage opportunities.
+    If the multi-period model does \underline{not} have any arbitrage opportunities, then none of the underlying single period model \underline{have} arbitrage opportunities.
   \end{proposition}
 
   \begin{proof}{\texttt{Proposition \ref{sec_multi_period_models}.\ref{prop_arbitrage_opportunities_single_and_multi_period_model}}}
@@ -1444,7 +1445,7 @@
     \end{cases} \]
     This strategy starts with zero money and does nothing unless the event $A$ occurs at time $t$, in which case at time $t$ the position $\hat{H}_n$ is taken in the $n^{th}$ risky security while the position in the bank account is used to self-finance.
     \par Subsequently, no position is taken in any of the risky securities, and non-zero value of the portfolio is reflected by a position in the bank account.
-    \par THis \textit{Trading Strategy} $H$ is an \textit{Arbitrage Opportunity} in the multi-period model.\proved
+    \par This \textit{Trading Strategy} $H$ is an \textit{Arbitrage Opportunity} in the multi-period model.\proved
   \end{proof}
 
   \begin{proof}{\texttt{Theorem \ref{sec_multi_period_models}.\ref{the_extension_of_no_arbitrage_principle}}}
@@ -1496,7 +1497,7 @@
     Thus $V_t^*=\expect_\Q[X/B_T|\mathcal{F}_t]$ independent of the choice of \textit{Martingale Measure} $\Q$.
   \end{proof}
 
-  \begin{remark}{Computing a Generating a Trading Strategy $H$}
+  \begin{remark}{Computing a Replicating Portfolio $H$}
     If we already know the \textit{Value Process} $\{V_t\}_{t\in\nats_0}$ for the replicating portfolio, we need to solve for the trading strategy $H$ using the linear equations in the definition of the value process (keeping in mind that $H$ is \textit{Predictable}).
     \[ V_t(\omega_i)=H_0(t)B_t+\sum_{n=1}^NH_n(t)S_n(t)(\omega_i)\ \forall\ \omega_i\in\Omega \]
     However, if we only know the \textit{Contingent Claim} $X$ we need to work backwards in time, deriving $V$ and $H$ simultaneously.
