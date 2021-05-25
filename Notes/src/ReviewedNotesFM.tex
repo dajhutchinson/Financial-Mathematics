@@ -624,7 +624,7 @@
         &&=&G\prob(X_\tau=G)+(-C)(1-\prob(X_\tau=G))\\
         \implies&C&=&(G+C)\prob(X_\tau=G)\\
         \implies&\prob(X_\tau=G)&=&\frac{C}{G+C}\\
-        \text{and }&\prob(X_\tau=-C)&=&1-\prob(X_\tau=G)=\frac{G}{G+C}
+        \text{and}&\prob(X_\tau=-C)&=&1-\prob(X_\tau=G)=\frac{G}{G+C}
       \end{array}\]
       To determine $\expect[X_\tau]$ we apply the \textit{Optional Stopping Theorem} to the process $\{Z_t\}_{\nats_0}$ where $Z_t:=X_t^2-t$. It was shown in \texttt{Proposition \ref{sec_probability}.\ref{prop_notable_martingales}}  that $\{Z_t\}_{t\in\nats_0}$ is a \textit{Martingale}.
       \par As $\{Z_t\}_{t\in\nats_0}$ is a \textit{Martingale} it holds that
@@ -827,23 +827,8 @@
     IRL the value of money is not constant due to inflation, interest rates \& exchange rates. We generally want to normalise the returns of our portfolio wrt the change in value of money in order to determine the ``real returns''.
   \end{remark}
 
-  \begin{definition}{Bank Account Process, $B_t$}\label{def_bank_account_process}
-    A \textit{Bank Account Process}\footnote{AKA a \textit{Bond} or a \textit{Numeraire}.} $B_t$ is how much an initial deposit of one unit at time $t=0$ would be worth at time point $t$ if the deposit was made into a ``Risk-Free Bank Account'', given some risk-free \textit{Interest Rate} $r$. This is a measure of how the value of money changes over the $t$ time-periods.
-    \par The \textit{Bank Account Process} must fulfil the following criteria
-    \[ B_0=1\quad\text{and}\quad B_t(\omega)\geq0\ \forall\ \omega\in\Omega \]
-    It is generally assumed that you can borrow money from these accounts, paying the same interest rate $r$.
-  \end{definition}
-
-  \begin{proposition}{Value of Bank Account Process $B_t$}
-    \par Suppose our ``Risk-Free Bank Account'' pays a constant interest rate of $r$ in each time-period, then after $t$ time-periods our initial deposit would be worth
-    \begin{itemize}
-      \item \textit{Continuous Time Model} $B_t=B_0e^{rt}$.
-      \item \textit{Single-Period Model} $B_1=B_0(1+r)$.\footnote{Must be that $t=1$ in a \textit{Single-Period Model}.}
-      \item \textit{Multi-Period Model} $B_t=B_0(1+r)^t$.
-    \end{itemize}
-  \end{proposition}
-
   \begin{definition}{Portfolio}
+    TODO
     % Replicating Portfolio
   \end{definition}
 
@@ -1045,7 +1030,7 @@
 
 \section{Discrete-Time}\label{sec_discrete_time_models}
 
-\subsection{Processes of Models}
+\subsection{Processes of Financial Models}\label{sec_processes_of_models}
 
   \begin{remark}{Time-Span $T$}
     Below I generically define several processes which are commonly defined for different financial models. Different models use different time-spans $T$ at which trades can occur:
@@ -1056,7 +1041,26 @@
     \end{itemize}
   \end{remark}
 
-  \begin{definition}{Price-Process $S_t$\footnote{AKA \textit{Stock Process}}}\label{def_price_process}
+  \begin{definition}{Bank Account Process, $B$}\label{def_bank_account_process}
+    A \textit{Bank Account Process} $B$ models how much an initial deposit of one unit, at time $t=0$, into a ``risk-free'' bank account, with interest rate $r$, would be worth at each time-point $t$.
+    \[\begin{array}{rrcl}
+      &B&=&\{B_t:t\in T\}\\
+      \text{where}&B_0&=&1\\
+      \text{and}&B_t(\omega)&\geq&0\ \forall\ \omega\in\Omega
+    \end{array}\]
+    It is generally assumed that you can borrow money from these accounts, paying the same interest rate $r$.
+  \end{definition}
+
+  \begin{proposition}{Value of Bank Account Process $B$}
+    \par Suppose our ``Risk-Free'' Bank Account pays a constant interest rate of $r$ in each time-period, then after $t$ time-periods our initial deposit is worth
+    \begin{itemize}
+      \item \textit{Single-Period Model} $B_1=B_0(1+r)$.\footnote{Must be that $t=1$ in a \textit{Single-Period Model}.}
+      \item \textit{Multi-Period Model} $B_t=B_0(1+r)^t$.
+      \item \textit{Continuous Time Model} $B_t=B_0e^{rt}$.
+    \end{itemize}
+  \end{proposition}
+
+  \begin{definition}{Price-Process $S$}\label{def_price_process}
     A \textit{Price Process} $S$ models the price of each security at each time-point
     \[ S:=\{S(t):t\in T\}\text{ where }S(t)=(S_1(t),\dots,S_N(t)) \]
     where $S_n(t)$ is the price of the $n^{th}$ stock at time $t$ and there are $N$ different stock available.
@@ -1128,18 +1132,20 @@
 
   \begin{definition}{Gains-Process $G$}\label{def_gains_process}
     A \textit{Gains Process} $G$ models the total profit/loss made by a \textit{Trading Strategy} $H$ up to time-period $t$.
-    \[\begin{array}{rrcl}
+    \[\everymath={\displaystyle}\begin{array}{rrcll}
       &G&:=&\{G_t:t\in T\setminus\{0\}\}\\
-      \text{where}&G_t&:=&\left(\sum_{u=1}^tH_0(u)B_t\right)+\sum_{n=1}^N\sum_{u=1}^tH_n(u)\Delta S_n^*(u)
+      \text{where}&G_t&:=&\left(\sum_{u=1}^tH_0(u)B_t\right)+\sum_{n=1}^N\sum_{u=1}^tH_n(u)\Delta S_n^*(u)&\text{Discrete}\\
+      \text{or}&G_t&:=&\int_0^tH_0(u)dB_u+\sum_{n=1}^N\int_0^tH_n(u)dS_n(u)&\text{Continuous}
     \end{array}\]
   \end{definition}
 
   \begin{definition}{Discounted Gains-Process $G^*$}\label{def_discounted_gains_process}
     A \textit{Discounted Gains Process} $G^*$ models the total discounted profit/loss made by a \textit{Trading Strategy} $H$ up to time-period $t$.
-    \[\begin{array}{rrcl}
+    \[\everymath={\displaystyle}\begin{array}{rrcll}
       &G^*&:=&\{G_t^*:t\in T\setminus\{0\}\}\\
-      \text{where}&G_t^8&:=&\frac{G_t}{B_t}=\sum_{n=1}^N\sum_{u=1}^tH_n(u)\Delta S_n^*(u)\\
-      \text{and}&\Delta S_n(u)&:=&S_n(t)-S_n(t-1)
+      \text{where}&G_t^*&:=&\frac{G_t}{B_t}=\sum_{n=1}^N\sum_{u=1}^tH_n(u)\Delta S_n^*(u)&\text{Discrete}\\
+      \text{and}&\Delta S_n(u)&:=&S_n(t)-S_n(t-1)\\
+      \text{or}&G_t^*&:=&\sum_{n=1}^N\int_0^tH_n(u)dS_n^*(u)&\text{Continuous}
     \end{array}\]
   \end{definition}
 
@@ -1538,7 +1544,7 @@
   \begin{definition}{Attainable Contingent Claim $X$}
     A \textit{Contingent Claim} $X$ is said to be ``\textit{attainable}'' if
     \begin{center}
-      $\exists$ (self-financing) trading strategy $H$ st $\forall\ \omega\in\Omega,\ V_T(\omega)=X(\omega)$ when using $H$.
+      $\exists$ (self-financing, admissible\footnote{Depends on model}) trading strategy $H$ st $\forall\ \omega\in\Omega,\ V_T(\omega)=X(\omega)$ when using $H$.
     \end{center}
     If such a strategy $H$ exists, it is called a \textit{Replicating Portfolio} and is said to ``\textit{generate}'' $X$.
   \end{definition}
@@ -1608,9 +1614,13 @@
     The \textit{Risk-Neutral Valuation Principle} gives the fair-price of an attainable contingent claim $X$ at each time-period for models where \underline{no} arbitrage opportunities exist. The principle is different under different models
     \begin{itemize}
       \item[Single-Period] The fair-price is $p=\expect_\Q[X/B_1]$ where $\Q$ is a risk-neutral probability measure.
-      \item[Multi-Period] The fair-price at time $t$ is the time value $V_t$ of the portfolio which replicates $X$. Moreover,
-      \[ V_t^*=\expect_\Q[X/B_t|\mathcal{F}_t] \]
+      \item[Multi-Period] The fair-price at time $t$ is the time $t$ value $V_t$ of the portfolio which replicates $X$. Moreover,
+      \[ V_t^*=\expect_\Q[X/B_T|\mathcal{F}_t] \]
       where $\Q$ is a martingale measure.
+      \item[Continuous] The fair-price at time $t$ is the time $t$ value $V_t$ of the portfolio which replicates $X$. Moreover,
+      \[ V_t^*=\expect_\Q[X/B_T|\mathcal{F}_t] \]
+      where $\Q$ is an equivalent-martingale measure. At time $t=0$, the value is
+      \[ \pi_0=V_0=\expect_\Q[X/B_T] \]
     \end{itemize}
   \end{theorem}
 
@@ -1634,10 +1644,10 @@
 
   \begin{proof}{\texttt{Theorem \ref{sec_discrete_time_models}.\ref{the_risk_neutral_valuation_principle}} - Multi-Period Models}\label{prf_risk_neutral_valuation_principle_multi_period}
     Let $P_t$ denote the actual price of the \textit{Contingent Claim} at time point $t$.
-    \par By \texttt{Theorem \ref{sec_financial_terminology_and_single_period_model}.\ref{thrm_equivalent_contract_valuations_over_time}}, $P_t=V_t$ is the only possibility to avoid arbitrage opportunities.
+    \par By \texttt{Theorem \ref{sec_discrete_time_models}.\ref{the_equivalent_contract_valuations_over_time}}, $P_t=V_t$ is the only possibility to avoid arbitrage opportunities.
     \par Now, let $\Q$ be an arbitrary \textit{Martingale Measure} then for every $t<T$ we have that
     \[ V_t^*:=\expect_\Q[V_t^*|\mathcal{F}_t] \]
-    as $V_t^*$ is a \textit{Martingale} by \texttt{Proposition \ref{sec_discrete_time_models}.\ref{prop_finance_processes_which_are_martingales}}.
+    as $V_t^*$ is a \textit{Martingale} by \texttt{Theorem \ref{sec_discrete_time_models}.\ref{the_finance_processes_martingales}}.
     \par Moreover, since $V_T^*$ is the discounted value of the portfolio which replicated $X$ we have that
     \[ \expect_\Q[V_T^*|\mathcal{F}_t]=\expect_\Q[X/B_T|\mathcal{F}_t] \]
     Thus $V_t^*=\expect_\Q[X/B_T|\mathcal{F}_t]$ independent of the choice of \textit{Martingale Measure} $\Q$.\proved
@@ -2113,6 +2123,358 @@
     \end{array}\]
     \proved
   \end{proof}
+
+\subsection{Continuous-Time Model}
+
+  \begin{definition}{Continuous-Time Financial Model}
+    The \textit{Continuous-Time Financial Model} has the following components
+    \begin{itemize}
+      \item Initial date $t=0$.
+      \item Terminal date $t=T\in\nats$.
+      \item Trading interval $[0,T]$ with trading allowed at any time-point $t\in[0,T]$.
+      \item A probability space $(\Omega,\mathcal{F},\prob)$.
+      \item Price, Value, Gains and Bank Account Process from \textbf{Section \ref{sec_processes_of_models}} over continuous time-interval $[0,T]$.
+    \end{itemize}
+  \end{definition}
+
+  \begin{remark}{Discounted Gains process in Multi-Period vs continuous Model}
+    In the multi-period model the discounted gains process is always a martingale. This is not the case for the continuous model. Rather,  we restrict ourselves to the subclass of \textit{Admissible Trading Strategies} (\textbf{Definition \ref{sec_continuous_time_models}.\ref{def_admissible_trading_strategies}}).
+  \end{remark}
+
+  \begin{definition}{Equivalent Martingale Measure}
+    An \textit{Equivalent Martingale Measure} is a probability measure $\Q$ st
+    \begin{enumerate}
+      \item $\Q$ is equivalent to $\prob$.
+      \[ \prob(A)=0\text{ \underline{iff} }\Q(A)=0 \]
+      \item The discounted price process $S_n^*$ is a martingale under $\Q$ for all $n=1,\dots,N$.
+    \end{enumerate}
+  \end{definition}
+
+  \begin{definition}{Admissible Trading Strategy}\label{def_admissible_trading_strategies}
+    A self-financing trading strategy $H$ is called \textit{Admissible} wrt to an \textit{Equivalent Martingale Measure} $\Q$ if the discounted gains process $G^*(t)$ is a martingale under $\Q$.
+  \end{definition}
+
+  \begin{theorem}{Conditions for discount value process to be a Martingale}\label{the_5_11}
+    For each \textit{Admissible Trading Strategy} $H$ and each equivalent martingale measure $\Q$, the discounted value process $V^*(t)$ is a Martingale wrt $\Q$.
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_continuous_time_models}.\ref{the_5_11}} }
+    Immediate from \textbf{Theorem \ref{sec_discrete_time_models}.\ref{the_self_financing_and_value_process}}.
+  \end{proof}
+
+  \begin{definition}{Arbitrage Opportunity - Continuous-Time Model}
+    Let $H$ be a trading strategy for a continuous-time financial model. $H$ exploits an \textit{Arbitrage Opportunity} if it has the following properties
+    \begin{enumerate}
+      \item $V_0=0$.
+      \item $V_T\geq0$.
+      \item $\expect[V_T]>0$ and
+      \item $H$ is self-financing.
+    \end{enumerate}
+  \end{definition}
+
+  \begin{theorem}{No-Admissible Arbitrage Theorem}\label{the_5_12}
+    Assume there exists an equivalent Martingale Measure $\Q$ for the market model.
+    \par Then the market model contains no \textit{Admissible Arbitrage Opportunities}.
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_continuous_time_models}.\ref{the_5_12}}}
+    Assume that $H$ is an admissible arbitrage opportunity. Then
+    \[ V_0^*=0,\ V_T^*\geq0\text{ and }\expect\left[V_T^*\right]>0 \]
+    Since $\Q$ is equivalent to $\prob$, we also have $\expect_\Q[V_T^*]>0$.
+    \par On the other hand $V_T^*$ is a martingale measure, using \texttt{Theorem \ref{sec_financial_market_models_in_continuous_time}.\ref{the_5_11}}.
+    \par That is
+    \[ \expect_\Q[V_t^*|\mathcal{F}_u]=V_u^*\text{ for all }u\leq t\leq T \]
+    This implies
+    \[ \expect_\Q[V_T^*]=V_0^*=0 \]
+    This is a contradiction. Thus there cannot be an admissible arbitrage opportunity.\proved
+  \end{proof}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_continuous_time_models}.\ref{the_risk_neutral_valuation_principle}} - Continuous Time}
+    Let $H$ be an arbitrary replicating portfolio for $X$ and $P_t$ be the time $t$ price of claim $X$.
+    \par If $P_t$ does not match the value of the strategy $H$ at time $t$, then there exists arbitrage opportunities as described in the proof of the Risk-neutral valuation principle.
+    \par Moreover, by \texttt{Theorem \ref{sec_continuous_time_models}.\ref{the_5_11}} the discounted value process $V_t^*$ is a martingale under $\Q$ and thus
+    \[ V_t^*=\expect_\Q[V_T^*|\mathcal{F}_t]=\expect_\Q\left[V_T/B_T|\mathcal{F}_t\right]=\expect_\Q\left[X/B_T|\mathcal{F}_t\right] \]
+    Note that the last expression is independent of the particular replicating strategy.\proved
+  \end{proof}
+
+\subsection{The Black-Scholes Model}
+
+  \begin{definition}{Black-Scholes Model}
+    The \textit{Black-Scholes Model} is a continuous-time financial market model with two assets:
+    \begin{itemize}
+      \item A riskless bond with a constant interest rate $r$ and corresponding bank account process
+      \[ B_t=e^{rt} \]
+      \item A risky asset with price process $\{S_t\}_{t\in[0<T]}$ modelled as \textit{Geometric Brownian Motion}
+      \[ S_t=S_0e^{\sigma W_t+t\cdot\left(\mu-\frac{\sigma^2}2\right)} \]
+      where $W_t$ is Brownian motion, $\mu$ is drift and $\sigma$ is volatility.
+    \end{itemize}
+    Brownian motion has the characteristic randomness of share prices and Geometric Brownian motion ensures prices do not become negative.
+  \end{definition}
+
+  \begin{remark}{Assumptions of Black-Scholes Framework}
+    In the \textit{Black-Scholes Framework} the following assumptions are made
+    \begin{enumerate}
+      \item No arbitrage opportunities exist. This is a standard assumption as when an arbitrage opportunity exists then it will disappear quickly due to arbitrageurs.
+      \item No transactions costs. (Relaxable).
+      \item Unlimited short-selling is available, at not cost.
+      \item Constant risk-free interest rate. (Relaxable).
+      \item The underlying price follows a geometric Brownian motion. In reality, prices can jump which does not fit with geometric Brownian motion. Some extensions of the Black-Scholes model account have jump components.
+      \item Constant volatility. In reality, volatility is not known nor constant.
+    \end{enumerate}
+  \end{remark}
+
+  \begin{remark}{Estimating Volatility}
+    Estimating the volatility $\sigma$ is hard. There are two approaches:
+    \begin{enumerate}
+      \item \textit{Statistical Approach}. Estimate volatility $\sigma$ by looking at historical prices $S$ and deduce the historical volatility. This is naturally a poor approach as there is no reason for the volatility over the past to be a good estimator of future volatility. Also, how far back do you want to consider.
+      \item \textit{Market-Based Approach}. Extract information of volatility from traded instruments. Volatility obtained in this way is the market view of the volatility, called ``Implied Volatility''. The Black-Scholes formula is numerically inverted to find the implied volatility of a quoted price.
+    \end{enumerate}
+    Moreover, the Black-Scholes model assumes volatility to be constant but in practice there is a ``Volatility Smile''\footnote{Volatility actually depends on strike price, typically in the shape of a smile.}.
+  \end{remark}
+
+  \begin{proposition}{Differential Equations of Black-Scholes Model}\label{prop_diff_equations_of_black_scholes_model}
+    In the \textit{Black-Scholes Model} the following differential equations hold
+    \begin{itemize}
+      \item Of the bond price $dB_t=rB_tdt$.
+      \item Of the price process $dS_t=\mu S_tdt+\sigma S_tdW_t$ (A stochastic differential equation).
+    \end{itemize}
+  \end{proposition}
+
+  \begin{proof}{\ref{sec_continuous_time_models}.\ref{prop_diff_equations_of_black_scholes_model}}
+    (First part proved in \textbf{Example 4.5} of long notes).
+    \par The function $f(t,W_t)=S_0\cdot\exp\left\{t\cdot\left(\mu-\frac{\sigma^2}2\right)+\sigma W_t\right\}$ has the following partial derivatives
+    \[ f_t(t,W_t)=(\mu-\frac{\sigma^2}2)S_t\quad f_X(t,W_t)=\sigma S_t\quad f_{XX}(t,W_t)=\sigma^2S_t \]
+    We can now apply It\^0's Lemma to obtain
+    \[\begin{array}{rcl}
+      dS_t&=&(f_t(t,W_t)+f_{XX}(t,W_t)/2)dt+f_X(t,W_t)dW_t\\
+      &=&\left((\mu-\sigma^2/2)+\sigma^2/2\right)S_td_t+\sigma S_tdW_t\\
+      &=&\mu S_td_t+\sigma S_tdW_t
+    \end{array}\]
+  \end{proof}
+
+\subsubsection{Equivalent Martingale Measures for Black-Scholes Model}
+
+  \begin{theorem}{Girsanov's Theorem for Black-Scholes Model\footnote{This is a special case of Girsanov's theorem}}\label{the_girsanov_theorem}
+    Let $\{W_t\}_{t\geq0}$ be standard Brownian motion, $\{X_t\}_{t\geq0}$ be Brownian motion with drift $b$ and volatility $\sigma$ (ie $X_t=\sigma W_t+bt$), $a\in\reals$ and $T>0$.
+    \par Define the \textit{Girsanov Density} $L_T$ as
+    \[ L_T=\exp\left\{\frac{a-b}{\sigma^2}X_T-\frac{a^2-b^2}{2\sigma^2}T\right\} \]
+    Setting
+    \[ \Q(A)=\expect[L_T\indexed\{A\}]\text{ for all }A\in\mathcal{F}_T \]
+    we can define a probability measure $\Q$ st
+    \begin{itemize}
+      \item $\Q$ is equivalent to $\prob$; and,
+      \item $\{X_t\}_{t\geq0}$ is Brownian motion with drift $a$ and volatility $\sigma$ under $\Q$.
+    \end{itemize}
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_continuous_time_models}.\ref{the_girsanov_theorem}}}
+    \textit{This is just a sketch proof}.
+    \par Write $X_T=\sigma W_T+bT$ and obtain
+    \[\begin{array}{rcl}
+      \Q(A)&=&\expect\left[\indexed\{A\}\cdot\exp\left\{\frac{a-b}\sigma W_T+\frac{a-b}{\sigma^2}bT-\frac{a^2-b^2}{2\sigma^2}T\right\}\right]\\
+      &=&\expect\left[\indexed\{A\}\cdot\exp\left\{\frac{a-b}\sigma W_T+\frac{T}{2\sigma^2}(a-b)\left(2b-(a+b)\right)\right\}\right]\\
+      &=&\expect\left[\indexed\{A\}\cdot\exp\left\{\frac{a-b}\sigma W_T+\frac{T}{2\sigma^2}(a-b)\left(-(a-b)\right)\right\}\right]\\
+      &=&\expect\left[\indexed\{A\}\cdot\exp\left\{\theta W_T+T\theta^2/2\right\}\right]
+    \end{array}\]
+    where $\theta:=(a-b)/\sigma$.
+    \par Since $W_T$ is distribution $\mathcal{N}(0,T)$ we obtain in particular for $A=\Omega$ that
+    \[\everymath={\displaystyle}\begin{array}{rcl}
+      \Q(\Omega)&=&\int_{-\infty}^\infty\exp\left\{\theta z-T\theta^2/2\right\}\frac1{\sqrt{2\pi T}}\exp\left\{-\frac{z^2}{2T}\right\}dz\\
+      &=&\int_{-\infty}^\infty\frac1{\sqrt{2\pi T}}\exp\left\{-\frac{z^2-2T\theta z+T^2\theta^2}{2T}\right\}dz\\
+      &=&\int_{-\infty}^\infty\frac1{\sqrt{2\pi T}}\exp\left\{-\frac{(z-T\theta)^2}{2T}\right\}dz\\
+      &=&\int_{-\infty}^\infty g(z)dz
+    \end{array}\]
+    We identify the intergrand $g(z)$ as the density of a $\mathcal{N}(T\theta,T)$ distribution.
+    \par Therefore
+    \[ \Q(\Omega)=\int_{-\infty}^\infty g(z)dz=1 \]
+    Hence $\Q$ is a probability measure.
+    \par Since $L_T>0$, $\Q$ is equivalent to $\prob$.
+    \par Similarly we obtain for every $s\in\reals$ that
+    \[\everymath={\displaystyle}\begin{array}{rcl}
+      \Q(X_T\leq s)&=&\Q\left(W_T\leq \frac{s-bT}\sigma\right)\\
+      &=&\int_{-\infty}^{\frac{s-bT}\sigma}g(z)dz\\
+      &=&\int_{-\infty}^sg\left(\frac{u-bT}\sigma\right)du
+    \end{array}\]
+    using the transformation $z=\frac{u-bT}\sigma$.
+    We can rewrite the integrand as
+    \[\everymath={\displaystyle}\begin{array}{rcl}
+      \frac1\sigma g\left(\frac{u-bT}\sigma\right)&=&\frac1{\sigma{2\pi T\sigma^2}}\exp\left\{-\frac{\left(\frac{u-bT}\sigma-T\theta\right)^2}{2T}\right\}\\
+      &=&\frac1{\sigma{2\pi T\sigma^2}}\exp\left\{-\frac{(u-T(b+\theta^2\sigma))^2}{2T\sigma^2}\right\}\\
+    \end{array}\]
+    Note that $\theta:=(a-b)/\sigma\implies b+\theta\sigma=a$. Therefore $X_T$ is, under $\Q$, normally distributed with mean $aT$ and variance $T\sigma^2$.
+    \par It remains to show that for $t<T$ the distribution of $X_t$ is again a normal distribution with mean $at$ and variance $t\sigma^2$ and that the increments of $X_t$ are independent.\footnote{Not covered in notes, may be out of scope of course.}\proved
+  \end{proof}
+
+  \begin{proposition}{Equivalent Martingale Measure for Black-Scholes Model}\label{prop_equivalent_martingale_measure_for_bs_model}
+    An equivalent martingale measure $\Q$ is defined by setting
+    \[ \Q(A)=\expect[L_T\indexed\{A\}] \]
+    where
+    \[ L_T=\exp\left\{\frac{r-\mu}\sigma W_T-\frac{(r-\mu)^2}{2\sigma^2}T\right\} \]
+  \end{proposition}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_continuous_time_models}.\ref{prop_equivalent_martingale_measure_for_bs_model}}}
+    The discounted price process in the \textit{Black-Scholes model} is given by
+    \[ S_t^*=e^{-rt}S_t=S_0e^{\sigma W_t+\left(\mu-r-\frac{\sigma^2}2\right)}=S_0e^{X_t} \]
+    where $X_t$ is a Brownian motion with volatility $\sigma$ and drift $\left(\mu-r-\frac{\sigma^2}2\right)$.
+    \par Writing
+    \[\everymath={\displaystyle}\begin{array}{rcl}
+      L_T&=&\exp\left\{\frac{r-\mu}{\sigma^2}\left(X_T-T(\mu-r-\frac{\sigma^2}2)\right)-\frac{(r-\mu)^2}{2\sigma^2}T\right\}\\
+      &=&\exp\left\{\frac{r-\mu}{\sigma^2}X_T-\frac{(r-\mu)(\mu-r-\frac{\sigma^2}2)T}{\sigma^2}-\frac{(r-\mu)^2}{2\sigma^2}T\right\}\\
+      &=&\exp\left\{\frac{r-\mu}{\sigma^2}X_T-\frac{-2(r-\mu)^2-(r-\mu)\sigma^2}{2\sigma^2}T-\frac{(r-\mu)^2}{2\sigma^2}T\right\}\\
+      &=&\exp\left\{\frac{r-\mu}{\sigma^2}X_T-\frac{-(r-\mu)^2-(r-\mu)\sigma^2}{2\sigma^2}T\right\}
+    \end{array}\]
+    and applying \textit{Girsanov's Theorem} (\texttt{Theorem \ref{sec_continuous_time_models}.\ref{the_girsanov_theorem}}) with $a=-\sigma^2/2$ and $b=\mu-r-\frac{\sigma^2}2$, we see that $X_T$ is, under $\Q$, a Brownian motion with volatility $\sigma$ and drift $-\sigma^2/2$
+    \par Using \texttt{Proposition \ref{sec_probability}.\ref{pro_martingales_and_brownian_motion}} we see that $S_t^*$ is a martingale under $\Q$. \proved
+  \end{proof}
+
+  \begin{remark}{Price Process under $\prob$ and $\Q$}
+    Under $\prob$, the stock price process is given by
+    \[ S_t=S_0\exp\left\{\sigma W_t+(\mu-\frac{\sigma^2}2)t\right\} \]
+    Under $\Q$, the stock price process is given by
+    \[ S_t=S_0\exp\left\{\sigma\bar{W}_t+(r-\frac{\sigma^2}2)t\right\} \]
+    where
+    \[ \bar{W}_t=W_t-\frac{r-\mu}\sigma t \]
+    Note that $\bar{W}$ is a standard Brownian motion wrt $\Q$. This show that computations using the risk-neutral measure can be made by replacing the trend $\mu$ with the constant interest rate $r$.
+  \end{remark}
+
+\subsubsection{Pricing a Black-Scholes Model}
+
+  \begin{proposition}{Price of Black-Scholes Model}\label{prop_price_of_black_scholes_continuous}
+    Consider the Black-Scholes model and a contingent claim $X$. The price of $X$ at time $t$ is given by
+    \[ P_t=e^{-r(T-t)}\expect_\Q[X|\mathcal{F}_t] \]
+    where $\expect_\Q$ is given via the Girsanov density (\textit{Theorem \ref{sec_financial_market_models_in_continuous_time}.\ref{the_girsanov_theorem}})
+  \end{proposition}
+
+  \begin{theorem}{Technical Lemma before Black-Scholes Formula}\label{the_technical_lemma_for_BS}
+    For $Z\sim\mathcal{N}(a,\gamma^2)$ and any $b,c>0$
+    \[ \expect[\{be^Z-c\}_+]=be^{a+\frac{\gamma^2}2}\Phi\left(\frac1\gamma\left(\ln(b/c)+a+\gamma^2\right)\right)-c\Phi\left(\frac1\gamma\left(\ln(b/c)+a\right)\right) \]
+  \end{theorem}
+
+  \begin{proof}{\texttt{Theorem \ref{sec_continuous_time_models}.\ref{the_technical_lemma_for_BS}}}
+    Recall that for a random variable $X$ with a standard normal distribution
+    \[ \prob(X>x)=1-\Phi(x)=\Phi(-x)\ \forall\ x\in\reals \]
+    Therefore we can calculate $\expect\left[\{be^Z-c\}_+\right]$ as follows
+    \[\everymath={\displaystyle}\begin{array}{rcl}
+      \expect\left[\{be^Z-c\}_+\right]&=&\int_{-\infty}^\infty\{be^x-c\}_+\frac1{\sqrt{2\pi\gamma^2}}e^{-\frac{(x-a)^2}{2\gamma^2}}dx\\
+      &=&\int_{\ln(c/b)}^\infty(be^x-c)\frac1{\sqrt{2\pi\gamma^2}}e^{-\frac{(x-a)^2}{2\gamma^2}}dx\\
+      &=&b\int_{\ln(c/b)}^\infty\frac1{\sqrt{2\pi\gamma^2}}e^{-\frac{2x\gamma^2+(x-a)^2}{2\gamma^2}}dx-c\underbrace{\int_{\ln(c/b)}^\infty\frac1{\sqrt{2\pi\gamma^2}}e^{-\frac{(x-a)^2}{2\gamma^2}}dx}_{=\prob(Z>\ln(c/b))}\\
+      &=&be^{\frac{2a\gamma^2+\gamma^4}{2\gamma^2}}\underbrace{\int_{\ln(c/b)}^\infty\frac1{\sqrt{2\pi\gamma^2}}e^{-\frac{(x-a-\gamma^2)^2}{2\gamma^2}}dx}_{=\prob(Z+\gamma^2>\ln(c/b))}-c\prob(Z>\ln(c/b))\\
+      &=&be^{a+\frac{\gamma^2}2}\prob(Z+\gamma^2>\ln(c/b))-c\prob(Z>\ln(c/b))\\
+      &=&be^{a+\frac{\gamma^2}2}\prob\left(\frac{Z-a}\gamma>\frac1\gamma\left(\ln(c/b)-\gamma^2-a\right)\right)-c\prob\left(\frac{Z-a}\gamma>\frac1\gamma\left(\ln(c/b)-a\right)\right)\\
+      &=&be^{a+\frac{\gamma^2}2}\Phi\left(\frac1\gamma\left(\ln(c/b)-\gamma^2-a\right)\right)-c\Phi\left(\frac1\gamma\left(\ln(c/b)-a\right)\right)\\
+    \end{array}\]
+    \proved
+  \end{proof}
+
+  \begin{proposition}{Black-Scholes Formula - Continuous Time}\label{prop_bs_formula_continuous}
+    \textit{This is the same as the Black-Scholes Formula in \texttt{Theorem \ref{sec_discrete_time_models}.\ref{the_black_scholes_formula}}.}
+    \par Consider a European call option with exercise price $K$ maturing at time $T$ which corresponds to the claim $X=\{S_T-K\}_+$. Then the Black-Scholes price process of that European class is given by
+    \[ \Pi_t=S_t\Phi(d_1(S_t,T_t))-Ke^{-r(T-t)}\Phi(d_2(S_t,T-t)) \]
+    The functions $d_1(u,v)$ and $d_2(u,v)$ are given by
+    \[\everymath={\displaystyle}\begin{array}{rcl}
+      d_1(u,v)&=&\frac{\ln(u/K)+\left(r+\frac{\sigma^2}2\right)v}{\sigma\sqrt{v}}\\
+      d_2(u,v)&=&\frac{\ln(u/K)+\left(r-\frac{\sigma^2}2\right)v}{\sigma\sqrt{v}}
+    \end{array}\]
+  \end{proposition}
+
+  \begin{proof}{\texttt{Proposition \ref{sec_continuous_time_models}.\ref{prop_bs_formula_continuous}}.}
+    Let $\bar{W}_t$ be a standard Brownian motion under $\Q$. The price $\Pi_t$ is given by
+    \[\everymath={\displaystyle}\begin{array}{rcl}
+      \Pi_t&=&e^{-r(T-t)}\expect_\Q\left[\{S_T-K\}_+|\mathcal{F}_t\right]\\
+      &=&e^{-r(T-t)}\expect_\Q\left[\left\{S_t e^{\sigma(\bar{W}_T-\bar{W}_t)+\left(r-\frac{\sigma^2}2\right)(T-t)}-K\right\}_+\bigg|\mathcal{F}_t\right]\\
+      &=&e^{-r(T-t)}\expect_\Q\left[|\{S_te^Z-K\}_+\mathcal{F}_t\right]
+    \end{array}\]
+    where $Z\sim\mathcal{N}(a,\gamma^2)$ under $\Q$ with mean $a=\left(r-\frac{\sigma^2}2\right)(T-t)$ and standard deviation $\gamma=\sigma\sqrt{T-t}$ and is independent of $\mathcal{F}_t$.
+    \par We obtain the Black-Scholes formula by applying \texttt{Theorem \ref{sec_continuous_time_models}.\ref{the_technical_lemma_for_BS}} with $b=S_t,c=K$
+    \[\everymath={\displaystyle}\begin{array}{rcl}
+      \Pi_t&=&e^{-r(T-t)}S_te^{a+\frac12(\sigma^2(T-t))}\Phi\left(\frac1{\sigma\sqrt{T-t}}\left(\ln(S_t/K)+a+\sigma^2(T-t)\right)\right)\\
+      &-&e^{-r(T-t)}K\Phi\left(\frac1{\sigma\sqrt{T-t}}(\ln(S_t/K)+a)\right)
+    \end{array}\]
+    \proved
+  \end{proof}
+
+\subsubsection{Black-Scholes-Merton Equation}
+
+  \begin{remark}{Motivation}
+    The risk-neutral pricing principle (\textbf{Theorem \ref{sec_discrete_time_models}.\ref{the_risk_neutral_valuation_principle}}) does not provide an explicitly expression for the replicating portfolio.
+  \end{remark}
+
+  \begin{theorem}{Black-Scholes-Mertons Equation}\label{eqn_black_scholes_mertons}
+    Let $X=g(S_T)$ be an attainable claim in the Black-Scholes model with drift $\mu$ and volatility $\sigma$.
+    \par Assume that the price $\Pi_t$ at time $t$ satisfies $\Pi_t=f(t,S_t)$ for some function $f$ with two continuous derivatives in $x$ and one in $t$.
+    \par Then $f(t,x)$ satisfies the \textit{Black-Scholes-Mertons Equation}
+    \[ f_t+rS_tf_x+\frac12\sigma^2S_t^2f_{xx}-rf=0,\quad f(T,S_T)=g(S_T) \]
+    Further, the replicating strategy is given by
+    \[\begin{array}{rcl}
+      H_0(t)&=&\frac1{B_t}\left(f(t,S_t)-f_x(t,S_t)S_t\right)\\
+      &=&\frac{1}{rB_t}\left(f_t(t,S_t)+\frac12f_{xx}(t,S_t)S_t^2\sigma^2\right)\\
+      H_1(t)&=&f_x(t,S_t)
+    \end{array}\]
+  \end{theorem}
+
+  \begin{proof}{Theorem \ref{sec_continuous_time_models}.\ref{eqn_black_scholes_mertons}}
+    The price process $S_t$ of the stock under $\Q$ is
+    \[ S_t=S_0\exp\left\{\sigma\bar{W}_t+t\cdot\left(r-\frac{\sigma^2}2\right)\right\} \]
+    An application of It\^o's lemma shows that it has dynamics
+    \begin{equation}\label{eqn_proof_bsm_dS}
+      dS_t=S_t(rdt+\sigma d\bar{W}_t)
+    \end{equation}
+    Similarly, the discounted price process $S_t^*=S_0\exp\left\{\sigma\bar{W}_t-t(\sigma^2/2)\right\}$ has dynamics
+    \begin{equation}\label{eqn_proof_bsm_dSt_star}
+      dS_t^*=S_t^*\sigma d\bar{W}_t
+    \end{equation}
+    Let now $h(t,S_t)=f(t,S_t)/B_t=\exp^{-rt}f(t,S_t)$ be the discounted fair price of the claim $X$ at time $t$.
+    \par Since, (\ref{eqn_proof_bsm_dS}) means that $S_t$ is an It\^0 process with $b_t=rS_t$ and $\sigma_t=\sigma S_t$ using It\^o's lemma we find that
+    \begin{equation}\label{eqn_proof_bsm_dh}
+      dh=\left(h_t+rS_th_x+\frac12\sigma^2S_t^2h_{xx}\right)dt+\sigma S_th_xd\bar{W}_t
+    \end{equation}
+    We know from the risk-neutral valuation principle that
+    \begin{equation}\label{eqn_proof_bsm_ht}
+      h_t(t,S_t)=\expect_\Q\left[X/B_T\bigg|\mathcal{F}_t\right]
+    \end{equation}
+    and in particular that $h$ is a martingale with respect to $\Q$.
+    \par Therefore, there is no drift meaning that the $dt$ term in (\ref{eqn_proof_bsm_dh}) is zero
+    \[ h_t(t,S_t)+rS_th_x(t,S_t)+\frac12\sigma^2S_t^2h_{xx}(t,S_t)=0 \]
+    Moreover, the dynamics of (\ref{eqn_proof_bsm_dh}) reduce to
+    \begin{equation}\label{eqn_proof_bsm_dh_2}
+      dh(t,S_t)=\sigma S_th_x(t,S_t)d\bar{W}_t
+    \end{equation}
+    \textit{Black-Scholes-Merton Equation}
+    \par The ratio between $h$ and $f$ is a function of $t$, not $x$, and therefore $h_x=f_x/B_t$ and $g_{xx}=f_{xx}/B_t$.
+    \par We also know that $h_t=(f_t/B_t)-(rf/B_t)$. Therefore, (\ref{eqn_proof_bsm_ht}) can be rewritten as
+    \[\begin{array}{rcl}
+      0&=&h_t+rS_th_x+\frac12\sigma^2S_t^2h_{xx}\\
+      &=&\frac1{B_t}\left(f_t-rf+rS_tf_x+\frac12\sigma^2S_t^2f_{xx}\right)
+    \end{array}\]
+    Multiplying by $B_t$ we see that $f$ satisfies the \textit{Black-Scholes-Merten Equation}.\proved
+    \par \textit{Replicating Portfolio}.
+    \par For all $t$ the value of the replicating portfolio $\left(H_0(t),H_1(t)\right)$ equals the price process $f(t,S_t)$ of the claim $X$ and the replicating strategy must be self-financing.
+    \par Therefore, (\ref{eqn_proof_bsm_dSt_star}) implies
+    \[\begin{array}{rcl}
+      dh(t,S_t)&=&H_1(t)dS_t^*\\
+      &=&H_1(t)S_t^*\sigma d\bar{W}_t\\
+      &=&H_1(t)\frac{S_t}{B_t}\sigma d\bar{W}_t
+    \end{array}\]
+    Equating this result to (\ref{eqn_proof_bsm_dh_2}) we get
+    \[\begin{array}{rrcl}
+      &H_1(t)S_t^*\sigma&=&\sigma S_th_x(t,S_t)\\
+      \implies&H_1(t)\left(\frac{S_t}{B_t}\right)&=&S_th_x(t,S_t)\\
+      \implies&H_1(t)&=&B_th_x(t,S_t)\\
+      &=&f_x(t,S_t)
+    \end{array}\]
+    Finally, the replicating portfolio has to satisfy
+    \[\begin{array}{rcl}
+      f(t,S_t)&=&H_0(t)B_t+H_1(t)S_t\\
+      &=&H_0(t)B_t+f_x(t,S_t)S_t
+    \end{array}\]
+    From this we obtain that
+    \[ H_0(t)=\frac{f(t,S_t)-f_x(t,S_t)S_t}{B_t} \]
+  \end{proof}
+
+  \begin{remark}{Black-Scholes-Merton Equation and Contingency Claims}
+    The \textit{Black-Scholes-Merton Equation} is an alternative way of calculating the price of a contingent claim.
+    \par The boundary condition has to be chosen according to the contingent claim we want to analyse. In particular, for $f(T,S_T)=\{S_T-k\}^+$ we obtain yet another way of deriving the Black-Scholes formula (See \textbf{Example 5.4} in long notes).
+  \end{remark}
 
 \reference
 
